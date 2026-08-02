@@ -62,7 +62,7 @@ export const WithFooter = () => (
       <TableBody>
         <TableRow>
           <TableCell className="font-medium">Deadly Aim</TableCell>
-          <TableCell className="text-muted-foreground">Blue &mdash; Fitness</TableCell>
+          <TableCell className="text-muted-foreground">Blue &mdash; Warfare</TableCell>
           <TableCell className="text-right font-mono">50</TableCell>
         </TableRow>
         <TableRow>
