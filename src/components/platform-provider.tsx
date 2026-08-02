@@ -12,19 +12,29 @@ import { PLATFORM_COOKIE } from "@/lib/platform";
 
 const listeners = new Set<() => void>();
 
+/**
+ * In-memory fallback for environments without writable storage (private
+ * mode, storage quota). Set before attempting localStorage so a failed write
+ * still changes the mode for this session.
+ */
+let memoryValue: Platform | null = null;
+
 function readPlatform(): Platform {
   try {
-    return localStorage.getItem(PLATFORM_COOKIE) === "console" ? "console" : "pc";
+    const stored = localStorage.getItem(PLATFORM_COOKIE);
+    if (stored === "console" || stored === "pc") return stored;
   } catch {
-    return "pc";
+    // fall through to the in-memory value
   }
+  return memoryValue ?? "pc";
 }
 
 function writePlatform(p: Platform) {
+  memoryValue = p;
   try {
     localStorage.setItem(PLATFORM_COOKIE, p);
   } catch {
-    // storage unavailable (private mode); the in-memory value still updates
+    // storage unavailable; memoryValue carries the session
   }
   listeners.forEach((l) => l());
 }

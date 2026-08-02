@@ -5,7 +5,20 @@ import { skills } from "@/data/skills";
 import { cpStars } from "@/data/cpStars";
 import { mundusStones } from "@/data/mundus";
 import { foods } from "@/data/food";
-import { rowToBuild, rowToCpStar, rowToFood, rowToMundus, rowToSet, rowToSkill } from "./supabase-map";
+import { companions } from "@/data/companions";
+import { zones } from "@/data/zones";
+import { patches } from "@/data/patches";
+import {
+  rowToBuild,
+  rowToCompanion,
+  rowToCpStar,
+  rowToFood,
+  rowToMundus,
+  rowToPatch,
+  rowToSet,
+  rowToSkill,
+  rowToZone,
+} from "./supabase-map";
 
 /**
  * Round-trip: entity → DB row (the seeder's column mapping) → entity must be
@@ -46,6 +59,24 @@ describe("supabase row mappers", () => {
     for (const f of foods) {
       const row = { id: f.id, name: f.name, effect: { text: f.effect, stats: f.stats ?? [] } };
       expect(rowToFood(row)).toEqual({ ...f, stats: f.stats ?? [] });
+    }
+  });
+
+  it("patches, companions, zones round-trip", () => {
+    for (const p of patches) {
+      const row = { id: p.id, code: p.code, name: p.name, released_at: p.releasedAt, season: p.season };
+      expect(rowToPatch(row)).toEqual(p);
+    }
+    for (const c of companions) {
+      const row = {
+        id: c.id, name: c.name, class: c.className, dlc_required: c.dlcRequired,
+        unlock_zone: c.unlockZone, unlock_npc: c.unlockNpc, role_ratings: c.roleRatings,
+      };
+      expect(rowToCompanion(row)).toEqual(c);
+    }
+    for (const z of zones) {
+      const row = { id: z.id, name: z.name, dlc_required: z.dlcRequired, level_scaled: z.levelScaled };
+      expect(rowToZone(row)).toEqual(z);
     }
   });
 

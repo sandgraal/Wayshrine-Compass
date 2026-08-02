@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { runIngest } from "@/lib/ingest/pipeline";
 import { parsePatchDataset } from "@/lib/ingest/parse";
-import { persistenceConfigured, persistIngest } from "@/lib/ingest/persist";
+import { canPersist, persistenceConfigured, persistIngest } from "@/lib/ingest/persist";
 import { getDb } from "@/lib/data";
 
 /**
@@ -16,8 +16,13 @@ import { getDb } from "@/lib/data";
  * by outsiders.
  */
 export async function GET(request: Request) {
+  // Fail closed: a missing CRON_SECRET is a deployment error, not an open
+  // door — this route can perform service-role writes.
   const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret && request.headers.get("authorization") !== `Bearer ${cronSecret}`) {
+  if (!cronSecret) {
+    return NextResponse.json({ error: "CRON_SECRET is not configured" }, { status: 503 });
+  }
+  if (request.headers.get("authorization") !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
@@ -62,9 +67,11 @@ export async function GET(request: Request) {
   );
 
   let mode = "dry-run";
-  if (persistenceConfigured()) {
+  if (canPersist(db)) {
     await persistIngest(incoming, result, db.currentPatch);
     mode = "persisted";
+  } else if (persistenceConfigured()) {
+    mode = "dry-run (read source is seed; refusing to persist)";
   }
 
   return NextResponse.json({

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { runIngest } from "@/lib/ingest/pipeline";
 import { parsePatchDataset } from "@/lib/ingest/parse";
-import { persistenceConfigured, persistIngest } from "@/lib/ingest/persist";
+import { canPersist, persistenceConfigured, persistIngest } from "@/lib/ingest/persist";
 import { getDb } from "@/lib/data";
 
 /**
@@ -14,12 +14,15 @@ import { getDb } from "@/lib/data";
  * the run is a dry run.
  */
 export async function POST(request: Request) {
+  // Fail closed: without a configured secret this endpoint accepts nothing.
+  // A missing secret must never mean "open to everyone" on a route that can
+  // perform service-role writes.
   const secret = process.env.INGEST_SECRET;
-  if (secret) {
-    const auth = request.headers.get("authorization");
-    if (auth !== `Bearer ${secret}`) {
-      return NextResponse.json({ error: "unauthorized" }, { status: 401 });
-    }
+  if (!secret) {
+    return NextResponse.json({ error: "INGEST_SECRET is not configured" }, { status: 503 });
+  }
+  if (request.headers.get("authorization") !== `Bearer ${secret}`) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   }
 
   let body: unknown;
@@ -42,9 +45,13 @@ export async function POST(request: Request) {
   );
 
   let mode = "dry-run";
-  if (persistenceConfigured()) {
+  if (canPersist(db)) {
     await persistIngest(incoming, result, db.currentPatch);
     mode = "persisted";
+  } else if (persistenceConfigured()) {
+    // Service key present but the read fell back to seed data — persisting a
+    // seed-based diff would overwrite live provenance, so refuse.
+    mode = "dry-run (read source is seed; refusing to persist)";
   }
 
   return NextResponse.json({

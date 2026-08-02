@@ -1,37 +1,80 @@
 import { describe, expect, it } from "vitest";
 import { parsePatchDataset } from "./parse";
 
-describe("parsePatchDataset", () => {
-  const valid = {
-    patch: { code: "U51" },
-    sets: [{ id: "set-a", name: "A" }],
-    skills: [],
-    cpStars: [],
-  };
+const validSet = {
+  id: "set-a",
+  name: "Alpha's Embrace",
+  type: "trial",
+  source: "Synthetic Trial",
+  dlcRequired: null,
+  bonuses: [{ pieces: 2, effect: "Adds 657 Critical Chance" }],
+};
 
-  it("accepts a minimal valid dataset and fills patch defaults", () => {
+const validSkill = {
+  id: "skill-a",
+  className: "sorcerer",
+  line: "dark-magic",
+  lineLabel: "Dark Magic",
+  name: "Crystal Shard",
+  ultimate: false,
+  description: "Conjure a crystal shard.",
+  morphs: [
+    { name: "Crystal Fragments", description: "a" },
+    { name: "Crystal Weapon", description: "b" },
+  ],
+};
+
+const validStar = {
+  id: "cp-a",
+  tree: "warfare",
+  name: "Deadly Aim",
+  effect: "10% single target damage",
+  slottable: true,
+};
+
+const valid = {
+  patch: { code: "U51", releasedAt: "2026-09-07" },
+  sets: [validSet],
+  skills: [validSkill],
+  cpStars: [validStar],
+};
+
+describe("parsePatchDataset", () => {
+  it("accepts a valid dataset and fills patch defaults", () => {
     const parsed = parsePatchDataset(valid);
     expect(parsed).not.toBeNull();
     expect(parsed!.patch).toEqual({
       id: "patch-u51",
       code: "U51",
       name: "U51",
-      releasedAt: "",
+      releasedAt: "2026-09-07",
       season: null,
     });
     expect(parsed!.sets).toHaveLength(1);
   });
 
-  it("rejects structurally invalid payloads", () => {
+  it("rejects a patch without a valid ISO release date (ordering would corrupt freshness)", () => {
+    expect(parsePatchDataset({ ...valid, patch: { code: "U51" } })).toBeNull();
+    expect(parsePatchDataset({ ...valid, patch: { code: "U51", releasedAt: "soon" } })).toBeNull();
+    expect(parsePatchDataset({ ...valid, patch: { code: "U51", releasedAt: "" } })).toBeNull();
+  });
+
+  it("rejects structurally invalid envelopes", () => {
     expect(parsePatchDataset(null)).toBeNull();
     expect(parsePatchDataset("string")).toBeNull();
     expect(parsePatchDataset({})).toBeNull();
-    expect(parsePatchDataset({ patch: { code: "" }, sets: [], skills: [], cpStars: [] })).toBeNull();
-    expect(parsePatchDataset({ patch: { code: "U51" }, sets: "nope", skills: [], cpStars: [] })).toBeNull();
-    // entities without string ids can't be diffed
-    expect(
-      parsePatchDataset({ patch: { code: "U51" }, sets: [{ name: "no id" }], skills: [], cpStars: [] })
-    ).toBeNull();
+    expect(parsePatchDataset({ ...valid, sets: "nope" })).toBeNull();
+  });
+
+  it("rejects entities missing schema-required fields", () => {
+    // id-only set (the exact payload from review) must not pass
+    expect(parsePatchDataset({ ...valid, sets: [{ id: "x" }] })).toBeNull();
+    expect(parsePatchDataset({ ...valid, sets: [{ ...validSet, name: "" }] })).toBeNull();
+    expect(parsePatchDataset({ ...valid, sets: [{ ...validSet, type: "legendary" }] })).toBeNull();
+    expect(parsePatchDataset({ ...valid, sets: [{ ...validSet, bonuses: [{ pieces: "5" }] }] })).toBeNull();
+    expect(parsePatchDataset({ ...valid, skills: [{ ...validSkill, morphs: [{}] }] })).toBeNull();
+    expect(parsePatchDataset({ ...valid, skills: [{ ...validSkill, ultimate: "yes" }] })).toBeNull();
+    expect(parsePatchDataset({ ...valid, cpStars: [{ ...validStar, tree: "combat" }] })).toBeNull();
   });
 
   it("preserves explicit patch metadata", () => {
@@ -40,6 +83,7 @@ describe("parsePatchDataset", () => {
       patch: { id: "patch-x", code: "U51", name: "Update 51", releasedAt: "2026-09-07", season: "Season 2" },
     });
     expect(parsed!.patch.name).toBe("Update 51");
+    expect(parsed!.patch.id).toBe("patch-x");
     expect(parsed!.patch.season).toBe("Season 2");
   });
 });
