@@ -1,4 +1,4 @@
-import { builds, buildBySlug } from "@/data/builds";
+import { builds } from "@/data/builds";
 import { sets } from "@/data/sets";
 import { skills } from "@/data/skills";
 import { cpStars } from "@/data/cpStars";
@@ -6,48 +6,23 @@ import { companions } from "@/data/companions";
 import { mundusStones } from "@/data/mundus";
 import { foods } from "@/data/food";
 import { zones } from "@/data/zones";
-import { CURRENT_PATCH, PATCH_ORDER, patches } from "@/data/patches";
-import { computeFreshness, type Freshness, type ProvenanceIndex } from "@/lib/freshness";
-import type { Build } from "@/lib/types";
+import { patches } from "@/data/patches";
+import { buildDb, type Db } from "./core";
+import { fetchDbFromSupabase, supabaseConfigured } from "./supabase";
+
+export type { Db };
 
 /**
- * Data access layer. v1 reads the committed seed dataset (imported TS modules).
- * The `db` facade below defines the interface a Supabase-backed adapter must
- * implement (schema in supabase/migrations/, activation steps in
- * supabase/README.md — the adapter itself is not written yet). All entity and
+ * Data access layer. When Supabase env vars are present, `getDb()` serves the
+ * live database (cached in-process for CACHE_TTL_MS); otherwise it falls back
+ * to the committed seed dataset. Both paths build the identical facade via
+ * buildDb(), so pages and engines don't know the difference. All entity and
  * content storage is queryable structure either way — no markdown files.
  */
 
-const TRACKED_ENTITY_TYPES = new Set(["set", "skill", "cp_star"]);
-
-const provenance: ProvenanceIndex = {
-  tracks(entityType) {
-    return TRACKED_ENTITY_TYPES.has(entityType);
-  },
-  get(entityType, entityId) {
-    switch (entityType) {
-      case "set": {
-        const e = sets.find((s) => s.id === entityId);
-        return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
-      }
-      case "skill": {
-        const e = skills.find((s) => s.id === entityId);
-        return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
-      }
-      case "cp_star": {
-        const e = cpStars.find((s) => s.id === entityId);
-        return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
-      }
-      default:
-        return undefined; // mundus/food don't change patch-to-patch in seed data
-    }
-  },
-};
-
-export const db = {
+const seedDb = buildDb({
+  source: "seed",
   patches,
-  currentPatch: CURRENT_PATCH,
-  patchOrder: PATCH_ORDER,
   sets,
   skills,
   cpStars,
@@ -56,20 +31,25 @@ export const db = {
   foods,
   zones,
   builds,
+});
 
-  setById: new Map(sets.map((s) => [s.id, s])),
-  skillById: new Map(skills.map((s) => [s.id, s])),
-  cpStarById: new Map(cpStars.map((s) => [s.id, s])),
-  mundusById: new Map(mundusStones.map((m) => [m.id, m])),
-  foodById: new Map(foods.map((f) => [f.id, f])),
+/** Synchronous seed-backed facade. Client components and tests use this. */
+export const db = seedDb;
 
-  getBuild(slug: string): Build | undefined {
-    return buildBySlug.get(slug);
-  },
+const CACHE_TTL_MS = 5 * 60 * 1000;
+let cached: { db: Db; at: number } | null = null;
 
-  freshness(build: Build): Freshness {
-    return computeFreshness(build, provenance, CURRENT_PATCH, PATCH_ORDER);
-  },
-};
-
-export type Db = typeof db;
+/** Async facade for server components and routes: Supabase when configured. */
+export async function getDb(): Promise<Db> {
+  if (!supabaseConfigured()) return seedDb;
+  if (cached && Date.now() - cached.at < CACHE_TTL_MS) return cached.db;
+  try {
+    const data = await fetchDbFromSupabase();
+    cached = { db: buildDb(data), at: Date.now() };
+    return cached.db;
+  } catch (err) {
+    // A database outage must never take the site down — serve seed data.
+    console.error("supabase fetch failed; falling back to seed data:", err);
+    return cached?.db ?? seedDb;
+  }
+}

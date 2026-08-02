@@ -2,13 +2,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { AlertTriangle, GitFork } from "lucide-react";
-import { db } from "@/lib/data";
+import { getDb } from "@/lib/data";
+import { builds as seedBuilds } from "@/data/builds";
 import { BuildGuidance } from "@/components/build-guidance";
 import { FreshnessBadge } from "@/components/freshness-badge";
 import type { GearSlot } from "@/lib/types";
 
+export const revalidate = 300;
+
 export async function generateStaticParams() {
-  return db.builds.map((b) => ({ slug: b.slug }));
+  // Build-time params come from the seed dataset; unknown slugs added later in
+  // the database render on demand (dynamicParams default).
+  return seedBuilds.map((b) => ({ slug: b.slug }));
 }
 
 export async function generateMetadata({
@@ -17,6 +22,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const db = await getDb();
   const build = db.getBuild(slug);
   return { title: build ? build.name : "Build" };
 }
@@ -38,6 +44,7 @@ const SLOT_LABEL: Record<GearSlot, string> = {
 
 export default async function BuildPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const db = await getDb();
   const build = db.getBuild(slug);
   if (!build) notFound();
 

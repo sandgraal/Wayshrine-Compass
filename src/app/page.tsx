@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { ArrowRight, Compass, Diff, ShieldCheck } from "lucide-react";
-import { db } from "@/lib/data";
+import { getDb } from "@/lib/data";
 import { FreshnessBadge } from "@/components/freshness-badge";
 
-export default function Home() {
+export const revalidate = 300;
+
+export default async function Home() {
+  const db = await getDb();
   const withFreshness = db.builds.map((b) => ({ build: b, freshness: db.freshness(b) }));
   const verified = withFreshness.filter((b) => b.freshness.status === "verified").length;
   const flagged = withFreshness.filter((b) => b.freshness.status === "needs_review");

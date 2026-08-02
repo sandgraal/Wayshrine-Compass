@@ -5,7 +5,7 @@ import { Compass } from "lucide-react";
 import "./globals.css";
 import { PlatformProvider } from "@/components/platform-provider";
 import { PlatformToggle } from "@/components/platform-toggle";
-import { db } from "@/lib/data";
+import { getDb } from "@/lib/data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,11 +34,12 @@ const NAV = [
   { href: "/skills", label: "Skills" },
 ];
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const db = await getDb();
   return (
     <html
       lang="en"
@@ -75,7 +76,8 @@ export default function RootLayout({
         <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground">
           <p>
             Wayshrine Compass is an unofficial fan resource. The Elder Scrolls Online © ZeniMax Media.
-            All guidance is original and derived from our patch-versioned database — currently {db.currentPatch}.
+            All guidance is original and derived from our patch-versioned database — currently{" "}
+            {db.currentPatch} (source: {db.source}).
           </p>
         </footer>
         </PlatformProvider>
