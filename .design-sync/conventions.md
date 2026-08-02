@@ -16,8 +16,8 @@ white page:
 </div>
 ```
 
-`PlatformProvider` supplies the PC/console context. `PlatformToggle` and
-`BuildGuidance` call `usePlatform()` and **render blank or throw without it** — wrap
+`PlatformProvider` supplies the PC/console context. Without it, `PlatformToggle` and
+`BuildGuidance` use the context's default PC mode and toggle writes are ignored — wrap
 once, near the root, whenever you use either:
 
 ```jsx
