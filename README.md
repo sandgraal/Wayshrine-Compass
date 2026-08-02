@@ -47,11 +47,16 @@ foreign keys into the entity database. That's what makes the diff → flag pipel
 
 ### Ingestion
 
-`POST /api/ingest` accepts a `PatchDataset` and runs the pipeline: diff against the current store,
-stamp `last_changed_patch`, emit a report, and flag every build whose `build_entities` rows
-intersect the changes. `vercel.json` schedules it daily. In seed mode the endpoint is a dry run;
-with Supabase configured the same pipeline output is persisted. Set `INGEST_SECRET` to require a
-bearer token.
+Two entry points run the same pipeline — diff against the current store, stamp
+`last_changed_patch`, emit a report, and flag every build whose `build_entities` rows intersect
+the changes:
+
+- `POST /api/ingest` — manual, guarded by `INGEST_SECRET` bearer token.
+- `GET /api/cron/ingest` — scheduled daily by `vercel.json`, guarded by `CRON_SECRET`; fetches
+  the dataset from `DATASET_URL` (any HTTPS endpoint returning a `PatchDataset`).
+
+Runs are dry (report only) until `SUPABASE_SERVICE_ROLE_KEY` is configured, after which
+provenance, build flags, and an `ingest_runs` audit row are persisted.
 
 ### Console mode
 
