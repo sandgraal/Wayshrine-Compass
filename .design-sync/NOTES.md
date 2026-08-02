@@ -72,8 +72,8 @@ verbatim, only the `url()` paths were rewritten, and a `:root` block defining
 - Because `Surface` is full-width, every component trips `[GRID_OVERFLOW] wide`. All 11
   carry `cfg.overrides.<Name>.cardMode = "column"`, which is the right presentation
   here anyway. A new component will flag on first validate — apply `column` and move on.
-- `cfg.provider` is `PlatformProvider`; `BuildGuidance` and `PlatformToggle` call
-  `usePlatform()` and render blank without it.
+- `cfg.provider` is `PlatformProvider`; without it, `BuildGuidance` and
+  `PlatformToggle` fall back to an inert PC context, so the toggle cannot change mode.
 - `BuildGuidance` renders native `<details>`, collapsed on first paint. Its `Opened`
   cell uses a small `useEffect` that sets `d.open = true` — the real rendered output,
   not a mock.
