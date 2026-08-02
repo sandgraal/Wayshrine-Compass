@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local tooling artifacts
+.design-sync/
+.ds-sync/
+ds-bundle/
+.claude/settings.local.json
