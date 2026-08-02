@@ -74,12 +74,76 @@ function encodeState(s: PlannerState): string {
 
 function decodeState(raw: string): PlannerState | null {
   try {
-    const parsed = JSON.parse(atob(decodeURIComponent(raw)));
-    if (!ALL_CLASSES.includes(parsed.className)) return null;
-    return parsed as PlannerState;
+    return sanitizeState(JSON.parse(atob(decodeURIComponent(raw))));
   } catch {
     return null;
   }
+}
+
+/**
+ * The `b` query param is user-controlled input. Rebuild a well-formed state
+ * from it, keeping only ids that exist in the entity database — a crafted
+ * URL must degrade to a partial build, never crash the page.
+ */
+function sanitizeState(parsed: unknown): PlannerState | null {
+  if (!parsed || typeof parsed !== "object") return null;
+  const o = parsed as Record<string, unknown>;
+  const className = o.className as ClassName;
+  if (!ALL_CLASSES.includes(className)) return null;
+
+  const strings = (v: unknown, keep: (s: string) => boolean, max: number): string[] =>
+    Array.isArray(v)
+      ? v.filter((x): x is string => typeof x === "string" && keep(x)).slice(0, max)
+      : [];
+
+  const isLine = (s: string) => allLines.some((l) => l.id === s);
+  const isActive = (s: string) => skills.some((sk) => sk.id === s && !sk.ultimate);
+  const isUlt = (v: unknown): v is string =>
+    typeof v === "string" && skills.some((sk) => sk.id === v && sk.ultimate);
+  const cpIn = (tree: CpTree) => (s: string) =>
+    cpStars.some((c) => c.id === s && c.tree === tree && c.slottable);
+
+  const gear: GearAssignment[] = [];
+  if (Array.isArray(o.gear)) {
+    for (const raw of o.gear.slice(0, GEAR_SLOTS.length * 2)) {
+      if (!raw || typeof raw !== "object") continue;
+      const g = raw as Record<string, unknown>;
+      const slot = g.slot as GearSlot;
+      if (!GEAR_SLOTS.includes(slot)) continue;
+      if (typeof g.setId !== "string" || !setById.has(g.setId)) continue;
+      if (gear.some((existing) => existing.slot === slot)) continue;
+      const trait = typeof g.trait === "string" && TRAITS.includes(g.trait) ? g.trait : "Divines";
+      gear.push({ slot, setId: g.setId, trait });
+    }
+  }
+
+  const bar = (o.bar && typeof o.bar === "object" ? o.bar : {}) as Record<string, unknown>;
+  const cp = (o.cp && typeof o.cp === "object" ? o.cp : {}) as Record<string, unknown>;
+
+  return {
+    className,
+    lines: strings(o.lines, isLine, 3),
+    gear,
+    bar: {
+      front: strings(bar.front, isActive, 5),
+      frontUlt: isUlt(bar.frontUlt) ? bar.frontUlt : "",
+      back: strings(bar.back, isActive, 5),
+      backUlt: isUlt(bar.backUlt) ? bar.backUlt : "",
+    },
+    cp: {
+      warfare: strings(cp.warfare, cpIn("warfare"), 4),
+      fitness: strings(cp.fitness, cpIn("fitness"), 4),
+      craft: strings(cp.craft, cpIn("craft"), 4),
+    },
+    mundusId:
+      typeof o.mundusId === "string" && mundusStones.some((m) => m.id === o.mundusId)
+        ? o.mundusId
+        : defaultState().mundusId,
+    foodId:
+      typeof o.foodId === "string" && foods.some((f) => f.id === o.foodId)
+        ? o.foodId
+        : defaultState().foodId,
+  };
 }
 
 export function Planner() {

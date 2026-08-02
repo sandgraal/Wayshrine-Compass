@@ -9,9 +9,9 @@ import { db } from "@/lib/data";
  *
  *   POST /api/ingest  { patch: {...}, sets: [...], skills: [...], cpStars: [...] }
  *
- * In seed mode this is a dry run: it returns the diff report and the builds
- * that would be flagged. In Supabase mode the same pipeline output is
- * persisted (entity upserts + build status updates) — see supabase/README.md.
+ * This is currently a dry run: it returns the diff report and the builds that
+ * would be flagged, without persisting. supabase/README.md documents the
+ * pending persistence steps (entity upserts + build status updates).
  */
 export async function POST(request: Request) {
   const secret = process.env.INGEST_SECRET;

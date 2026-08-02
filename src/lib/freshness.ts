@@ -4,6 +4,12 @@ import { buildEntityRefs } from "@/lib/entities";
 export interface ProvenanceIndex {
   /** entityType:entityId → { name, lastChangedPatch } */
   get(entityType: string, entityId: string): { name: string; lastChangedPatch: PatchCode } | undefined;
+  /**
+   * Whether this index is authoritative for the entity type. For a tracked
+   * type, a missing entity means it was removed from the game data — a
+   * needs_review condition, not a silent pass.
+   */
+  tracks(entityType: string): boolean;
 }
 
 export interface Freshness {
@@ -40,7 +46,18 @@ export function computeFreshness(
   const reasons: ChangeNote[] = [];
   for (const ref of buildEntityRefs(build)) {
     const entity = provenance.get(ref.entityType, ref.entityId);
-    if (!entity) continue;
+    if (!entity) {
+      if (provenance.tracks(ref.entityType)) {
+        reasons.push({
+          entityType: ref.entityType,
+          entityId: ref.entityId,
+          entityName: ref.entityId,
+          patch: currentPatch,
+          summary: `${ref.entityId} no longer exists in the ${currentPatch} game data — this build references a removed entity.`,
+        });
+      }
+      continue;
+    }
     const changedAt = patchIndex(patchOrder, entity.lastChangedPatch);
     if (changedAt > patchIndex(patchOrder, build.patchVerified)) {
       reasons.push({

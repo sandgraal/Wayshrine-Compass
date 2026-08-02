@@ -162,6 +162,7 @@ describe("diff engine (synthetic patch data)", () => {
   it("computeFreshness derives amber/red badges from provenance", () => {
     const order = ["U49", "U50", "U51"];
     const provenance = {
+      tracks: () => true,
       get: (_type: string, id: string) =>
         id === "set-alpha"
           ? { name: "Alpha's Embrace", lastChangedPatch: "U51" }
@@ -181,5 +182,22 @@ describe("diff engine (synthetic patch data)", () => {
     const staleBuild = { ...buildUsing("b3", ["set-beta"], ["skill-curse"]), patchVerified: "U49" };
     const red = computeFreshness(staleBuild, provenance, "U51", order);
     expect(red.status).toBe("stale");
+  });
+
+  it("a build referencing an entity removed from the game data goes amber, not verified", () => {
+    const order = ["U50", "U51"];
+    // set-gamma was removed in U51: the store no longer has it at all.
+    const provenance = {
+      tracks: (type: string) => ["set", "skill", "cp_star"].includes(type),
+      get: (_type: string, id: string) =>
+        id === "set-gamma" ? undefined : { name: id, lastChangedPatch: "U50" },
+    };
+    const amber = computeFreshness(buildUsing("b-gamma", ["set-gamma"], ["skill-curse"]), provenance, "U51", order);
+    expect(amber.status).toBe("needs_review");
+    expect(amber.reasons.some((r) => r.entityId === "set-gamma" && /removed/.test(r.summary))).toBe(true);
+
+    // Untracked types (mundus/food in seed mode) must not trigger false alarms
+    const clean = computeFreshness(buildUsing("b-clean", ["set-beta"], ["skill-curse"]), provenance, "U51", order);
+    expect(clean.status).toBe("verified");
   });
 });

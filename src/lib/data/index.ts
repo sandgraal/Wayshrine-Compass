@@ -11,13 +11,19 @@ import { computeFreshness, type Freshness, type ProvenanceIndex } from "@/lib/fr
 import type { Build } from "@/lib/types";
 
 /**
- * Data access layer. v1 reads the committed seed dataset (imported TS modules);
- * the same interface is implemented against Supabase by src/lib/data/supabase.ts
- * once NEXT_PUBLIC_SUPABASE_URL / SUPABASE keys are configured. All entity and
+ * Data access layer. v1 reads the committed seed dataset (imported TS modules).
+ * The `db` facade below defines the interface a Supabase-backed adapter must
+ * implement (schema in supabase/migrations/, activation steps in
+ * supabase/README.md — the adapter itself is not written yet). All entity and
  * content storage is queryable structure either way — no markdown files.
  */
 
+const TRACKED_ENTITY_TYPES = new Set(["set", "skill", "cp_star"]);
+
 const provenance: ProvenanceIndex = {
+  tracks(entityType) {
+    return TRACKED_ENTITY_TYPES.has(entityType);
+  },
   get(entityType, entityId) {
     switch (entityType) {
       case "set": {
