@@ -58,11 +58,11 @@ for a tinted callout is a `/10`–`/15` background with a `/40` border:
 Radius: `rounded-sm | md | lg | xl` all derive from `--radius`. Type: `font-sans` is
 Geist, `font-mono` is Geist Mono — use mono for patch codes (`U50`) and numerals.
 
-**The stylesheet is a compiled Tailwind subset.** Spacing, flex/grid, sizing,
-typography, borders, shadows, opacity, transitions and the `sm: md: lg: xl:` /
-`hover: focus-visible: disabled:` variants of the above are all present. If you need
-something outside that surface, use an inline style against the token instead of
-inventing a class — the custom properties are always defined:
+**The stylesheet is a compiled Tailwind subset.** Utility values and variants are available
+only where they are explicitly safelisted in `.design-sync/tailwind-entry.css`; do not
+assume every utility has every responsive or state variant. If you need something outside
+that surface, use an inline style against the token instead of inventing a class — the
+custom properties are always defined:
 
 ```jsx
 <div style={{ borderColor: "var(--ring)", background: "var(--card)" }} />
