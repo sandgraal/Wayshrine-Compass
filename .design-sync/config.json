@@ -1,0 +1,40 @@
+{
+  "projectId": "d00224bc-b917-4925-8c22-d398edf5c4e4",
+  "shape": "package",
+  "pkg": "wayshrine-compass",
+  "globalName": "WayshrineCompass",
+  "srcDir": "src",
+  "tsconfig": "tsconfig.json",
+  "buildCmd": "node .ds-sync/node_modules/@tailwindcss/cli/dist/index.mjs -i .design-sync/tailwind-entry.css -o .design-sync/.cache/tailwind.css",
+  "cssEntry": ".design-sync/.cache/tailwind.css",
+  "extraFonts": [".design-sync/fonts/geist.css"],
+  "provider": { "component": "PlatformProvider" },
+  "docsDir": ".design-sync/docs",
+  "readmeHeader": ".design-sync/conventions.md",
+  "overrides": {
+    "Badge": { "cardMode": "column" },
+    "Button": { "cardMode": "column" },
+    "Card": { "cardMode": "column" },
+    "Input": { "cardMode": "column" },
+    "Label": { "cardMode": "column" },
+    "Select": { "cardMode": "column" },
+    "Table": { "cardMode": "column" },
+    "BuildGuidance": { "cardMode": "column" },
+    "FreshnessBadge": { "cardMode": "column" },
+    "PlatformProvider": { "cardMode": "column" },
+    "PlatformToggle": { "cardMode": "column" }
+  },
+  "componentSrcMap": {
+    "Badge": "src/components/ui/badge.tsx",
+    "Button": "src/components/ui/button.tsx",
+    "Input": "src/components/ui/input.tsx",
+    "Label": "src/components/ui/label.tsx",
+    "Card": "src/components/ui/card.tsx",
+    "Select": "src/components/ui/select.tsx",
+    "Table": "src/components/ui/table.tsx",
+    "BuildGuidance": "src/components/build-guidance.tsx",
+    "FreshnessBadge": "src/components/freshness-badge.tsx",
+    "PlatformProvider": "src/components/platform-provider.tsx",
+    "PlatformToggle": "src/components/platform-toggle.tsx"
+  }
+}

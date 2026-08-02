@@ -1,0 +1,88 @@
+/* Compile entry for design-sync.
+ *
+ * Tailwind only emits utilities it finds in scanned source. The app's own src/
+ * exercises a narrow slice, but designs built from this system are written by an
+ * agent that composes fresh layouts — so the shipped stylesheet must carry a
+ * general utility surface, not just the classes this repo happens to use today.
+ *
+ * The @source inline() blocks below are that surface. Keep them in sync with the
+ * class families enumerated in .design-sync/conventions.md: what is safelisted
+ * here is what the design agent is told it may use.
+ */
+@import "../src/app/globals.css";
+
+/* Real usage: the app's components and the authored preview compositions. */
+@source "../src";
+@source "./previews";
+
+/* ---- Semantic colors ------------------------------------------------- */
+@source inline("{,hover:,focus-visible:}{bg,text,border,ring,fill,stroke,outline,divide,accent,caret}-{background,foreground,card,card-foreground,popover,popover-foreground,primary,primary-foreground,secondary,secondary-foreground,muted,muted-foreground,accent,accent-foreground,destructive,destructive-foreground,border,input,ring,verified,needs-review,stale,white,black,transparent,current}");
+/* Alpha modifiers — freshness tints and overlay surfaces use these. */
+@source inline("{bg,text,border,ring}-{background,foreground,card,primary,secondary,muted,accent,destructive,border,ring,verified,needs-review,stale}/{5,10,15,20,25,30,40,50,60,70,75,80,90,95}");
+
+/* ---- Spacing --------------------------------------------------------- */
+@source inline("{,sm:,md:,lg:,xl:}{p,px,py,pt,pr,pb,pl}-{0,0.5,1,1.5,2,2.5,3,3.5,4,5,6,7,8,9,10,11,12,14,16,20,24,28,32}");
+@source inline("{,sm:,md:,lg:,xl:}{m,mx,my,mt,mr,mb,ml}-{0,0.5,1,1.5,2,2.5,3,3.5,4,5,6,8,10,12,16,20,24,auto}");
+@source inline("-{m,mx,my,mt,mr,mb,ml}-{1,2,3,4,5,6,8,10,12}");
+@source inline("{,sm:,md:,lg:,xl:}{gap,gap-x,gap-y,space-x,space-y}-{0,0.5,1,1.5,2,2.5,3,3.5,4,5,6,7,8,10,12,16,20,24}");
+
+/* ---- Sizing ---------------------------------------------------------- */
+@source inline("{,sm:,md:,lg:,xl:}{w,h,size,min-w,min-h,max-h}-{0,1,2,3,3.5,4,5,6,7,8,9,10,11,12,14,16,20,24,28,32,40,48,56,64,72,80,96,px,auto,full,screen,fit,min,max}");
+@source inline("{,sm:,md:,lg:,xl:}max-w-{none,xs,sm,md,lg,xl,2xl,3xl,4xl,5xl,6xl,7xl,full,fit,min,max,prose}");
+@source inline("{w,h}-{1/2,1/3,2/3,1/4,3/4,1/5,2/5,3/5,4/5}");
+@source inline("aspect-{auto,square,video}");
+
+/* ---- Layout / flex / grid -------------------------------------------- */
+@source inline("{,sm:,md:,lg:,xl:}{block,inline-block,inline,flex,inline-flex,grid,inline-grid,contents,hidden,table,flow-root}");
+@source inline("{,sm:,md:,lg:,xl:}{flex-row,flex-row-reverse,flex-col,flex-col-reverse,flex-wrap,flex-wrap-reverse,flex-nowrap}");
+@source inline("{flex-1,flex-auto,flex-initial,flex-none,grow,grow-0,shrink,shrink-0,basis-0,basis-auto,basis-full,basis-1/2,basis-1/3}");
+@source inline("{,sm:,md:,lg:,xl:}grid-cols-{1,2,3,4,5,6,7,8,9,10,11,12,none}");
+@source inline("{,sm:,md:,lg:,xl:}grid-rows-{1,2,3,4,5,6,none}");
+@source inline("{,sm:,md:,lg:,xl:}{col-span,row-span}-{1,2,3,4,5,6,7,8,9,10,11,12,full}");
+@source inline("{col,row}-{start,end}-{1,2,3,4,5,6,7,8,9,10,11,12,13,auto}");
+@source inline("items-{start,center,end,baseline,stretch}");
+@source inline("{,sm:,md:,lg:,xl:}justify-{start,center,end,between,around,evenly,stretch}");
+@source inline("{justify-items,place-items,place-content,place-self}-{start,center,end,stretch,between}");
+@source inline("{self,content}-{auto,start,center,end,stretch,baseline,between}");
+@source inline("{,sm:,md:,lg:,xl:}{static,relative,absolute,fixed,sticky}");
+@source inline("{inset,inset-x,inset-y,top,right,bottom,left}-{0,0.5,1,2,3,4,5,6,8,10,12,16,auto,px,full}");
+@source inline("z-{0,10,20,30,40,50,auto}");
+@source inline("{,sm:,md:,lg:,xl:}overflow-{auto,hidden,clip,visible,scroll}");
+@source inline("overflow-{x,y}-{auto,hidden,clip,visible,scroll}");
+@source inline("{order-{1,2,3,4,5,6,first,last,none},isolate,float-{left,right,none},clear-both}");
+
+/* ---- Typography ------------------------------------------------------ */
+@source inline("{,sm:,md:,lg:,xl:}text-{xs,sm,base,lg,xl,2xl,3xl,4xl,5xl,6xl,7xl}");
+/* No `serif`: this DS ships only Geist / Geist Mono, and font-serif's default
+   stack would pull in families (Cambria et al) the bundle cannot ship. */
+@source inline("font-{thin,extralight,light,normal,medium,semibold,bold,extrabold,black,sans,mono}");
+@source inline("leading-{none,tight,snug,normal,relaxed,loose,3,4,5,6,7,8,9,10}");
+@source inline("tracking-{tighter,tight,normal,wide,wider,widest}");
+@source inline("{,sm:,md:,lg:,xl:}text-{left,center,right,justify,start,end}");
+@source inline("{uppercase,lowercase,capitalize,normal-case,italic,not-italic,underline,overline,line-through,no-underline,truncate,text-wrap,text-nowrap,text-balance,text-pretty,tabular-nums,antialiased,align-middle,align-top,align-bottom}");
+@source inline("line-clamp-{1,2,3,4,5,6,none}");
+@source inline("{whitespace-{normal,nowrap,pre,pre-line,pre-wrap},break-{words,all,keep},underline-offset-{1,2,4,8}}");
+@source inline("list-{none,disc,decimal,inside,outside}");
+
+/* ---- Borders, radius, effects ---------------------------------------- */
+@source inline("{border,border-{0,2,4,8},border-{x,y,t,r,b,l},border-{x,y,t,r,b,l}-{0,2,4,8}}");
+@source inline("border-{solid,dashed,dotted,double,none}");
+/* Only the radius steps this theme actually defines. globals.css sets
+   --radius-sm/md/lg/xl from --radius; rounded-xs/2xl/3xl would emit
+   border-radius: var(--radius-2xl) against an undefined variable and
+   silently render square. */
+@source inline("rounded-{none,sm,md,lg,xl,full}");
+@source inline("rounded-{t,r,b,l,tl,tr,br,bl}-{none,sm,md,lg,xl,full}");
+@source inline("{shadow,shadow-{2xs,xs,sm,md,lg,xl,2xl,none}}");
+@source inline("{ring,ring-{0,1,2,4,8},ring-offset-{0,1,2,4,8},outline-none,outline,outline-{0,1,2,4},outline-offset-{0,1,2,4}}");
+@source inline("opacity-{0,5,10,15,20,25,30,40,50,60,70,75,80,90,95,100}");
+@source inline("{backdrop-blur,backdrop-blur-{xs,sm,md,lg,xl},blur,blur-{xs,sm,md,lg,xl,none}}");
+@source inline("{transition,transition-{all,colors,opacity,shadow,transform,none}}");
+@source inline("duration-{0,75,100,150,200,300,500,700,1000}");
+@source inline("ease-{linear,in,out,in-out}");
+@source inline("{scale,rotate,translate-x,translate-y}-{0,1,2,3,6,12,45,90,95,100,105,110,180}");
+@source inline("{cursor-{pointer,default,not-allowed,wait,text},select-{none,text,all,auto},pointer-events-{none,auto},appearance-none,resize,resize-none}");
+@source inline("{object-{contain,cover,fill,none,scale-down},object-{center,top,bottom,left,right}}");
+@source inline("{sr-only,not-sr-only,invisible,visible,collapse}");
+@source inline("{group,peer}");
+@source inline("{,hover:,focus:,focus-visible:,active:,disabled:,group-hover:,peer-disabled:}{opacity-{0,50,70,80,90,100},underline,no-underline,shadow-md,shadow-lg,pointer-events-none,cursor-not-allowed}");
