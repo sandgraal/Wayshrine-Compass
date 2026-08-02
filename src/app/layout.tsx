@@ -3,9 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import { Compass } from "lucide-react";
 import "./globals.css";
+import { PlatformProvider } from "@/components/platform-provider";
 import { PlatformToggle } from "@/components/platform-toggle";
-import { getPlatform } from "@/lib/platform-server";
-import { db } from "@/lib/data";
+import { getDb } from "@/lib/data";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,13 +39,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const platform = await getPlatform();
+  const db = await getDb();
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <PlatformProvider>
         <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
           <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4">
             <Link href="/" className="flex items-center gap-2 font-semibold text-primary">
@@ -67,7 +68,7 @@ export default async function RootLayout({
               <span className="hidden rounded-md border border-border bg-secondary px-2 py-0.5 font-mono text-xs text-muted-foreground md:inline">
                 {db.currentPatch}
               </span>
-              <PlatformToggle platform={platform} />
+              <PlatformToggle />
             </div>
           </div>
         </header>
@@ -75,9 +76,11 @@ export default async function RootLayout({
         <footer className="border-t border-border py-6 text-center text-xs text-muted-foreground">
           <p>
             Wayshrine Compass is an unofficial fan resource. The Elder Scrolls Online © ZeniMax Media.
-            All guidance is original and derived from our patch-versioned database — currently {db.currentPatch}.
+            All guidance is original and derived from our patch-versioned database — currently{" "}
+            {db.currentPatch} (source: {db.source}).
           </p>
         </footer>
+        </PlatformProvider>
       </body>
     </html>
   );

@@ -16,16 +16,21 @@ everything needed to move entity and content storage to Supabase Postgres for pr
    ```
 4. Copy `.env.example` → `.env.local` and fill in the URL and keys.
 
-## Ingestion persistence — current status
+## Read path
 
-`POST /api/ingest` runs the full diff pipeline (`src/lib/ingest/pipeline.ts`) and returns the
-report and flagged builds. Today it is a **dry run**: results are returned, not persisted. Wiring
-persistence means, inside the route when Supabase env vars are present:
+`getDb()` in `src/lib/data/index.ts` serves the live database whenever
+`NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` are set (in-process cache,
+5-minute TTL, automatic fallback to the committed seed dataset on outage). The site footer shows
+the active source. Row mappers live in `src/lib/data/supabase-map.ts` with round-trip tests
+against the seeder's column mapping.
 
-1. Upsert the pipeline's `result.store` entities (same column mapping as `scripts/seed-supabase.ts`).
-2. Set `status = 'needs_review'` and `review_reasons` on the flagged build rows.
-3. Insert a row into `ingest_runs` with the report for the audit trail.
+## Ingestion persistence
 
-The pipeline itself is pure and fully tested (`src/lib/ingest/diff.test.ts`); only the persistence
-adapter is pending. A read-path adapter implementing the `db` facade in `src/lib/data/index.ts`
-against these tables is likewise pending — the seed-mode facade defines the interface to match.
+`POST /api/ingest` always runs the diff pipeline and returns the report. When
+`SUPABASE_SERVICE_ROLE_KEY` is also present in the server environment, the run is **persisted**:
+entity provenance is upserted, flagged builds get `status = 'needs_review'` +
+`review_reasons`, and an `ingest_runs` audit row is written. Without the key it stays a dry run.
+
+The service-role key is intentionally never stored in the repo or fetched by tooling — copy it
+from the Supabase dashboard (Settings → API keys) into the deployment environment
+(`vercel env add SUPABASE_SERVICE_ROLE_KEY production`).

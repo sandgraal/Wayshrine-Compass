@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { db } from "@/lib/data";
+import { getDb } from "@/lib/data";
 import { ALL_CLASSES, type ClassName } from "@/lib/types";
 import { FreshnessBadge } from "@/components/freshness-badge";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ export default async function BuildsPage({
 }: {
   searchParams: Promise<{ class?: string; role?: string; content?: string }>;
 }) {
+  const db = await getDb();
   const params = await searchParams;
   const cls = ALL_CLASSES.includes(params.class as ClassName) ? (params.class as ClassName) : undefined;
   const role = ROLES.includes(params.role as (typeof ROLES)[number]) ? params.role : undefined;

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { db } from "@/lib/data";
+import { getDb } from "@/lib/data";
 import { FreshnessBadge } from "@/components/freshness-badge";
 
 export const metadata: Metadata = { title: "Review Queue" };
@@ -10,7 +10,10 @@ export const metadata: Metadata = { title: "Review Queue" };
  * entities that changed. In Supabase mode this reads status=needs_review rows
  * written by the ingestion job; in seed mode freshness is computed on read.
  */
-export default function ReviewQueuePage() {
+export const revalidate = 300;
+
+export default async function ReviewQueuePage() {
+  const db = await getDb();
   const queue = db.builds
     .map((b) => ({ build: b, freshness: db.freshness(b) }))
     .filter(({ freshness }) => freshness.status !== "verified")

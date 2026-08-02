@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { db } from "@/lib/data";
+import { getDb } from "@/lib/data";
 import { ALL_CLASSES } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Skills" };
 
-export default function SkillsPage() {
+export const revalidate = 300;
+
+export default async function SkillsPage() {
+  const db = await getDb();
   return (
     <div>
       <h1 className="text-2xl font-bold">Skills</h1>

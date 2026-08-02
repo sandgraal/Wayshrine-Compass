@@ -2,14 +2,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { AlertTriangle, GitFork } from "lucide-react";
-import { db } from "@/lib/data";
-import { getPlatform } from "@/lib/platform-server";
-import { renderGuidance } from "@/lib/platform";
+import { getDb } from "@/lib/data";
+import { builds as seedBuilds } from "@/data/builds";
+import { BuildGuidance } from "@/components/build-guidance";
 import { FreshnessBadge } from "@/components/freshness-badge";
 import type { GearSlot } from "@/lib/types";
 
+export const revalidate = 300;
+
 export async function generateStaticParams() {
-  return db.builds.map((b) => ({ slug: b.slug }));
+  // Build-time params come from the seed dataset; unknown slugs added later in
+  // the database render on demand (dynamicParams default).
+  return seedBuilds.map((b) => ({ slug: b.slug }));
 }
 
 export async function generateMetadata({
@@ -18,6 +22,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const db = await getDb();
   const build = db.getBuild(slug);
   return { title: build ? build.name : "Build" };
 }
@@ -39,12 +44,11 @@ const SLOT_LABEL: Record<GearSlot, string> = {
 
 export default async function BuildPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const db = await getDb();
   const build = db.getBuild(slug);
   if (!build) notFound();
 
-  const platform = await getPlatform();
   const freshness = db.freshness(build);
-  const guidance = renderGuidance(build.guidance, platform);
   const mundus = db.mundusById.get(build.mundusId);
   const food = db.foodById.get(build.foodId);
 
@@ -180,19 +184,7 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
 
       {/* ---- Everything else: collapsed ---- */}
       <section className="mt-6 space-y-2">
-        {guidance.map((block) => (
-          <details key={block.title} className="group rounded-lg border border-border bg-card">
-            <summary className="cursor-pointer select-none px-4 py-3 text-sm font-medium marker:text-primary">
-              {block.title}
-              {block.isConsoleAlternative && (
-                <span className="ml-2 rounded-full border border-border px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-muted-foreground">
-                  console
-                </span>
-              )}
-            </summary>
-            <p className="border-t border-border/50 px-4 py-3 text-sm text-muted-foreground">{block.body}</p>
-          </details>
-        ))}
+        <BuildGuidance blocks={build.guidance} />
         <details className="group rounded-lg border border-border bg-card">
           <summary className="cursor-pointer select-none px-4 py-3 text-sm font-medium marker:text-primary">
             Morphs &amp; alternatives

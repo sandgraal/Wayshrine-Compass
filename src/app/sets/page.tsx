@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { db } from "@/lib/data";
+import { getDb } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Sets" };
 
-export default function SetsPage() {
+export const revalidate = 300;
+
+export default async function SetsPage() {
+  const db = await getDb();
   const grouped = new Map<string, typeof db.sets>();
   for (const set of db.sets) {
     const list = grouped.get(set.type) ?? [];

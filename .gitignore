@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local tooling artifacts
+# .design-sync/ holds committed sync inputs (config, notes, conventions,
+# previews, fonts, the barrel entry) — only machine state is ignored.
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules
+.ds-sync/
+ds-bundle/
+.claude/settings.local.json
+!.env.example
