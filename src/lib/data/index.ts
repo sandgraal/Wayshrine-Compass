@@ -39,6 +39,15 @@ export const db = seedDb;
 const CACHE_TTL_MS = 5 * 60 * 1000;
 let cached: { db: Db; at: number } | null = null;
 
+/**
+ * Drops the in-process cache so the next getDb() refetches. Called after a
+ * write (e.g. marking a build reviewed) so the admin console doesn't show
+ * stale freshness for up to CACHE_TTL_MS.
+ */
+export function invalidateDbCache(): void {
+  cached = null;
+}
+
 /** Async facade for server components and routes: Supabase when configured. */
 export async function getDb(): Promise<Db> {
   if (!supabaseConfigured()) return seedDb;

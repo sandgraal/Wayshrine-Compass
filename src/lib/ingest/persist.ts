@@ -85,3 +85,24 @@ export async function persistIngest(
   const { error } = await supabase.rpc("ingest_apply", { payload });
   if (error) throw new Error(`ingest_apply failed (transaction rolled back): ${error.message}`);
 }
+
+/**
+ * Re-stamps a build after a human review: patch_verified moves to the given
+ * patch and the ingest-written flags are cleared. Touches only the build's own
+ * row — freshness stays computed from entity provenance on read, so a build
+ * whose references change again immediately goes back to amber.
+ */
+export async function markBuildReviewed(buildId: string, patch: string): Promise<void> {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
+  const { data, error } = await supabase
+    .from("builds")
+    .update({ status: "verified", patch_verified: patch, review_reasons: [] })
+    .eq("id", buildId)
+    .select("id");
+  if (error) throw new Error(`mark reviewed failed: ${error.message}`);
+  if (!data || data.length === 0) throw new Error(`mark reviewed failed: build ${buildId} not found`);
+}
