@@ -135,28 +135,44 @@ export default async function Image({ params }: { params: Promise<{ slug: string
               {db.currentPatch}
             </div>
             {freshness && (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  border: `2px solid ${FRESHNESS_COLOR[freshness.status]}`,
-                  borderRadius: 999,
-                  color: FRESHNESS_COLOR[freshness.status],
-                  fontSize: 26,
-                  padding: "4px 18px",
-                }}
-              >
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 <div
                   style={{
                     display: "flex",
-                    width: 12,
-                    height: 12,
+                    alignItems: "center",
+                    gap: 10,
+                    border: `2px solid ${FRESHNESS_COLOR[freshness.status]}`,
                     borderRadius: 999,
-                    backgroundColor: FRESHNESS_COLOR[freshness.status],
+                    color: FRESHNESS_COLOR[freshness.status],
+                    fontSize: 26,
+                    padding: "4px 18px",
                   }}
-                />
-                {FRESHNESS_LABEL[freshness.status](db.currentPatch)}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      width: 12,
+                      height: 12,
+                      borderRadius: 999,
+                      backgroundColor: FRESHNESS_COLOR[freshness.status],
+                    }}
+                  />
+                  {FRESHNESS_LABEL[freshness.status](db.currentPatch)}
+                </div>
+                {freshness.status === "needs_review" &&
+                  freshness.reasons.map((r, i) => (
+                    <div
+                      key={i}
+                      style={{
+                        display: "flex",
+                        color: C.needsReview,
+                        fontSize: 20,
+                        paddingLeft: 18,
+                      }}
+                    >
+                      {r.entityName} changed in {r.patch}
+                    </div>
+                  ))}
               </div>
             )}
           </div>
