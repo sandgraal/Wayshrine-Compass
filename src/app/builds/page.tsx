@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 import { getDb } from "@/lib/data";
 import { ALL_CLASSES, type ClassName } from "@/lib/types";
 import { FreshnessBadge } from "@/components/freshness-badge";
+import { CharacterPortrait } from "@/components/character-portrait";
 import { ClassSigil } from "@/components/illustrations";
+import { portraitForBuild } from "@/lib/portraits";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Builds" };
@@ -74,33 +76,46 @@ export default async function BuildsPage({
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((build) => {
           const freshness = db.freshness(build);
+          const portrait = portraitForBuild(build);
           return (
             <Link
               key={build.id}
               href={`/builds/${build.slug}`}
-              className="wc-card-hover flex flex-col gap-4 rounded-xl border border-border bg-card p-5 no-underline"
+              className="wc-card-hover flex flex-col overflow-hidden rounded-xl border border-border bg-card no-underline"
             >
-              <div className="flex items-start gap-3">
-                <span className="sigil-ring size-10">
-                  <ClassSigil name={build.className} className="size-5" />
-                </span>
-                <div className="flex flex-col gap-1">
-                  <h2 className="text-base font-semibold leading-tight text-foreground">{build.name}</h2>
-                  <p className="text-xs capitalize text-muted-foreground">
-                    {build.contentType}
-                    {build.subclassLines.some((l) => !l.startsWith(build.className)) && " · subclassed"}
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="rounded-md border border-border bg-secondary px-2 py-0.5 text-xs capitalize text-muted-foreground">
-                  {build.role}
-                </span>
-                <FreshnessBadge freshness={freshness} currentPatch={db.currentPatch} />
-              </div>
-              {freshness.status === "needs_review" && (
-                <p className="line-clamp-2 text-xs text-needs-review">{freshness.reasons[0]?.summary}</p>
+              {portrait && (
+                <CharacterPortrait
+                  portrait={portrait}
+                  sizes="(min-width: 1024px) 22rem, (min-width: 640px) 45vw, 90vw"
+                  objectPosition="center 12%"
+                  className="h-52 border-b border-border/60"
+                >
+                  <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-b from-transparent to-card" />
+                </CharacterPortrait>
               )}
+              <div className="flex flex-col gap-4 p-5">
+                <div className="flex items-start gap-3">
+                  <span className="sigil-ring size-10">
+                    <ClassSigil name={build.className} className="size-5" />
+                  </span>
+                  <div className="flex flex-col gap-1">
+                    <h2 className="text-base font-semibold leading-tight text-foreground">{build.name}</h2>
+                    <p className="text-xs capitalize text-muted-foreground">
+                      {build.contentType}
+                      {build.subclassLines.some((l) => !l.startsWith(build.className)) && " · subclassed"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="rounded-md border border-border bg-secondary px-2 py-0.5 text-xs capitalize text-muted-foreground">
+                    {build.role}
+                  </span>
+                  <FreshnessBadge freshness={freshness} currentPatch={db.currentPatch} />
+                </div>
+                {freshness.status === "needs_review" && (
+                  <p className="line-clamp-2 text-xs text-needs-review">{freshness.reasons[0]?.summary}</p>
+                )}
+              </div>
             </Link>
           );
         })}

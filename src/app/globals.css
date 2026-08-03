@@ -114,6 +114,13 @@
     opacity: 0.95;
   }
 }
+@media (prefers-reduced-motion: reduce) {
+  .hero-star {
+    animation: none;
+    /* Stars have no static opacity attribute; hold them at a dim mid-twinkle. */
+    opacity: 0.55;
+  }
+}
 .wc-card-hover {
   transition:
     transform 0.2s ease,
