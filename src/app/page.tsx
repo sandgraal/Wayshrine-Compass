@@ -2,7 +2,8 @@ import Link from "next/link";
 import { getDb } from "@/lib/data";
 import { changedReferencedEntities, type ChangedReferencedEntity } from "@/lib/entities";
 import { FreshnessBadge } from "@/components/freshness-badge";
-import { HeroScene, RuneDivider, ClassSigil } from "@/components/illustrations";
+import { RuneDivider, ClassSigil } from "@/components/illustrations";
+import { HeroVideo } from "@/components/hero-video";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -104,7 +105,7 @@ export default async function Home() {
     <div>
       <section>
         <div className="hero-panel">
-          <HeroScene className="absolute inset-0 h-full w-full" />
+          <HeroVideo />
           <div className="relative z-10 flex flex-col gap-6 px-6 py-16 sm:px-12 sm:py-24">
             <span className="w-fit rounded-full border border-primary/40 bg-primary/10 px-3 py-1 font-mono text-xs text-primary">
               {db.currentPatch} IS LIVE
