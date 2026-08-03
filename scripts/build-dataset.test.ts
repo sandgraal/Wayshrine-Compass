@@ -31,7 +31,7 @@ describe("public/dataset/current.json", () => {
     }
   });
 
-  it("matches the seed's class-skill ids closely enough to diff, not replace", () => {
+  it("matches the seed's skill ids (class and weapon lines) closely enough to diff, not replace", () => {
     const dsIds = new Set(dataset!.skills.map((s) => s.id));
     const matched = seedSkills.filter((s) => dsIds.has(s.id)).length;
     // 112/117 at snapshot time (5 real in-game renames); drift craters this.

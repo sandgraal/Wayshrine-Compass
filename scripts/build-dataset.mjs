@@ -310,7 +310,13 @@ async function main() {
   if (process.env.PATCH_CODE) {
     // Cloudflare sometimes challenges esoapi; allow a manual override.
     const n = process.env.PATCH_CODE.replace(/^U/i, "");
-    patch = { id: `patch-u${n}`, code: `U${n}`, name: `Update ${n}`, releasedAt: process.env.PATCH_DATE || new Date().toISOString().slice(0, 10), season: null };
+    // The release date orders patches in the DB — a regeneration-date default
+    // could corrupt current-patch/freshness ordering, so require it explicitly.
+    const date = process.env.PATCH_DATE;
+    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      throw new Error("PATCH_CODE override requires PATCH_DATE=YYYY-MM-DD (the patch's release date)");
+    }
+    patch = { id: `patch-u${n}`, code: `U${n}`, name: `Update ${n}`, releasedAt: date, season: null };
   } else {
     const versionsRaw = await fetchText("https://esoapi.uesp.net/", "apiVersions");
     patch = parsePatchFromVersions(versionsRaw);
