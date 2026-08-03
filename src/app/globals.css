@@ -29,6 +29,9 @@
   --verified: oklch(0.72 0.17 150);
   --needs-review: oklch(0.8 0.16 80);
   --stale: oklch(0.62 0.2 25);
+  /* Secondary "wayshrine glow" — imagery and decorative art only. Interactive
+     UI accents (links, buttons, rings, badges) stay on --primary gold. */
+  --wayshrine: oklch(0.72 0.11 230);
 }
 
 @theme inline {
@@ -158,11 +161,20 @@
   font-weight: 600;
 }
 .bg-rune-field {
-  background-image: radial-gradient(
-    color-mix(in oklab, var(--foreground) 6%, transparent) 1px,
-    transparent 1px
-  );
-  background-size: 22px 22px;
+  background-image:
+    radial-gradient(
+      color-mix(in oklab, var(--foreground) 6%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      color-mix(in oklab, var(--background) 95%, transparent),
+      color-mix(in oklab, var(--background) 95%, transparent)
+    ),
+    url("/textures/runic-stone.webp");
+  background-size:
+    22px 22px,
+    auto,
+    900px auto;
 }
 .wc-glow-text {
   text-shadow: 0 0 30px color-mix(in oklab, var(--primary) 35%, transparent);

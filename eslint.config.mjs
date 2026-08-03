@@ -16,6 +16,7 @@ const eslintConfig = defineConfig([
     ".design-sync/**",
     ".ds-sync/**",
     "ds-bundle/**",
+    ".claude/worktrees/**",
   ]),
 ]);
 
