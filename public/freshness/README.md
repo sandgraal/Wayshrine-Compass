@@ -1,24 +1,29 @@
 # Wayshrine freshness icons
 
-Expected files (transparent-background PNG, square, ≥96px source — served at
-18px inline in `FreshnessBadge` via `src/components/wayshrine-icon.tsx`):
+Badge icons rendered at 18px by `src/components/wayshrine-icon.tsx`:
 
 ```
-wayshrine-lit.png     verified      brilliantly lit, pale cyan-blue portal
-wayshrine-dim.png     needs_review  barely flickering dim amber ember
-wayshrine-unlit.png   stale         extinguished cold dark stone
+wayshrine-lit.png     verified      lit, pale cyan-blue portal
+wayshrine-dim.png     needs_review  amber ember glow
+wayshrine-unlit.png   stale         extinguished dark stone
 ```
 
-Until these exist the badge renders its original colored dot (the icon
-component falls back on load error), so this directory can stay empty.
-
-Prep from generated ≥512² sources (keep PNG for alpha):
+Derived from the generated icon sheet
+`~/Downloads/ESO/download/Game_map_marker_icons_black_202608022035.jpeg`
+(column C active / column I inactive), not hand-generated. Pipeline, run
+anywhere with the sheet converted to `sheet.png`:
 
 ```bash
-sips -Z 96 source.png --out public/freshness/wayshrine-lit.png
+# crop the two source icons
+ffmpeg -i sheet.png -vf "crop=342:720:682:85"   lit-raw.png
+ffmpeg -i sheet.png -vf "crop=342:640:682:1070" unlit-raw.png
+# dim = lit with the cyan glow rotated to amber and dimmed
+ffmpeg -i lit-raw.png -vf "hue=h=210:s=0.8,eq=brightness=-0.06:saturation=0.9" dim-raw.png
+# black background -> alpha (a = max channel, colors unpremultiplied), then 96px
+for n in lit dim unlit; do
+  ffmpeg -i "$n-raw.png" -vf "format=rgba,geq=r='min(255,255*r(X,Y)/max(1,max(max(r(X,Y),g(X,Y)),b(X,Y))))':g='min(255,255*g(X,Y)/max(1,max(max(r(X,Y),g(X,Y)),b(X,Y))))':b='min(255,255*b(X,Y)/max(1,max(max(r(X,Y),g(X,Y)),b(X,Y))))':a='max(max(r(X,Y),g(X,Y)),b(X,Y))',scale=-1:96" "wayshrine-$n.png"
+done
 ```
 
-Generation prompts live in the project plan / PR description: single centered
-stone wayshrine arch game icon on a plain background, in the three states
-above, matching the site's slate-stone + cyan-glow (#86D7EA) art direction.
+The badge falls back to its original colored dot if a file here fails to load.
 Icons are decorative only — badge text and color remain the accessible signal.
