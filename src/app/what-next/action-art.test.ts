@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { ACTION_ART, actionArt } from "./action-art";
 
 describe("action art map", () => {
@@ -20,11 +21,29 @@ describe("action art map", () => {
     expect(uncovered).toEqual([]);
   });
 
-  it("returns undefined for companion actions when the shared file has not shipped", () => {
-    // No files are in SHIPPED_IDS yet; actionArt() must return undefined so
-    // ActionThumb never mounts-then-fails before art lands in public/whatnext/.
-    expect(actionArt("unlock-companion-companion-bastian")).toBeUndefined();
+  it("resolves companion actions to the shared shipped illustration", () => {
+    expect(actionArt("unlock-companion-companion-bastian")).toBe(
+      "/whatnext/unlock-companion.webp"
+    );
     expect(engineSource).toContain("id: `unlock-companion-${c.id}`");
+  });
+
+  it("has a WebP file on disk for every map entry and the companion art", () => {
+    const paths = [
+      ...Object.values(ACTION_ART),
+      "/whatnext/unlock-companion.webp",
+    ];
+    for (const p of paths) {
+      expect(existsSync(join("public", p!)), `missing file for ${p}`).toBe(
+        true
+      );
+    }
+  });
+
+  it("returns the mapped path for shipped ids", () => {
+    for (const [id, path] of Object.entries(ACTION_ART)) {
+      expect(actionArt(id)).toBe(path);
+    }
   });
 
   it("returns undefined for unknown ids", () => {

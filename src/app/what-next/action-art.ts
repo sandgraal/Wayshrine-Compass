@@ -46,7 +46,8 @@ export const ACTION_ART: Partial<Record<string, string>> = {
  * any id absent from this set so no request is fired before the file ships.
  */
 const SHIPPED_IDS = new Set<string>([
-  // e.g. "set-mundus",
+  ...Object.keys(ACTION_ART),
+  "unlock-companion",
 ]);
 
 export function actionArt(actionId: string): string | undefined {
