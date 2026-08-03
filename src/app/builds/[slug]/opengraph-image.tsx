@@ -92,7 +92,6 @@ export default async function Image({ params }: { params: Promise<{ slug: string
               display: "flex",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={portraitSrc}
               alt=""
@@ -186,7 +185,6 @@ export default async function Image({ params }: { params: Promise<{ slug: string
 
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 26 }}>
             {emblem && (
-              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={emblem}
                 alt=""
