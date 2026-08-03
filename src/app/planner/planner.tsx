@@ -3,9 +3,9 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AlertCircle, Check, Link2 } from "lucide-react";
-import type { ClassName, CpTree, EntityType, GearAssignment, GearSet, GearSlot, Skill } from "@/lib/types";
+import type { ClassName, CpStar, CpTree, GearAssignment, GearSet, GearSlot, Skill } from "@/lib/types";
 import { ALL_CLASSES, GEAR_SLOTS } from "@/lib/types";
-import type { Freshness } from "@/lib/freshness";
+import { computeFreshnessPreview } from "./freshness-preview";
 import { sets } from "@/data/sets";
 import { skills } from "@/data/skills";
 import { cpStars } from "@/data/cpStars";
@@ -15,7 +15,6 @@ import { buildBySlug } from "@/data/builds";
 import { computeStats, validateGear, validateSubclassLines } from "@/lib/planner/validate";
 import { cn } from "@/lib/utils";
 import { ClassSigil } from "@/components/illustrations";
-import { FreshnessBadge } from "@/components/freshness-badge";
 
 const TRAITS = ["Divines", "Sturdy", "Training", "Infused", "Bloodthirsty", "Arcane", "Robust", "Precise", "Defending", "Powered", "Nirnhoned", "Charged", "Sharpened"];
 
@@ -153,14 +152,16 @@ export function Planner({
   currentPatch,
   liveSets,
   liveSkills,
+  liveCpStars,
 }: {
   currentPatch: string;
-  /** The active data facade's sets/skills (Supabase when configured, seed otherwise) — used for
-   * the freshness preview so its "changed this patch" check reads from the same source as
-   * `currentPatch`, instead of always the statically-imported seed data used for the rest of the
-   * planner's dropdowns and legality checks. */
+  /** The active data facade's sets/skills/CP stars (Supabase when configured, seed otherwise) —
+   * used for the freshness preview so its "changed this patch" check reads from the same source
+   * as `currentPatch`, instead of always the statically-imported seed data used for the rest of
+   * the planner's dropdowns and legality checks. */
   liveSets: GearSet[];
   liveSkills: Skill[];
+  liveCpStars: CpStar[];
 }) {
   const searchParams = useSearchParams();
   const [state, setState] = useState<PlannerState>(() => {
@@ -199,47 +200,28 @@ export function Planner({
   }, [state.lines]);
 
   /**
-   * Live freshness preview: any currently-slotted set or skill that changed
-   * in the current patch flags this draft, same rule the real db.freshness()
-   * engine applies to a saved Build — just evaluated against in-progress
-   * planner state rather than a stored one.
+   * Live freshness preview: any currently-slotted set, skill, or CP star that
+   * changed in the current patch — or is missing from the live game data —
+   * flags this draft, same conditions the real db.freshness() engine applies
+   * to a saved Build, just evaluated against in-progress planner state.
    */
   const liveSetById = useMemo(() => new Map(liveSets.map((s) => [s.id, s])), [liveSets]);
+  const liveSkillById = useMemo(() => new Map(liveSkills.map((s) => [s.id, s])), [liveSkills]);
+  const liveCpStarById = useMemo(() => new Map(liveCpStars.map((s) => [s.id, s])), [liveCpStars]);
 
-  const changedRefs = useMemo(() => {
-    const slottedSkillIds = [...state.bar.front, state.bar.frontUlt, ...state.bar.back, state.bar.backUlt].filter(
-      Boolean
-    );
-    const changedSets = state.gear
-      .map((g) => liveSetById.get(g.setId))
-      .filter((s): s is NonNullable<typeof s> => s !== undefined && s.lastChangedPatch === currentPatch)
-      .map((s) => ({ entityType: "set" as EntityType, entityId: s.id, entityName: s.name }));
-    const changedSkills = slottedSkillIds
-      .map((id) => liveSkills.find((s) => s.id === id))
-      .filter((s): s is NonNullable<typeof s> => s !== undefined && s.lastChangedPatch === currentPatch)
-      .map((s) => ({ entityType: "skill" as EntityType, entityId: s.id, entityName: s.name }));
-    const seen = new Set<string>();
-    return [...changedSets, ...changedSkills].filter((r) => {
-      const key = `${r.entityType}:${r.entityId}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-  }, [state.gear, state.bar, currentPatch, liveSetById, liveSkills]);
-
-  const plannerFreshness: Freshness =
-    changedRefs.length === 0
-      ? { status: "verified", reasons: [], patchVerified: currentPatch, patchesBehind: 0 }
-      : {
-          status: "needs_review",
-          reasons: changedRefs.map((r) => ({
-            ...r,
-            patch: currentPatch,
-            summary: `${r.entityName} changed in ${currentPatch} — this draft references it.`,
-          })),
-          patchVerified: currentPatch,
-          patchesBehind: 0,
-        };
+  const preview = useMemo(
+    () =>
+      computeFreshnessPreview(
+        {
+          setIds: state.gear.map((g) => g.setId),
+          skillIds: [...state.bar.front, state.bar.frontUlt, ...state.bar.back, state.bar.backUlt].filter(Boolean),
+          cpStarIds: [...state.cp.warfare, ...state.cp.fitness, ...state.cp.craft],
+        },
+        { setById: liveSetById, skillById: liveSkillById, cpStarById: liveCpStarById },
+        currentPatch
+      ),
+    [state.gear, state.bar, state.cp, currentPatch, liveSetById, liveSkillById, liveCpStarById]
+  );
 
   const update = (patch: Partial<PlannerState>) => {
     setState((s) => ({ ...s, ...patch }));
@@ -498,20 +480,27 @@ export function Planner({
           {copied ? "Permalink copied" : "Copy shareable permalink"}
         </button>
 
-        <section className={cn("rounded-lg border bg-card p-4", changedRefs.length ? "border-needs-review/40" : "border-border")}>
+        <section className={cn("rounded-lg border bg-card p-4", preview.status === "needs_review" ? "border-needs-review/40" : "border-border")}>
           <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Freshness preview</h2>
           <div className="mt-2 flex flex-col gap-3">
-            <FreshnessBadge freshness={plannerFreshness} currentPatch={currentPatch} />
-            {changedRefs.length > 0 ? (
-              <div className="rounded-md border border-needs-review/40 bg-needs-review/10 px-3 py-2 text-xs">
-                {plannerFreshness.reasons.map((r) => (
-                  <p key={`${r.entityType}-${r.entityId}`}>{r.summary}</p>
-                ))}
-              </div>
+            {/* A draft is never "verified" — green is reserved for human-reviewed builds. */}
+            {preview.status === "needs_review" ? (
+              <>
+                <PreviewPill tone="needs-review" label="Needs review" />
+                <div className="rounded-md border border-needs-review/40 bg-needs-review/10 px-3 py-2 text-xs">
+                  {preview.reasons.map((r) => (
+                    <p key={`${r.entityType}-${r.entityId}`}>{r.summary}</p>
+                  ))}
+                </div>
+              </>
             ) : (
-              <p className="text-xs text-muted-foreground">
-                Nothing slotted in this draft has moved in {currentPatch}.
-              </p>
+              <>
+                <PreviewPill tone="neutral" label={`No ${currentPatch} changes detected`} />
+                <p className="text-xs text-muted-foreground">
+                  Nothing slotted in this draft has moved in {currentPatch}. Published builds earn a
+                  green badge only after human review.
+                </p>
+              </>
             )}
           </div>
         </section>
@@ -580,6 +569,24 @@ export function Planner({
         </section>
       </aside>
     </div>
+  );
+}
+
+/** Preview counterpart of FreshnessBadge — same pill shape, but with a neutral
+ * (never green) resting state, since a draft carries no review provenance. */
+function PreviewPill({ tone, label }: { tone: "needs-review" | "neutral"; label: string }) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 self-start rounded-full border px-2.5 py-0.5 text-xs font-medium whitespace-nowrap",
+        tone === "needs-review"
+          ? "border-needs-review/40 bg-needs-review/15 text-needs-review"
+          : "border-border bg-secondary text-muted-foreground"
+      )}
+    >
+      <span className={cn("size-1.5 rounded-full", tone === "needs-review" ? "bg-needs-review" : "bg-muted-foreground")} />
+      {label}
+    </span>
   );
 }
 
