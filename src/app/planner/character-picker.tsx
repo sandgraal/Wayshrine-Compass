@@ -71,6 +71,7 @@ export function CharacterPicker({
               <button
                 key={g}
                 onClick={() => setGender(g)}
+                aria-pressed={gender === g}
                 className={cn(
                   "flex-1 rounded-md border px-2.5 py-1.5 text-xs capitalize sm:flex-none sm:px-6",
                   gender === g
@@ -96,6 +97,7 @@ export function CharacterPicker({
                 <button
                   key={p.id}
                   onClick={() => onSelect(p.id === portraitId ? undefined : p.id)}
+                  aria-pressed={p.id === portraitId}
                   title={p.id === portraitId ? "Deselect portrait" : `Use portrait ${p.variant}`}
                   className={cn(
                     "overflow-hidden rounded-lg border-2 transition-opacity",

@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AlertCircle, Check, Link2 } from "lucide-react";
-import type { CpStar, CpTree, GearSet, GearSlot, Skill } from "@/lib/types";
+import type { CpStar, GearSet, GearSlot, Skill } from "@/lib/types";
 import { ALL_CLASSES, GEAR_SLOTS } from "@/lib/types";
 import { computeFreshnessPreview } from "./freshness-preview";
 import { sets } from "@/data/sets";
