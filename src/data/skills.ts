@@ -108,7 +108,9 @@ export const skills: Skill[] = [
   /* ---------------- Necromancer ---------------- */
   sk("necromancer", "grave-lord", "Grave Lord", "Frozen Colossus", { ult: true, desc: "Summon a colossus that smashes the area and applies Major Vulnerability.", morphs: ["Pestilent Colossus", "Glacial Colossus"] }),
   sk("necromancer", "grave-lord", "Grave Lord", "Flame Skull", { desc: "Lob an explosive skull; every third cast hits harder.", morphs: ["Venom Skull", "Ricochet Skull"] }),
-  sk("necromancer", "grave-lord", "Grave Lord", "Blastbones", { desc: "Summon a skeleton that leaps at an enemy and explodes.", morphs: ["Blighted Blastbones", "Grave Lord's Sacrifice"], patch: { last: "U49" } }),
+  // Renamed from Blastbones in the U50 dataset; id must match the datamined
+  // skill-necromancer-grave-lord-sacrificial-bones so builds stay resolvable.
+  sk("necromancer", "grave-lord", "Grave Lord", "Sacrificial Bones", { desc: "Summon a skeleton that leaps to you, empowering your necromancy.", morphs: ["Blighted Blastbones", "Grave Lord's Sacrifice"], patch: { last: "U49" } }),
   sk("necromancer", "grave-lord", "Grave Lord", "Boneyard", { desc: "Desecrate the ground, dealing frost damage over time.", morphs: ["Unnerving Boneyard", "Avid Boneyard"] }),
   sk("necromancer", "bone-tyrant", "Bone Tyrant", "Bone Goliath Transformation", { ult: true, desc: "Become a bone goliath, massively increasing Health.", morphs: ["Pummeling Goliath", "Ravenous Goliath"] }),
   sk("necromancer", "bone-tyrant", "Bone Tyrant", "Death Scythe", { desc: "Sweep enemies in front of you, healing per target hit.", morphs: ["Ruinous Scythe", "Hungry Scythe"] }),
