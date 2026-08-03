@@ -29,8 +29,20 @@ set. If a fetch keeps failing, wait a bit and rerun.
 
 ## Mapping notes and known limitations
 
-- **`dlcRequired` is always `null`** — UESP's `setSummary` export carries no DLC
-  field, so DLC gating for sets is not derivable from this source.
+- **`dlcRequired` is derived from `sources`, not a DLC field** — UESP's
+  `setSummary` export carries no DLC column (verified against the full column
+  list; the `zones` table is not JSON-exportable), so the builder maps the
+  place named in `sources` to a DLC id via an explicit `PLACE_DLC` table
+  (ids from `src/data/zones.ts` `ALL_DLC_IDS`, cross-checked by test). Dungeon
+  and trial sources read `"Zone, Dungeon"` where the zone is only the
+  location — the *dungeon's* DLC gates the set (e.g. "Summerset, Coral Aerie"
+  → `ascending-tide`, not `summerset`) — so lookups key on the last segment;
+  monster sets key on the dungeon in `"Boss in Dungeon"`. Crafted sets stay
+  `null` (the gear is tradeable and wearable without the DLC), as do mythics
+  (fragment leads span many DLCs) and all base-game places. Any place name
+  missing from the table stays `null` and is listed in the build summary so
+  coverage gaps are visible instead of silent. 310 of 641 sets carry a DLC id
+  at snapshot time.
 - **Set types**: UESP `type` values Crafted/Overland/Dungeon/Trial/Arena/PVP/
   Monster/Mythic map to the site's lowercase enum. Rows typed `""`, `Class`, or
   `Other` (class sets, holiday/other oddities) are skipped; the build prints how
