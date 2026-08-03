@@ -105,7 +105,11 @@ export function ReviewConsole({ items, currentPatch }: { items: ReviewItem[]; cu
                 >
                   {pending === id ? "Re-stamping…" : `Mark reviewed for ${currentPatch}`}
                 </button>
-                {errors[id] ? <p className="text-xs text-stale">{errors[id]}</p> : null}
+                {errors[id] ? (
+                  <p role="alert" className="text-xs text-stale">
+                    {errors[id]}
+                  </p>
+                ) : null}
               </div>
             </li>
           ))}

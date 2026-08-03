@@ -13,7 +13,10 @@ export const metadata: Metadata = { title: "Review Queue" };
 export const dynamic = "force-dynamic";
 
 export default async function ReviewQueuePage() {
-  const db = await getDb();
+  // Fresh read: on serverless the per-instance cache means router.refresh()
+  // after a re-stamp could otherwise land on an instance still holding the
+  // pre-write amber state.
+  const db = await getDb({ fresh: true });
   const items: ReviewItem[] = db.builds
     .map((b) => ({ id: b.id, slug: b.slug, name: b.name, freshness: db.freshness(b) }))
     .sort((a, b) => {

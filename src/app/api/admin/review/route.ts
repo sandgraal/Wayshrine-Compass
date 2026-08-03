@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { canPersist, markBuildReviewed } from "@/lib/ingest/persist";
+import { canPersist, markBuildReviewed, ReviewConflictError } from "@/lib/ingest/persist";
 import { getDb, invalidateDbCache } from "@/lib/data";
 
 /**
@@ -41,13 +41,18 @@ export async function POST(request: Request) {
   if (typeof patch !== "string" || !patch) {
     return NextResponse.json({ error: "patch is required" }, { status: 400 });
   }
-  if (typeof buildId !== "string" && typeof slug !== "string") {
-    return NextResponse.json({ error: "buildId or slug is required" }, { status: 400 });
+  // Exactly one identifier: with both, an OR lookup would silently pick
+  // whichever build the iteration order favors when they disagree.
+  if ((typeof buildId === "string") === (typeof slug === "string")) {
+    return NextResponse.json({ error: "exactly one of buildId or slug is required" }, { status: 400 });
   }
 
-  const db = await getDb();
-  const build = db.builds.find(
-    (b) => (typeof buildId === "string" && b.id === buildId) || (typeof slug === "string" && b.slug === slug)
+  // Fresh read: the in-process cache is per function instance, and re-stamping
+  // a build based on a five-minute-old view of it would clear flags the
+  // reviewer never saw.
+  const db = await getDb({ fresh: true });
+  const build = db.builds.find((b) =>
+    typeof buildId === "string" ? b.id === buildId : b.slug === slug
   );
   if (!build) {
     return NextResponse.json({ error: "build not found" }, { status: 404 });
@@ -66,7 +71,17 @@ export async function POST(request: Request) {
     );
   }
 
-  await markBuildReviewed(build.id, patch);
+  try {
+    // Compare-and-swap against the stored flags from this request's fresh
+    // read, so a concurrent ingest re-flagging the build makes this fail
+    // instead of silently verifying changes nobody reviewed.
+    await markBuildReviewed(build.id, patch, build.needsReviewReasons);
+  } catch (err) {
+    if (err instanceof ReviewConflictError) {
+      return NextResponse.json({ error: err.message }, { status: 409 });
+    }
+    throw err;
+  }
   invalidateDbCache();
 
   return NextResponse.json({ ok: true, buildId: build.id, slug: build.slug, patchVerified: patch });

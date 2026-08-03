@@ -86,13 +86,25 @@ export async function persistIngest(
   if (error) throw new Error(`ingest_apply failed (transaction rolled back): ${error.message}`);
 }
 
+/** The build row changed between the reviewer's read and the re-stamp. */
+export class ReviewConflictError extends Error {}
+
 /**
  * Re-stamps a build after a human review: patch_verified moves to the given
  * patch and the ingest-written flags are cleared. Touches only the build's own
  * row — freshness stays computed from entity provenance on read, so a build
  * whose references change again immediately goes back to amber.
+ *
+ * Compare-and-swap on the stored review_reasons: a same-patch ingest can
+ * write new flags between the reviewer's read and their click, and clearing
+ * those unseen would verify changes nobody looked at. jsonb equality is
+ * structural, so serializing the expected value is safe.
  */
-export async function markBuildReviewed(buildId: string, patch: string): Promise<void> {
+export async function markBuildReviewed(
+  buildId: string,
+  patch: string,
+  expectedReasons: unknown[]
+): Promise<void> {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -102,7 +114,12 @@ export async function markBuildReviewed(buildId: string, patch: string): Promise
     .from("builds")
     .update({ status: "verified", patch_verified: patch, review_reasons: [] })
     .eq("id", buildId)
+    .eq("review_reasons", JSON.stringify(expectedReasons))
     .select("id");
   if (error) throw new Error(`mark reviewed failed: ${error.message}`);
-  if (!data || data.length === 0) throw new Error(`mark reviewed failed: build ${buildId} not found`);
+  if (!data || data.length === 0) {
+    throw new ReviewConflictError(
+      `build ${buildId} changed since it was loaded (ingest may have re-flagged it); reload and re-review`
+    );
+  }
 }

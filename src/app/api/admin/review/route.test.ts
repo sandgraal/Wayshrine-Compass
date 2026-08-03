@@ -14,16 +14,21 @@ const mocks = vi.hoisted(() => ({
   invalidateDbCache: vi.fn(),
 }));
 
-vi.mock("@/lib/ingest/persist", () => ({
-  canPersist: mocks.canPersist,
-  markBuildReviewed: mocks.markBuildReviewed,
-}));
+vi.mock("@/lib/ingest/persist", () => {
+  class ReviewConflictError extends Error {}
+  return {
+    canPersist: mocks.canPersist,
+    markBuildReviewed: mocks.markBuildReviewed,
+    ReviewConflictError,
+  };
+});
 vi.mock("@/lib/data", () => ({
   getDb: mocks.getDb,
   invalidateDbCache: mocks.invalidateDbCache,
 }));
 
 import { POST } from "./route";
+import { ReviewConflictError } from "@/lib/ingest/persist";
 
 const SECRET = "test-admin-secret";
 
@@ -39,8 +44,8 @@ const fakeDb = {
   source: "supabase",
   currentPatch: "U50",
   builds: [
-    { id: "build-sorcerer-dps", slug: "sorcerer-dps" },
-    { id: "build-warden-dps", slug: "warden-dps" },
+    { id: "build-sorcerer-dps", slug: "sorcerer-dps", needsReviewReasons: [{ entityId: "skill-x" }] },
+    { id: "build-warden-dps", slug: "warden-dps", needsReviewReasons: [] },
   ],
 };
 
@@ -93,6 +98,14 @@ describe("POST /api/admin/review validation", () => {
     expect(res.status).toBe(400);
   });
 
+  it("rejects a body with both buildId and slug with 400 (ambiguous target)", async () => {
+    const res = await POST(
+      post({ buildId: "build-sorcerer-dps", slug: "warden-dps", patch: "U50" }, SECRET)
+    );
+    expect(res.status).toBe(400);
+    expect(mocks.markBuildReviewed).not.toHaveBeenCalled();
+  });
+
   it("returns 404 for an unknown build", async () => {
     const res = await POST(post({ slug: "no-such-build", patch: "U50" }, SECRET));
     expect(res.status).toBe(404);
@@ -114,6 +127,13 @@ describe("POST /api/admin/review refusal paths", () => {
     expect(res.status).toBe(409);
     expect(mocks.markBuildReviewed).not.toHaveBeenCalled();
   });
+
+  it("returns 409 when the build row changed since it was loaded (CAS conflict)", async () => {
+    mocks.markBuildReviewed.mockRejectedValue(new ReviewConflictError("build changed"));
+    const res = await POST(post({ slug: "sorcerer-dps", patch: "U50" }, SECRET));
+    expect(res.status).toBe(409);
+    expect(mocks.invalidateDbCache).not.toHaveBeenCalled();
+  });
 });
 
 describe("POST /api/admin/review success", () => {
@@ -126,13 +146,20 @@ describe("POST /api/admin/review success", () => {
       slug: "warden-dps",
       patchVerified: "U50",
     });
-    expect(mocks.markBuildReviewed).toHaveBeenCalledWith("build-warden-dps", "U50");
+    expect(mocks.markBuildReviewed).toHaveBeenCalledWith("build-warden-dps", "U50", []);
     expect(mocks.invalidateDbCache).toHaveBeenCalled();
   });
 
-  it("re-stamps by buildId", async () => {
+  it("re-stamps by buildId, passing the stored flags for the compare-and-swap", async () => {
     const res = await POST(post({ buildId: "build-sorcerer-dps", patch: "U50" }, SECRET));
     expect(res.status).toBe(200);
-    expect(mocks.markBuildReviewed).toHaveBeenCalledWith("build-sorcerer-dps", "U50");
+    expect(mocks.markBuildReviewed).toHaveBeenCalledWith("build-sorcerer-dps", "U50", [
+      { entityId: "skill-x" },
+    ]);
+  });
+
+  it("reads the database fresh, bypassing the per-instance cache", async () => {
+    await POST(post({ slug: "sorcerer-dps", patch: "U50" }, SECRET));
+    expect(mocks.getDb).toHaveBeenCalledWith({ fresh: true });
   });
 });

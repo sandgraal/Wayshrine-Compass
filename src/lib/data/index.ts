@@ -48,10 +48,16 @@ export function invalidateDbCache(): void {
   cached = null;
 }
 
-/** Async facade for server components and routes: Supabase when configured. */
-export async function getDb(): Promise<Db> {
+/**
+ * Async facade for server components and routes: Supabase when configured.
+ * `fresh: true` bypasses the in-process cache — required wherever a stale
+ * read would be acted on (the admin review console and its route), since on
+ * serverless each function instance holds its own cache and invalidation
+ * doesn't cross instances.
+ */
+export async function getDb(opts?: { fresh?: boolean }): Promise<Db> {
   if (!supabaseConfigured()) return seedDb;
-  if (cached && Date.now() - cached.at < CACHE_TTL_MS) return cached.db;
+  if (!opts?.fresh && cached && Date.now() - cached.at < CACHE_TTL_MS) return cached.db;
   try {
     const data = await fetchDbFromSupabase();
     cached = { db: buildDb(data), at: Date.now() };
