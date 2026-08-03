@@ -22,7 +22,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_DIR = path.join(ROOT, "public", "dataset");
@@ -202,7 +202,7 @@ const PLACE_DLC = {
  * tradeable and wearable by anyone), mythics stay null (leads span many
  * DLCs), and any place not in PLACE_DLC stays null and is reported.
  */
-function resolveSetDlc(type, source, unmapped) {
+export function resolveSetDlc(type, source, unmapped) {
   if (type === "crafted" || type === "mythic") return null;
   let key;
   if (type === "dungeon" || type === "trial") {
@@ -519,7 +519,10 @@ async function main() {
   console.log(`wrote ${path.relative(ROOT, OUT_FILE)}`);
 }
 
-main().catch((err) => {
-  console.error(err.message);
-  process.exit(1);
-});
+// Run only when executed directly — the test suite imports resolveSetDlc.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((err) => {
+    console.error(err.message);
+    process.exit(1);
+  });
+}
