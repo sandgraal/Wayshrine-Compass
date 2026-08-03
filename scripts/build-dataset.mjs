@@ -32,6 +32,8 @@ const USER_AGENT = "WayshrineCompass-dataset-builder/0.1 (contact: cennisc@gmail
 const DELAY_MS = 1000;
 const CACHE_DIR = process.env.UESP_CACHE_DIR || "";
 
+const NONCLASS_CATEGORIES = ["Weapon", "Guild", "World", "Armor"];
+
 const CLASSES = [
   "Dragonknight",
   "Sorcerer",
@@ -161,8 +163,13 @@ function transformSkills(raw) {
   // (verified against e.g. Crystal Shard -> Crystal Weapon / Crystal Fragments).
   const groups = new Map();
   for (const row of rows) {
-    const [className, lineName] = String(row.skillTypeName).split("::");
-    if (!CLASSES.includes(className) || !lineName) continue;
+    const [category, lineName] = String(row.skillTypeName).split("::");
+    if (!lineName) continue;
+    // Class trees keep their class; weapon/guild/world/armor lines are the
+    // seed's null-class skills (id prefix "weapon" per src/data/skills.ts).
+    const isClass = CLASSES.includes(category);
+    if (!isClass && !NONCLASS_CATEGORIES.includes(category)) continue;
+    const className = isClass ? category : null;
     const key = `${row.skillTypeName}::${row.baseName}`;
     if (!groups.has(key)) groups.set(key, { className, lineName, rows: [] });
     groups.get(key).rows.push(row);
@@ -188,7 +195,7 @@ function transformSkills(raw) {
     // so datasets diff against existing entities instead of replacing them all.
     // Collisions are resolved in a second pass below so ids never depend on
     // upstream row order.
-    const id = `skill-${kebab(className)}-${kebab(lineName)}-${kebab(baseName)}`;
+    const id = `skill-${className ? kebab(className) : "weapon"}-${kebab(lineName)}-${kebab(baseName)}`;
     skills.push({
       id,
       abilityId: baseRow.abilityId,
@@ -197,7 +204,7 @@ function transformSkills(raw) {
       lineLabel: lineName,
       ultimate: baseRow.type === "Ultimate",
       description: stripEsoCodes(baseRow.description),
-      className: className.toLowerCase(),
+      className: className ? className.toLowerCase() : null,
       morphs,
     });
   }
@@ -299,9 +306,21 @@ async function main() {
     "cp2Skills"
   );
   await sleep(DELAY_MS);
-  const versionsRaw = await fetchText("https://esoapi.uesp.net/", "apiVersions");
-
-  const patch = parsePatchFromVersions(versionsRaw);
+  let patch;
+  if (process.env.PATCH_CODE) {
+    // Cloudflare sometimes challenges esoapi; allow a manual override.
+    const n = process.env.PATCH_CODE.replace(/^U/i, "");
+    // The release date orders patches in the DB — a regeneration-date default
+    // could corrupt current-patch/freshness ordering, so require it explicitly.
+    const date = process.env.PATCH_DATE;
+    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      throw new Error("PATCH_CODE override requires PATCH_DATE=YYYY-MM-DD (the patch's release date)");
+    }
+    patch = { id: `patch-u${n}`, code: `U${n}`, name: `Update ${n}`, releasedAt: date, season: null };
+  } else {
+    const versionsRaw = await fetchText("https://esoapi.uesp.net/", "apiVersions");
+    patch = parsePatchFromVersions(versionsRaw);
+  }
   const { sets, skipped } = transformSets(setRaw);
   const { skills } = transformSkills(skillRaw);
   const { cpStars } = transformCpStars(cpRaw);

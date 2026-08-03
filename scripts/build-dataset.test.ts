@@ -27,16 +27,15 @@ describe("public/dataset/current.json", () => {
   it("uses seed-compatible skill ids so diffs match existing entities", () => {
     for (const s of dataset!.skills) {
       expect(s.id).toMatch(/^skill-[a-z]+-[a-z0-9-]+$/);
-      expect(s.id.startsWith(`skill-${s.className}-${s.line}-`)).toBe(true);
+      expect(s.id.startsWith(`skill-${s.className ?? "weapon"}-${s.line}-`)).toBe(true);
     }
   });
 
-  it("matches the seed's class-skill ids closely enough to diff, not replace", () => {
+  it("matches the seed's skill ids (class and weapon lines) closely enough to diff, not replace", () => {
     const dsIds = new Set(dataset!.skills.map((s) => s.id));
-    const seedClass = seedSkills.filter((s) => s.className !== null);
-    const matched = seedClass.filter((s) => dsIds.has(s.id)).length;
-    // 79/84 at snapshot time; a convention drift would crater this.
-    expect(matched).toBeGreaterThanOrEqual(79);
+    const matched = seedSkills.filter((s) => dsIds.has(s.id)).length;
+    // 112/117 at snapshot time (5 real in-game renames); drift craters this.
+    expect(matched).toBeGreaterThanOrEqual(112);
   });
 
   it("carries the site's current patch", () => {
@@ -48,7 +47,7 @@ describe("public/dataset/current.json", () => {
     // Dataset changes arrive as reviewed PRs, so pin exact counts — a partial
     // extraction after an upstream schema change must fail, not shrink quietly.
     expect(dataset!.sets.length).toBe(641);
-    expect(dataset!.skills.length).toBe(245);
+    expect(dataset!.skills.length).toBe(433);
     expect(dataset!.cpStars.length).toBe(118);
   });
 
