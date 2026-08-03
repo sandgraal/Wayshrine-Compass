@@ -303,6 +303,14 @@ export function portraitById(id: string): Portrait | undefined {
   return PORTRAITS.find((p) => p.id === id);
 }
 
+/**
+ * Repo-relative path of the portrait's JPEG derivative in `public/chars-og/`,
+ * used by the Open Graph image route (satori cannot decode the WebP originals).
+ */
+export function ogPortraitPath(portrait: Portrait): string {
+  return `public/chars-og/${portrait.id}.jpg`;
+}
+
 /** Narrow the catalog by any combination of race, class and gender. */
 export function portraitsMatching(filter: {
   race?: Race;

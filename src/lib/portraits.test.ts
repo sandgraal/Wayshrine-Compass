@@ -45,6 +45,18 @@ describe("portrait catalog", () => {
     }
   });
 
+  it("has an OG JPEG derivative for every portrait", () => {
+    // The share-image route reads public/chars-og/<id>.jpg at request time;
+    // regenerate that dir (see its README) whenever public/chars changes.
+    const og = new Set(
+      readdirSync("public/chars-og")
+        .filter((f) => f.endsWith(".jpg"))
+        .map((f) => f.replace(/\.jpg$/, ""))
+    );
+    const missing = PORTRAITS.filter((p) => !og.has(p.id)).map((p) => p.id);
+    expect(missing).toEqual([]);
+  });
+
   it("points every portrait at a /chars asset matching its id", () => {
     for (const p of PORTRAITS) {
       expect(p.src).toBe(`/chars/${p.id}.webp`);
