@@ -185,8 +185,10 @@ function transformSkills(raw) {
         morphs.push({ name: top.name, description: stripEsoCodes(top.description) });
       }
     }
-    let id = `skill-${kebab(baseName)}`;
-    if (usedIds.has(id)) id = `${id}-${kebab(lineName)}`;
+    // Seed/DB id convention: skill-<class>-<line>-<slug> (src/data/skills.ts),
+    // so datasets diff against existing entities instead of replacing them all.
+    let id = `skill-${kebab(className)}-${kebab(lineName)}-${kebab(baseName)}`;
+    if (usedIds.has(id)) id = `${id}-${kebab(String(baseRow.abilityId ?? usedIds.size))}`;
     usedIds.set(id, true);
     skills.push({
       id,

@@ -14987,7 +14987,7 @@
   ],
   "skills": [
     {
-      "id": "skill-a-soul-ablaze",
+      "id": "skill-dragonknight-ardent-flame-a-soul-ablaze",
       "name": "A Soul Ablaze",
       "line": "ardent-flame",
       "lineLabel": "Ardent Flame",
@@ -14997,7 +14997,7 @@
       "morphs": []
     },
     {
-      "id": "skill-above-and-beyond",
+      "id": "skill-nightblade-class-mastery-above-and-beyond",
       "name": "Above and Beyond",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15007,7 +15007,7 @@
       "morphs": []
     },
     {
-      "id": "skill-abyssal-emergence",
+      "id": "skill-arcanist-class-mastery-abyssal-emergence",
       "name": "Abyssal Emergence",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15017,7 +15017,7 @@
       "morphs": []
     },
     {
-      "id": "skill-abyssal-impact",
+      "id": "skill-arcanist-herald-of-the-tome-abyssal-impact",
       "name": "Abyssal Impact",
       "line": "herald-of-the-tome",
       "lineLabel": "Herald of the Tome",
@@ -15036,7 +15036,7 @@
       ]
     },
     {
-      "id": "skill-accelerated-growth",
+      "id": "skill-warden-green-balance-accelerated-growth",
       "name": "Accelerated Growth",
       "line": "green-balance",
       "lineLabel": "Green Balance",
@@ -15046,7 +15046,7 @@
       "morphs": []
     },
     {
-      "id": "skill-advanced-species",
+      "id": "skill-warden-animal-companions-advanced-species",
       "name": "Advanced Species",
       "line": "animal-companions",
       "lineLabel": "Animal Companions",
@@ -15056,7 +15056,7 @@
       "morphs": []
     },
     {
-      "id": "skill-aegis-of-the-unseen",
+      "id": "skill-arcanist-soldier-of-apocrypha-aegis-of-the-unseen",
       "name": "Aegis of the Unseen",
       "line": "soldier-of-apocrypha",
       "lineLabel": "Soldier of Apocrypha",
@@ -15066,7 +15066,7 @@
       "morphs": []
     },
     {
-      "id": "skill-amplitude",
+      "id": "skill-sorcerer-storm-calling-amplitude",
       "name": "Amplitude",
       "line": "storm-calling",
       "lineLabel": "Storm Calling",
@@ -15076,7 +15076,7 @@
       "morphs": []
     },
     {
-      "id": "skill-an-eye-for-exploitation",
+      "id": "skill-nightblade-class-mastery-an-eye-for-exploitation",
       "name": "An Eye for Exploitation",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15086,7 +15086,7 @@
       "morphs": []
     },
     {
-      "id": "skill-apocryphal-gate",
+      "id": "skill-arcanist-curative-runeforms-apocryphal-gate",
       "name": "Apocryphal Gate",
       "line": "curative-runeforms",
       "lineLabel": "Curative Runeforms",
@@ -15105,7 +15105,7 @@
       ]
     },
     {
-      "id": "skill-arcanists-domain",
+      "id": "skill-arcanist-curative-runeforms-arcanists-domain",
       "name": "Arcanist's Domain",
       "line": "curative-runeforms",
       "lineLabel": "Curative Runeforms",
@@ -15124,7 +15124,7 @@
       ]
     },
     {
-      "id": "skill-arctic-wind",
+      "id": "skill-warden-winters-embrace-arctic-wind",
       "name": "Arctic Wind",
       "line": "winters-embrace",
       "lineLabel": "Winter's Embrace",
@@ -15143,7 +15143,7 @@
       ]
     },
     {
-      "id": "skill-aspect-of-terror",
+      "id": "skill-nightblade-shadow-aspect-of-terror",
       "name": "Aspect of Terror",
       "line": "shadow",
       "lineLabel": "Shadow",
@@ -15162,7 +15162,7 @@
       ]
     },
     {
-      "id": "skill-assassins-blade",
+      "id": "skill-nightblade-assassination-assassins-blade",
       "name": "Assassin's Blade",
       "line": "assassination",
       "lineLabel": "Assassination",
@@ -15181,7 +15181,7 @@
       ]
     },
     {
-      "id": "skill-backlash",
+      "id": "skill-templar-dawns-wrath-backlash",
       "name": "Backlash",
       "line": "dawns-wrath",
       "lineLabel": "Dawn's Wrath",
@@ -15200,7 +15200,7 @@
       ]
     },
     {
-      "id": "skill-balanced-warrior",
+      "id": "skill-templar-aedric-spear-balanced-warrior",
       "name": "Balanced Warrior",
       "line": "aedric-spear",
       "lineLabel": "Aedric Spear",
@@ -15210,7 +15210,7 @@
       "morphs": []
     },
     {
-      "id": "skill-bastion-of-light",
+      "id": "skill-templar-class-mastery-bastion-of-light",
       "name": "Bastion of Light",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15220,7 +15220,7 @@
       "morphs": []
     },
     {
-      "id": "skill-betty-netch",
+      "id": "skill-warden-animal-companions-betty-netch",
       "name": "Betty Netch",
       "line": "animal-companions",
       "lineLabel": "Animal Companions",
@@ -15239,7 +15239,7 @@
       ]
     },
     {
-      "id": "skill-bitter-harvest",
+      "id": "skill-necromancer-bone-tyrant-bitter-harvest",
       "name": "Bitter Harvest",
       "line": "bone-tyrant",
       "lineLabel": "Bone Tyrant",
@@ -15258,7 +15258,7 @@
       ]
     },
     {
-      "id": "skill-blessing-at-the-peak",
+      "id": "skill-dragonknight-earthen-heart-blessing-at-the-peak",
       "name": "Blessing at the Peak",
       "line": "earthen-heart",
       "lineLabel": "Earthen Heart",
@@ -15268,7 +15268,7 @@
       "morphs": []
     },
     {
-      "id": "skill-blood-magic",
+      "id": "skill-sorcerer-dark-magic-blood-magic",
       "name": "Blood Magic",
       "line": "dark-magic",
       "lineLabel": "Dark Magic",
@@ -15278,7 +15278,7 @@
       "morphs": []
     },
     {
-      "id": "skill-blur",
+      "id": "skill-nightblade-shadow-blur",
       "name": "Blur",
       "line": "shadow",
       "lineLabel": "Shadow",
@@ -15297,7 +15297,7 @@
       ]
     },
     {
-      "id": "skill-bolt-escape",
+      "id": "skill-sorcerer-storm-calling-bolt-escape",
       "name": "Bolt Escape",
       "line": "storm-calling",
       "lineLabel": "Storm Calling",
@@ -15316,7 +15316,7 @@
       ]
     },
     {
-      "id": "skill-bond-with-nature",
+      "id": "skill-warden-animal-companions-bond-with-nature",
       "name": "Bond with Nature",
       "line": "animal-companions",
       "lineLabel": "Animal Companions",
@@ -15326,7 +15326,7 @@
       "morphs": []
     },
     {
-      "id": "skill-bone-armor",
+      "id": "skill-necromancer-bone-tyrant-bone-armor",
       "name": "Bone Armor",
       "line": "bone-tyrant",
       "lineLabel": "Bone Tyrant",
@@ -15345,7 +15345,7 @@
       ]
     },
     {
-      "id": "skill-bone-goliath-transformation",
+      "id": "skill-necromancer-bone-tyrant-bone-goliath-transformation",
       "name": "Bone Goliath Transformation",
       "line": "bone-tyrant",
       "lineLabel": "Bone Tyrant",
@@ -15364,7 +15364,7 @@
       ]
     },
     {
-      "id": "skill-bone-totem",
+      "id": "skill-necromancer-bone-tyrant-bone-totem",
       "name": "Bone Totem",
       "line": "bone-tyrant",
       "lineLabel": "Bone Tyrant",
@@ -15383,7 +15383,7 @@
       ]
     },
     {
-      "id": "skill-boneyard",
+      "id": "skill-necromancer-grave-lord-boneyard",
       "name": "Boneyard",
       "line": "grave-lord",
       "lineLabel": "Grave Lord",
@@ -15402,7 +15402,7 @@
       ]
     },
     {
-      "id": "skill-booming-voice",
+      "id": "skill-dragonknight-class-mastery-booming-voice",
       "name": "Booming Voice",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15412,7 +15412,7 @@
       "morphs": []
     },
     {
-      "id": "skill-bound-armor",
+      "id": "skill-sorcerer-daedric-summoning-bound-armor",
       "name": "Bound Armor",
       "line": "daedric-summoning",
       "lineLabel": "Daedric Summoning",
@@ -15431,7 +15431,7 @@
       ]
     },
     {
-      "id": "skill-bountiful-harvest",
+      "id": "skill-warden-class-mastery-bountiful-harvest",
       "name": "Bountiful Harvest",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15441,7 +15441,7 @@
       "morphs": []
     },
     {
-      "id": "skill-bright-harbinger",
+      "id": "skill-templar-class-mastery-bright-harbinger",
       "name": "Bright Harbinger",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15451,7 +15451,7 @@
       "morphs": []
     },
     {
-      "id": "skill-burning-light",
+      "id": "skill-templar-aedric-spear-burning-light",
       "name": "Burning Light",
       "line": "aedric-spear",
       "lineLabel": "Aedric Spear",
@@ -15461,7 +15461,7 @@
       "morphs": []
     },
     {
-      "id": "skill-burnished-scales",
+      "id": "skill-dragonknight-draconic-power-burnished-scales",
       "name": "Burnished Scales",
       "line": "draconic-power",
       "lineLabel": "Draconic Power",
@@ -15471,7 +15471,7 @@
       "morphs": []
     },
     {
-      "id": "skill-calculated-defense",
+      "id": "skill-sorcerer-class-mastery-calculated-defense",
       "name": "Calculated Defense",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15481,7 +15481,7 @@
       "morphs": []
     },
     {
-      "id": "skill-capacitor",
+      "id": "skill-sorcerer-storm-calling-capacitor",
       "name": "Capacitor",
       "line": "storm-calling",
       "lineLabel": "Storm Calling",
@@ -15491,7 +15491,7 @@
       "morphs": []
     },
     {
-      "id": "skill-catalyst",
+      "id": "skill-nightblade-siphoning-catalyst",
       "name": "Catalyst",
       "line": "siphoning",
       "lineLabel": "Siphoning",
@@ -15501,7 +15501,7 @@
       "morphs": []
     },
     {
-      "id": "skill-chains-of-flame",
+      "id": "skill-dragonknight-draconic-power-chains-of-flame",
       "name": "Chains of Flame",
       "line": "draconic-power",
       "lineLabel": "Draconic Power",
@@ -15520,7 +15520,7 @@
       ]
     },
     {
-      "id": "skill-chakram-shields",
+      "id": "skill-arcanist-curative-runeforms-chakram-shields",
       "name": "Chakram Shields",
       "line": "curative-runeforms",
       "lineLabel": "Curative Runeforms",
@@ -15539,7 +15539,7 @@
       ]
     },
     {
-      "id": "skill-circumvented-fate",
+      "id": "skill-arcanist-soldier-of-apocrypha-circumvented-fate",
       "name": "Circumvented Fate",
       "line": "soldier-of-apocrypha",
       "lineLabel": "Soldier of Apocrypha",
@@ -15549,7 +15549,7 @@
       "morphs": []
     },
     {
-      "id": "skill-cleansing-ritual",
+      "id": "skill-templar-restoring-light-cleansing-ritual",
       "name": "Cleansing Ritual",
       "line": "restoring-light",
       "lineLabel": "Restoring Light",
@@ -15568,7 +15568,7 @@
       ]
     },
     {
-      "id": "skill-combustion",
+      "id": "skill-dragonknight-ardent-flame-combustion",
       "name": "Combustion",
       "line": "ardent-flame",
       "lineLabel": "Ardent Flame",
@@ -15578,7 +15578,7 @@
       "morphs": []
     },
     {
-      "id": "skill-conjured-ward",
+      "id": "skill-sorcerer-daedric-summoning-conjured-ward",
       "name": "Conjured Ward",
       "line": "daedric-summoning",
       "lineLabel": "Daedric Summoning",
@@ -15597,7 +15597,7 @@
       ]
     },
     {
-      "id": "skill-conservation-of-energy",
+      "id": "skill-sorcerer-class-mastery-conservation-of-energy",
       "name": "Conservation of Energy",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15607,7 +15607,7 @@
       "morphs": []
     },
     {
-      "id": "skill-consuming-darkness",
+      "id": "skill-nightblade-shadow-consuming-darkness",
       "name": "Consuming Darkness",
       "line": "shadow",
       "lineLabel": "Shadow",
@@ -15626,7 +15626,7 @@
       ]
     },
     {
-      "id": "skill-core-of-flame",
+      "id": "skill-dragonknight-ardent-flame-core-of-flame",
       "name": "Core of Flame",
       "line": "ardent-flame",
       "lineLabel": "Ardent Flame",
@@ -15645,7 +15645,7 @@
       ]
     },
     {
-      "id": "skill-corpse-consumption",
+      "id": "skill-necromancer-living-death-corpse-consumption",
       "name": "Corpse Consumption",
       "line": "living-death",
       "lineLabel": "Living Death",
@@ -15655,7 +15655,7 @@
       "morphs": []
     },
     {
-      "id": "skill-cripple",
+      "id": "skill-nightblade-siphoning-cripple",
       "name": "Cripple",
       "line": "siphoning",
       "lineLabel": "Siphoning",
@@ -15674,7 +15674,7 @@
       ]
     },
     {
-      "id": "skill-crystal-shard",
+      "id": "skill-sorcerer-dark-magic-crystal-shard",
       "name": "Crystal Shard",
       "line": "dark-magic",
       "lineLabel": "Dark Magic",
@@ -15693,7 +15693,7 @@
       ]
     },
     {
-      "id": "skill-crystallized-shield",
+      "id": "skill-warden-winters-embrace-crystallized-shield",
       "name": "Crystallized Shield",
       "line": "winters-embrace",
       "lineLabel": "Winter's Embrace",
@@ -15712,7 +15712,7 @@
       ]
     },
     {
-      "id": "skill-curative-curse",
+      "id": "skill-necromancer-living-death-curative-curse",
       "name": "Curative Curse",
       "line": "living-death",
       "lineLabel": "Living Death",
@@ -15722,7 +15722,7 @@
       "morphs": []
     },
     {
-      "id": "skill-cutthroats-focus",
+      "id": "skill-nightblade-class-mastery-cutthroats-focus",
       "name": "Cutthroat's Focus",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15732,7 +15732,7 @@
       "morphs": []
     },
     {
-      "id": "skill-cycle-unending",
+      "id": "skill-necromancer-class-mastery-cycle-unending",
       "name": "Cycle Unending",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15742,7 +15742,7 @@
       "morphs": []
     },
     {
-      "id": "skill-daedric-curse",
+      "id": "skill-sorcerer-daedric-summoning-daedric-curse",
       "name": "Daedric Curse",
       "line": "daedric-summoning",
       "lineLabel": "Daedric Summoning",
@@ -15761,7 +15761,7 @@
       ]
     },
     {
-      "id": "skill-daedric-mines",
+      "id": "skill-sorcerer-dark-magic-daedric-mines",
       "name": "Daedric Mines",
       "line": "dark-magic",
       "lineLabel": "Dark Magic",
@@ -15780,7 +15780,7 @@
       ]
     },
     {
-      "id": "skill-daedric-protection",
+      "id": "skill-sorcerer-daedric-summoning-daedric-protection",
       "name": "Daedric Protection",
       "line": "daedric-summoning",
       "lineLabel": "Daedric Summoning",
@@ -15790,7 +15790,7 @@
       "morphs": []
     },
     {
-      "id": "skill-dark-exchange",
+      "id": "skill-sorcerer-dark-magic-dark-exchange",
       "name": "Dark Exchange",
       "line": "dark-magic",
       "lineLabel": "Dark Magic",
@@ -15809,7 +15809,7 @@
       ]
     },
     {
-      "id": "skill-dark-talons",
+      "id": "skill-dragonknight-draconic-power-dark-talons",
       "name": "Dark Talons",
       "line": "draconic-power",
       "lineLabel": "Draconic Power",
@@ -15828,7 +15828,7 @@
       ]
     },
     {
-      "id": "skill-dark-veil",
+      "id": "skill-nightblade-shadow-dark-veil",
       "name": "Dark Veil",
       "line": "shadow",
       "lineLabel": "Shadow",
@@ -15838,7 +15838,7 @@
       "morphs": []
     },
     {
-      "id": "skill-dark-vigor",
+      "id": "skill-nightblade-shadow-dark-vigor",
       "name": "Dark Vigor",
       "line": "shadow",
       "lineLabel": "Shadow",
@@ -15848,7 +15848,7 @@
       "morphs": []
     },
     {
-      "id": "skill-death-gleaning",
+      "id": "skill-necromancer-bone-tyrant-death-gleaning",
       "name": "Death Gleaning",
       "line": "bone-tyrant",
       "lineLabel": "Bone Tyrant",
@@ -15858,7 +15858,7 @@
       "morphs": []
     },
     {
-      "id": "skill-death-knell",
+      "id": "skill-necromancer-grave-lord-death-knell",
       "name": "Death Knell",
       "line": "grave-lord",
       "lineLabel": "Grave Lord",
@@ -15868,7 +15868,7 @@
       "morphs": []
     },
     {
-      "id": "skill-death-scythe",
+      "id": "skill-necromancer-bone-tyrant-death-scythe",
       "name": "Death Scythe",
       "line": "bone-tyrant",
       "lineLabel": "Bone Tyrant",
@@ -15887,7 +15887,7 @@
       ]
     },
     {
-      "id": "skill-death-stroke",
+      "id": "skill-nightblade-assassination-death-stroke",
       "name": "Death Stroke",
       "line": "assassination",
       "lineLabel": "Assassination",
@@ -15906,7 +15906,7 @@
       ]
     },
     {
-      "id": "skill-devout-guardian",
+      "id": "skill-templar-class-mastery-devout-guardian",
       "name": "Devout Guardian",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -15916,7 +15916,7 @@
       "morphs": []
     },
     {
-      "id": "skill-disdain-harm",
+      "id": "skill-necromancer-bone-tyrant-disdain-harm",
       "name": "Disdain Harm",
       "line": "bone-tyrant",
       "lineLabel": "Bone Tyrant",
@@ -15926,7 +15926,7 @@
       "morphs": []
     },
     {
-      "id": "skill-dismember",
+      "id": "skill-necromancer-grave-lord-dismember",
       "name": "Dismember",
       "line": "grave-lord",
       "lineLabel": "Grave Lord",
@@ -15936,7 +15936,7 @@
       "morphs": []
     },
     {
-      "id": "skill-dive",
+      "id": "skill-warden-animal-companions-dive",
       "name": "Dive",
       "line": "animal-companions",
       "lineLabel": "Animal Companions",
@@ -15955,7 +15955,7 @@
       ]
     },
     {
-      "id": "skill-dragon-blood",
+      "id": "skill-dragonknight-draconic-power-dragon-blood",
       "name": "Dragon Blood",
       "line": "draconic-power",
       "lineLabel": "Draconic Power",
@@ -15974,7 +15974,7 @@
       ]
     },
     {
-      "id": "skill-dragon-leap",
+      "id": "skill-dragonknight-draconic-power-dragon-leap",
       "name": "Dragon Leap",
       "line": "draconic-power",
       "lineLabel": "Draconic Power",
@@ -15993,7 +15993,7 @@
       ]
     },
     {
-      "id": "skill-dragonfire-breath",
+      "id": "skill-dragonknight-draconic-power-dragonfire-breath",
       "name": "Dragonfire Breath",
       "line": "draconic-power",
       "lineLabel": "Draconic Power",
@@ -16012,7 +16012,7 @@
       ]
     },
     {
-      "id": "skill-dragonknight-standard",
+      "id": "skill-dragonknight-ardent-flame-dragonknight-standard",
       "name": "Dragonknight Standard",
       "line": "ardent-flame",
       "lineLabel": "Ardent Flame",
@@ -16031,7 +16031,7 @@
       ]
     },
     {
-      "id": "skill-drain-power",
+      "id": "skill-nightblade-siphoning-drain-power",
       "name": "Drain Power",
       "line": "siphoning",
       "lineLabel": "Siphoning",
@@ -16050,7 +16050,7 @@
       ]
     },
     {
-      "id": "skill-earthspike-mantle",
+      "id": "skill-dragonknight-earthen-heart-earthspike-mantle",
       "name": "Earthspike Mantle",
       "line": "earthen-heart",
       "lineLabel": "Earthen Heart",
@@ -16069,7 +16069,7 @@
       ]
     },
     {
-      "id": "skill-eclipse",
+      "id": "skill-templar-dawns-wrath-eclipse",
       "name": "Eclipse",
       "line": "dawns-wrath",
       "lineLabel": "Dawn's Wrath",
@@ -16088,7 +16088,7 @@
       ]
     },
     {
-      "id": "skill-elder-dragon",
+      "id": "skill-dragonknight-draconic-power-elder-dragon",
       "name": "Elder Dragon",
       "line": "draconic-power",
       "lineLabel": "Draconic Power",
@@ -16098,7 +16098,7 @@
       "morphs": []
     },
     {
-      "id": "skill-emerald-moss",
+      "id": "skill-warden-green-balance-emerald-moss",
       "name": "Emerald Moss",
       "line": "green-balance",
       "lineLabel": "Green Balance",
@@ -16108,7 +16108,7 @@
       "morphs": []
     },
     {
-      "id": "skill-encase",
+      "id": "skill-sorcerer-dark-magic-encase",
       "name": "Encase",
       "line": "dark-magic",
       "lineLabel": "Dark Magic",
@@ -16127,7 +16127,7 @@
       ]
     },
     {
-      "id": "skill-enduring-rays",
+      "id": "skill-templar-dawns-wrath-enduring-rays",
       "name": "Enduring Rays",
       "line": "dawns-wrath",
       "lineLabel": "Dawn's Wrath",
@@ -16137,7 +16137,7 @@
       "morphs": []
     },
     {
-      "id": "skill-energized",
+      "id": "skill-sorcerer-storm-calling-energized",
       "name": "Energized",
       "line": "storm-calling",
       "lineLabel": "Storm Calling",
@@ -16147,7 +16147,7 @@
       "morphs": []
     },
     {
-      "id": "skill-erudites-rigor",
+      "id": "skill-arcanist-class-mastery-erudites-rigor",
       "name": "Erudite's Rigor",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -16157,7 +16157,7 @@
       "morphs": []
     },
     {
-      "id": "skill-erudition",
+      "id": "skill-arcanist-curative-runeforms-erudition",
       "name": "Erudition",
       "line": "curative-runeforms",
       "lineLabel": "Curative Runeforms",
@@ -16167,7 +16167,7 @@
       "morphs": []
     },
     {
-      "id": "skill-executioner",
+      "id": "skill-nightblade-assassination-executioner",
       "name": "Executioner",
       "line": "assassination",
       "lineLabel": "Assassination",
@@ -16177,7 +16177,7 @@
       "morphs": []
     },
     {
-      "id": "skill-expert-mage",
+      "id": "skill-sorcerer-storm-calling-expert-mage",
       "name": "Expert Mage",
       "line": "storm-calling",
       "lineLabel": "Storm Calling",
@@ -16187,7 +16187,7 @@
       "morphs": []
     },
     {
-      "id": "skill-expert-summoner",
+      "id": "skill-sorcerer-daedric-summoning-expert-summoner",
       "name": "Expert Summoner",
       "line": "daedric-summoning",
       "lineLabel": "Daedric Summoning",
@@ -16197,7 +16197,7 @@
       "morphs": []
     },
     {
-      "id": "skill-exploitation",
+      "id": "skill-sorcerer-dark-magic-exploitation",
       "name": "Exploitation",
       "line": "dark-magic",
       "lineLabel": "Dark Magic",
@@ -16207,7 +16207,7 @@
       "morphs": []
     },
     {
-      "id": "skill-expunge",
+      "id": "skill-necromancer-living-death-expunge",
       "name": "Expunge",
       "line": "living-death",
       "lineLabel": "Living Death",
@@ -16226,7 +16226,7 @@
       ]
     },
     {
-      "id": "skill-falcons-swiftness",
+      "id": "skill-warden-animal-companions-falcons-swiftness",
       "name": "Falcon's Swiftness",
       "line": "animal-companions",
       "lineLabel": "Animal Companions",
@@ -16245,7 +16245,7 @@
       ]
     },
     {
-      "id": "skill-fan-the-flames",
+      "id": "skill-dragonknight-ardent-flame-fan-the-flames",
       "name": "Fan the Flames",
       "line": "ardent-flame",
       "lineLabel": "Ardent Flame",
@@ -16255,7 +16255,7 @@
       "morphs": []
     },
     {
-      "id": "skill-fate-realigned",
+      "id": "skill-arcanist-class-mastery-fate-realigned",
       "name": "Fate Realigned",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -16265,7 +16265,7 @@
       "morphs": []
     },
     {
-      "id": "skill-fatecarver",
+      "id": "skill-arcanist-herald-of-the-tome-fatecarver",
       "name": "Fatecarver",
       "line": "herald-of-the-tome",
       "lineLabel": "Herald of the Tome",
@@ -16284,7 +16284,7 @@
       ]
     },
     {
-      "id": "skill-fated-fortune",
+      "id": "skill-arcanist-herald-of-the-tome-fated-fortune",
       "name": "Fated Fortune",
       "line": "herald-of-the-tome",
       "lineLabel": "Herald of the Tome",
@@ -16294,7 +16294,7 @@
       "morphs": []
     },
     {
-      "id": "skill-fatewoven-armor",
+      "id": "skill-arcanist-soldier-of-apocrypha-fatewoven-armor",
       "name": "Fatewoven Armor",
       "line": "soldier-of-apocrypha",
       "lineLabel": "Soldier of Apocrypha",
@@ -16313,7 +16313,7 @@
       ]
     },
     {
-      "id": "skill-feral-guardian",
+      "id": "skill-warden-animal-companions-feral-guardian",
       "name": "Feral Guardian",
       "line": "animal-companions",
       "lineLabel": "Animal Companions",
@@ -16332,7 +16332,7 @@
       ]
     },
     {
-      "id": "skill-flame-skull",
+      "id": "skill-necromancer-grave-lord-flame-skull",
       "name": "Flame Skull",
       "line": "grave-lord",
       "lineLabel": "Grave Lord",
@@ -16351,7 +16351,7 @@
       ]
     },
     {
-      "id": "skill-flourish",
+      "id": "skill-warden-animal-companions-flourish",
       "name": "Flourish",
       "line": "animal-companions",
       "lineLabel": "Animal Companions",
@@ -16361,7 +16361,7 @@
       "morphs": []
     },
     {
-      "id": "skill-focused-charge",
+      "id": "skill-templar-aedric-spear-focused-charge",
       "name": "Focused Charge",
       "line": "aedric-spear",
       "lineLabel": "Aedric Spear",
@@ -16380,7 +16380,7 @@
       ]
     },
     {
-      "id": "skill-font-of-power",
+      "id": "skill-sorcerer-class-mastery-font-of-power",
       "name": "Font of Power",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -16390,7 +16390,7 @@
       "morphs": []
     },
     {
-      "id": "skill-frost-cloak",
+      "id": "skill-warden-winters-embrace-frost-cloak",
       "name": "Frost Cloak",
       "line": "winters-embrace",
       "lineLabel": "Winter's Embrace",
@@ -16409,7 +16409,7 @@
       ]
     },
     {
-      "id": "skill-frozen-armor",
+      "id": "skill-warden-winters-embrace-frozen-armor",
       "name": "Frozen Armor",
       "line": "winters-embrace",
       "lineLabel": "Winter's Embrace",
@@ -16419,7 +16419,7 @@
       "morphs": []
     },
     {
-      "id": "skill-frozen-colossus",
+      "id": "skill-necromancer-grave-lord-frozen-colossus",
       "name": "Frozen Colossus",
       "line": "grave-lord",
       "lineLabel": "Grave Lord",
@@ -16438,7 +16438,7 @@
       ]
     },
     {
-      "id": "skill-frozen-gate",
+      "id": "skill-warden-winters-embrace-frozen-gate",
       "name": "Frozen Gate",
       "line": "winters-embrace",
       "lineLabel": "Winter's Embrace",
@@ -16457,7 +16457,7 @@
       ]
     },
     {
-      "id": "skill-fungal-growth",
+      "id": "skill-warden-green-balance-fungal-growth",
       "name": "Fungal Growth",
       "line": "green-balance",
       "lineLabel": "Green Balance",
@@ -16476,7 +16476,7 @@
       ]
     },
     {
-      "id": "skill-gibbering-shield",
+      "id": "skill-arcanist-soldier-of-apocrypha-gibbering-shield",
       "name": "Gibbering Shield",
       "line": "soldier-of-apocrypha",
       "lineLabel": "Soldier of Apocrypha",
@@ -16495,7 +16495,7 @@
       ]
     },
     {
-      "id": "skill-glacial-obstinance",
+      "id": "skill-warden-class-mastery-glacial-obstinance",
       "name": "Glacial Obstinance",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -16505,7 +16505,7 @@
       "morphs": []
     },
     {
-      "id": "skill-glacial-presence",
+      "id": "skill-warden-winters-embrace-glacial-presence",
       "name": "Glacial Presence",
       "line": "winters-embrace",
       "lineLabel": "Winter's Embrace",
@@ -16515,7 +16515,7 @@
       "morphs": []
     },
     {
-      "id": "skill-grave-grasp",
+      "id": "skill-necromancer-bone-tyrant-grave-grasp",
       "name": "Grave Grasp",
       "line": "bone-tyrant",
       "lineLabel": "Bone Tyrant",
@@ -16534,7 +16534,7 @@
       ]
     },
     {
-      "id": "skill-green-keepers-hide",
+      "id": "skill-warden-class-mastery-green-keepers-hide",
       "name": "Green-Keeper's Hide",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -16544,7 +16544,7 @@
       "morphs": []
     },
     {
-      "id": "skill-grim-focus",
+      "id": "skill-nightblade-assassination-grim-focus",
       "name": "Grim Focus",
       "line": "assassination",
       "lineLabel": "Assassination",
@@ -16563,7 +16563,7 @@
       ]
     },
     {
-      "id": "skill-harnessed-quintessence",
+      "id": "skill-arcanist-herald-of-the-tome-harnessed-quintessence",
       "name": "Harnessed Quintessence",
       "line": "herald-of-the-tome",
       "lineLabel": "Herald of the Tome",
@@ -16573,7 +16573,7 @@
       "morphs": []
     },
     {
-      "id": "skill-healing-ritual",
+      "id": "skill-templar-restoring-light-healing-ritual",
       "name": "Healing Ritual",
       "line": "restoring-light",
       "lineLabel": "Restoring Light",
@@ -16592,7 +16592,7 @@
       ]
     },
     {
-      "id": "skill-healing-seed",
+      "id": "skill-warden-green-balance-healing-seed",
       "name": "Healing Seed",
       "line": "green-balance",
       "lineLabel": "Green Balance",
@@ -16611,7 +16611,7 @@
       ]
     },
     {
-      "id": "skill-healing-tides",
+      "id": "skill-arcanist-curative-runeforms-healing-tides",
       "name": "Healing Tides",
       "line": "curative-runeforms",
       "lineLabel": "Curative Runeforms",
@@ -16621,7 +16621,7 @@
       "morphs": []
     },
     {
-      "id": "skill-health-avarice",
+      "id": "skill-necromancer-bone-tyrant-health-avarice",
       "name": "Health Avarice",
       "line": "bone-tyrant",
       "lineLabel": "Bone Tyrant",
@@ -16631,7 +16631,7 @@
       "morphs": []
     },
     {
-      "id": "skill-heart-of-stone",
+      "id": "skill-dragonknight-earthen-heart-heart-of-stone",
       "name": "Heart of Stone",
       "line": "earthen-heart",
       "lineLabel": "Earthen Heart",
@@ -16641,7 +16641,7 @@
       "morphs": []
     },
     {
-      "id": "skill-hearthfire",
+      "id": "skill-dragonknight-ardent-flame-hearthfire",
       "name": "Hearthfire",
       "line": "ardent-flame",
       "lineLabel": "Ardent Flame",
@@ -16660,7 +16660,7 @@
       ]
     },
     {
-      "id": "skill-hemorrhage",
+      "id": "skill-nightblade-assassination-hemorrhage",
       "name": "Hemorrhage",
       "line": "assassination",
       "lineLabel": "Assassination",
@@ -16670,7 +16670,7 @@
       "morphs": []
     },
     {
-      "id": "skill-hideous-clarity",
+      "id": "skill-arcanist-curative-runeforms-hideous-clarity",
       "name": "Hideous Clarity",
       "line": "curative-runeforms",
       "lineLabel": "Curative Runeforms",
@@ -16680,7 +16680,7 @@
       "morphs": []
     },
     {
-      "id": "skill-icy-aura",
+      "id": "skill-warden-winters-embrace-icy-aura",
       "name": "Icy Aura",
       "line": "winters-embrace",
       "lineLabel": "Winter's Embrace",
@@ -16690,7 +16690,7 @@
       "morphs": []
     },
     {
-      "id": "skill-illuminate",
+      "id": "skill-templar-dawns-wrath-illuminate",
       "name": "Illuminate",
       "line": "dawns-wrath",
       "lineLabel": "Dawn's Wrath",
@@ -16700,7 +16700,7 @@
       "morphs": []
     },
     {
-      "id": "skill-impaling-shards",
+      "id": "skill-warden-winters-embrace-impaling-shards",
       "name": "Impaling Shards",
       "line": "winters-embrace",
       "lineLabel": "Winter's Embrace",
@@ -16719,7 +16719,7 @@
       ]
     },
     {
-      "id": "skill-implacable-outcome",
+      "id": "skill-arcanist-soldier-of-apocrypha-implacable-outcome",
       "name": "Implacable Outcome",
       "line": "soldier-of-apocrypha",
       "lineLabel": "Soldier of Apocrypha",
@@ -16729,7 +16729,7 @@
       "morphs": []
     },
     {
-      "id": "skill-inexorable-descent",
+      "id": "skill-dragonknight-class-mastery-inexorable-descent",
       "name": "Inexorable Descent",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -16739,7 +16739,7 @@
       "morphs": []
     },
     {
-      "id": "skill-inferno",
+      "id": "skill-dragonknight-ardent-flame-inferno",
       "name": "Inferno",
       "line": "ardent-flame",
       "lineLabel": "Ardent Flame",
@@ -16758,7 +16758,7 @@
       ]
     },
     {
-      "id": "skill-ink-scribes-verve",
+      "id": "skill-arcanist-class-mastery-ink-scribes-verve",
       "name": "Ink-Scribe's Verve",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -16768,7 +16768,7 @@
       "morphs": []
     },
     {
-      "id": "skill-intricate-runeforms",
+      "id": "skill-arcanist-curative-runeforms-intricate-runeforms",
       "name": "Intricate Runeforms",
       "line": "curative-runeforms",
       "lineLabel": "Curative Runeforms",
@@ -16778,7 +16778,7 @@
       "morphs": []
     },
     {
-      "id": "skill-judgments-brand",
+      "id": "skill-templar-class-mastery-judgments-brand",
       "name": "Judgment's Brand",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -16788,7 +16788,7 @@
       "morphs": []
     },
     {
-      "id": "skill-landslide",
+      "id": "skill-dragonknight-earthen-heart-landslide",
       "name": "Landslide",
       "line": "earthen-heart",
       "lineLabel": "Earthen Heart",
@@ -16798,7 +16798,7 @@
       "morphs": []
     },
     {
-      "id": "skill-last-gasp",
+      "id": "skill-necromancer-bone-tyrant-last-gasp",
       "name": "Last Gasp",
       "line": "bone-tyrant",
       "lineLabel": "Bone Tyrant",
@@ -16808,7 +16808,7 @@
       "morphs": []
     },
     {
-      "id": "skill-lava-whip",
+      "id": "skill-dragonknight-ardent-flame-lava-whip",
       "name": "Lava Whip",
       "line": "ardent-flame",
       "lineLabel": "Ardent Flame",
@@ -16827,7 +16827,7 @@
       ]
     },
     {
-      "id": "skill-lead-from-the-front",
+      "id": "skill-dragonknight-class-mastery-lead-from-the-front",
       "name": "Lead from the Front",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -16837,7 +16837,7 @@
       "morphs": []
     },
     {
-      "id": "skill-life-amid-death",
+      "id": "skill-necromancer-living-death-life-amid-death",
       "name": "Life amid Death",
       "line": "living-death",
       "lineLabel": "Living Death",
@@ -16856,7 +16856,7 @@
       ]
     },
     {
-      "id": "skill-light-weaver",
+      "id": "skill-templar-restoring-light-light-weaver",
       "name": "Light Weaver",
       "line": "restoring-light",
       "lineLabel": "Restoring Light",
@@ -16866,7 +16866,7 @@
       "morphs": []
     },
     {
-      "id": "skill-lightning-form",
+      "id": "skill-sorcerer-storm-calling-lightning-form",
       "name": "Lightning Form",
       "line": "storm-calling",
       "lineLabel": "Storm Calling",
@@ -16885,7 +16885,7 @@
       ]
     },
     {
-      "id": "skill-lightning-splash",
+      "id": "skill-sorcerer-storm-calling-lightning-splash",
       "name": "Lightning Splash",
       "line": "storm-calling",
       "lineLabel": "Storm Calling",
@@ -16904,7 +16904,7 @@
       ]
     },
     {
-      "id": "skill-living-vines",
+      "id": "skill-warden-green-balance-living-vines",
       "name": "Living Vines",
       "line": "green-balance",
       "lineLabel": "Green Balance",
@@ -16923,7 +16923,7 @@
       ]
     },
     {
-      "id": "skill-lotus-flower",
+      "id": "skill-warden-green-balance-lotus-flower",
       "name": "Lotus Flower",
       "line": "green-balance",
       "lineLabel": "Green Balance",
@@ -16942,7 +16942,7 @@
       ]
     },
     {
-      "id": "skill-mages-fury",
+      "id": "skill-sorcerer-storm-calling-mages-fury",
       "name": "Mages' Fury",
       "line": "storm-calling",
       "lineLabel": "Storm Calling",
@@ -16961,7 +16961,7 @@
       ]
     },
     {
-      "id": "skill-magicka-flood",
+      "id": "skill-nightblade-siphoning-magicka-flood",
       "name": "Magicka Flood",
       "line": "siphoning",
       "lineLabel": "Siphoning",
@@ -16971,7 +16971,7 @@
       "morphs": []
     },
     {
-      "id": "skill-magma-armor",
+      "id": "skill-dragonknight-earthen-heart-magma-armor",
       "name": "Magma Armor",
       "line": "earthen-heart",
       "lineLabel": "Earthen Heart",
@@ -16990,7 +16990,7 @@
       ]
     },
     {
-      "id": "skill-malevolent-offering",
+      "id": "skill-nightblade-siphoning-malevolent-offering",
       "name": "Malevolent Offering",
       "line": "siphoning",
       "lineLabel": "Siphoning",
@@ -17009,7 +17009,7 @@
       ]
     },
     {
-      "id": "skill-malevolent-promise",
+      "id": "skill-necromancer-class-mastery-malevolent-promise",
       "name": "Malevolent Promise",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -17019,7 +17019,7 @@
       "morphs": []
     },
     {
-      "id": "skill-mark-target",
+      "id": "skill-nightblade-assassination-mark-target",
       "name": "Mark Target",
       "line": "assassination",
       "lineLabel": "Assassination",
@@ -17038,7 +17038,7 @@
       ]
     },
     {
-      "id": "skill-master-assassin",
+      "id": "skill-nightblade-assassination-master-assassin",
       "name": "Master Assassin",
       "line": "assassination",
       "lineLabel": "Assassination",
@@ -17048,7 +17048,7 @@
       "morphs": []
     },
     {
-      "id": "skill-master-ritualist",
+      "id": "skill-templar-restoring-light-master-ritualist",
       "name": "Master Ritualist",
       "line": "restoring-light",
       "lineLabel": "Restoring Light",
@@ -17058,7 +17058,7 @@
       "morphs": []
     },
     {
-      "id": "skill-maturation",
+      "id": "skill-warden-green-balance-maturation",
       "name": "Maturation",
       "line": "green-balance",
       "lineLabel": "Green Balance",
@@ -17068,7 +17068,7 @@
       "morphs": []
     },
     {
-      "id": "skill-mending",
+      "id": "skill-templar-restoring-light-mending",
       "name": "Mending",
       "line": "restoring-light",
       "lineLabel": "Restoring Light",
@@ -17078,7 +17078,7 @@
       "morphs": []
     },
     {
-      "id": "skill-molten-weapons",
+      "id": "skill-dragonknight-earthen-heart-molten-weapons",
       "name": "Molten Weapons",
       "line": "earthen-heart",
       "lineLabel": "Earthen Heart",
@@ -17097,7 +17097,7 @@
       ]
     },
     {
-      "id": "skill-mountain-giant",
+      "id": "skill-dragonknight-earthen-heart-mountain-giant",
       "name": "Mountain Giant",
       "line": "earthen-heart",
       "lineLabel": "Earthen Heart",
@@ -17107,7 +17107,7 @@
       "morphs": []
     },
     {
-      "id": "skill-natures-gift",
+      "id": "skill-warden-green-balance-natures-gift",
       "name": "Nature's Gift",
       "line": "green-balance",
       "lineLabel": "Green Balance",
@@ -17117,7 +17117,7 @@
       "morphs": []
     },
     {
-      "id": "skill-natures-grasp",
+      "id": "skill-warden-green-balance-natures-grasp",
       "name": "Nature's Grasp",
       "line": "green-balance",
       "lineLabel": "Green Balance",
@@ -17136,7 +17136,7 @@
       ]
     },
     {
-      "id": "skill-near-death-experience",
+      "id": "skill-necromancer-living-death-near-death-experience",
       "name": "Near-Death Experience",
       "line": "living-death",
       "lineLabel": "Living Death",
@@ -17146,7 +17146,7 @@
       "morphs": []
     },
     {
-      "id": "skill-negate-magic",
+      "id": "skill-sorcerer-dark-magic-negate-magic",
       "name": "Negate Magic",
       "line": "dark-magic",
       "lineLabel": "Dark Magic",
@@ -17165,7 +17165,7 @@
       ]
     },
     {
-      "id": "skill-nocturnal-inspiration",
+      "id": "skill-nightblade-class-mastery-nocturnal-inspiration",
       "name": "Nocturnal Inspiration",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -17175,7 +17175,7 @@
       "morphs": []
     },
     {
-      "id": "skill-nothing-wasted",
+      "id": "skill-necromancer-class-mastery-nothing-wasted",
       "name": "Nothing Wasted",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -17185,7 +17185,7 @@
       "morphs": []
     },
     {
-      "id": "skill-nova",
+      "id": "skill-templar-dawns-wrath-nova",
       "name": "Nova",
       "line": "dawns-wrath",
       "lineLabel": "Dawn's Wrath",
@@ -17204,7 +17204,7 @@
       ]
     },
     {
-      "id": "skill-obsidian-shield",
+      "id": "skill-dragonknight-earthen-heart-obsidian-shield",
       "name": "Obsidian Shield",
       "line": "earthen-heart",
       "lineLabel": "Earthen Heart",
@@ -17223,7 +17223,7 @@
       ]
     },
     {
-      "id": "skill-overload",
+      "id": "skill-sorcerer-storm-calling-overload",
       "name": "Overload",
       "line": "storm-calling",
       "lineLabel": "Storm Calling",
@@ -17242,7 +17242,7 @@
       ]
     },
     {
-      "id": "skill-path-of-darkness",
+      "id": "skill-nightblade-shadow-path-of-darkness",
       "name": "Path of Darkness",
       "line": "shadow",
       "lineLabel": "Shadow",
@@ -17261,7 +17261,7 @@
       ]
     },
     {
-      "id": "skill-persistence",
+      "id": "skill-sorcerer-dark-magic-persistence",
       "name": "Persistence",
       "line": "dark-magic",
       "lineLabel": "Dark Magic",
@@ -17271,7 +17271,7 @@
       "morphs": []
     },
     {
-      "id": "skill-petrify",
+      "id": "skill-dragonknight-earthen-heart-petrify",
       "name": "Petrify",
       "line": "earthen-heart",
       "lineLabel": "Earthen Heart",
@@ -17290,7 +17290,7 @@
       ]
     },
     {
-      "id": "skill-piercing-cold",
+      "id": "skill-warden-winters-embrace-piercing-cold",
       "name": "Piercing Cold",
       "line": "winters-embrace",
       "lineLabel": "Winter's Embrace",
@@ -17300,7 +17300,7 @@
       "morphs": []
     },
     {
-      "id": "skill-piercing-javelin",
+      "id": "skill-templar-aedric-spear-piercing-javelin",
       "name": "Piercing Javelin",
       "line": "aedric-spear",
       "lineLabel": "Aedric Spear",
@@ -17319,7 +17319,7 @@
       ]
     },
     {
-      "id": "skill-piercing-spear",
+      "id": "skill-templar-aedric-spear-piercing-spear",
       "name": "Piercing Spear",
       "line": "aedric-spear",
       "lineLabel": "Aedric Spear",
@@ -17329,7 +17329,7 @@
       "morphs": []
     },
     {
-      "id": "skill-pound-of-flesh",
+      "id": "skill-necromancer-class-mastery-pound-of-flesh",
       "name": "Pound of Flesh",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -17339,7 +17339,7 @@
       "morphs": []
     },
     {
-      "id": "skill-power-stone",
+      "id": "skill-sorcerer-daedric-summoning-power-stone",
       "name": "Power Stone",
       "line": "daedric-summoning",
       "lineLabel": "Daedric Summoning",
@@ -17349,7 +17349,7 @@
       "morphs": []
     },
     {
-      "id": "skill-pressure-points",
+      "id": "skill-nightblade-assassination-pressure-points",
       "name": "Pressure Points",
       "line": "assassination",
       "lineLabel": "Assassination",
@@ -17359,7 +17359,7 @@
       "morphs": []
     },
     {
-      "id": "skill-prism",
+      "id": "skill-templar-dawns-wrath-prism",
       "name": "Prism",
       "line": "dawns-wrath",
       "lineLabel": "Dawn's Wrath",
@@ -17369,7 +17369,7 @@
       "morphs": []
     },
     {
-      "id": "skill-psychic-lesion",
+      "id": "skill-arcanist-herald-of-the-tome-psychic-lesion",
       "name": "Psychic Lesion",
       "line": "herald-of-the-tome",
       "lineLabel": "Herald of the Tome",
@@ -17379,7 +17379,7 @@
       "morphs": []
     },
     {
-      "id": "skill-puncturing-strikes",
+      "id": "skill-templar-aedric-spear-puncturing-strikes",
       "name": "Puncturing Strikes",
       "line": "aedric-spear",
       "lineLabel": "Aedric Spear",
@@ -17398,7 +17398,7 @@
       ]
     },
     {
-      "id": "skill-radial-sweep",
+      "id": "skill-templar-aedric-spear-radial-sweep",
       "name": "Radial Sweep",
       "line": "aedric-spear",
       "lineLabel": "Aedric Spear",
@@ -17417,7 +17417,7 @@
       ]
     },
     {
-      "id": "skill-radiant-destruction",
+      "id": "skill-templar-dawns-wrath-radiant-destruction",
       "name": "Radiant Destruction",
       "line": "dawns-wrath",
       "lineLabel": "Dawn's Wrath",
@@ -17436,7 +17436,7 @@
       ]
     },
     {
-      "id": "skill-rapid-rot",
+      "id": "skill-necromancer-grave-lord-rapid-rot",
       "name": "Rapid Rot",
       "line": "grave-lord",
       "lineLabel": "Grave Lord",
@@ -17446,7 +17446,7 @@
       "morphs": []
     },
     {
-      "id": "skill-reanimate",
+      "id": "skill-necromancer-living-death-reanimate",
       "name": "Reanimate",
       "line": "living-death",
       "lineLabel": "Living Death",
@@ -17465,7 +17465,7 @@
       ]
     },
     {
-      "id": "skill-rebate",
+      "id": "skill-sorcerer-daedric-summoning-rebate",
       "name": "Rebate",
       "line": "daedric-summoning",
       "lineLabel": "Daedric Summoning",
@@ -17475,7 +17475,7 @@
       "morphs": []
     },
     {
-      "id": "skill-refreshing-shadows",
+      "id": "skill-nightblade-shadow-refreshing-shadows",
       "name": "Refreshing Shadows",
       "line": "shadow",
       "lineLabel": "Shadow",
@@ -17485,7 +17485,7 @@
       "morphs": []
     },
     {
-      "id": "skill-remedy-cascade",
+      "id": "skill-arcanist-curative-runeforms-remedy-cascade",
       "name": "Remedy Cascade",
       "line": "curative-runeforms",
       "lineLabel": "Curative Runeforms",
@@ -17504,7 +17504,7 @@
       ]
     },
     {
-      "id": "skill-render-flesh",
+      "id": "skill-necromancer-living-death-render-flesh",
       "name": "Render Flesh",
       "line": "living-death",
       "lineLabel": "Living Death",
@@ -17523,7 +17523,7 @@
       ]
     },
     {
-      "id": "skill-resolute-defense",
+      "id": "skill-dragonknight-class-mastery-resolute-defense",
       "name": "Resolute Defense",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -17533,7 +17533,7 @@
       "morphs": []
     },
     {
-      "id": "skill-restoring-aura",
+      "id": "skill-templar-restoring-light-restoring-aura",
       "name": "Restoring Aura",
       "line": "restoring-light",
       "lineLabel": "Restoring Light",
@@ -17552,7 +17552,7 @@
       ]
     },
     {
-      "id": "skill-restoring-spirit",
+      "id": "skill-templar-dawns-wrath-restoring-spirit",
       "name": "Restoring Spirit",
       "line": "dawns-wrath",
       "lineLabel": "Dawn's Wrath",
@@ -17562,7 +17562,7 @@
       "morphs": []
     },
     {
-      "id": "skill-restoring-tether",
+      "id": "skill-necromancer-living-death-restoring-tether",
       "name": "Restoring Tether",
       "line": "living-death",
       "lineLabel": "Living Death",
@@ -17581,7 +17581,7 @@
       ]
     },
     {
-      "id": "skill-reusable-parts",
+      "id": "skill-necromancer-grave-lord-reusable-parts",
       "name": "Reusable Parts",
       "line": "grave-lord",
       "lineLabel": "Grave Lord",
@@ -17591,7 +17591,7 @@
       "morphs": []
     },
     {
-      "id": "skill-rite-of-passage",
+      "id": "skill-templar-restoring-light-rite-of-passage",
       "name": "Rite of Passage",
       "line": "restoring-light",
       "lineLabel": "Restoring Light",
@@ -17610,7 +17610,7 @@
       ]
     },
     {
-      "id": "skill-rune-focus",
+      "id": "skill-templar-restoring-light-rune-focus",
       "name": "Rune Focus",
       "line": "restoring-light",
       "lineLabel": "Restoring Light",
@@ -17629,7 +17629,7 @@
       ]
     },
     {
-      "id": "skill-rune-of-eldritch-horror",
+      "id": "skill-arcanist-soldier-of-apocrypha-rune-of-eldritch-horror",
       "name": "Rune of Eldritch Horror",
       "line": "soldier-of-apocrypha",
       "lineLabel": "Soldier of Apocrypha",
@@ -17648,7 +17648,7 @@
       ]
     },
     {
-      "id": "skill-rune-prison",
+      "id": "skill-sorcerer-dark-magic-rune-prison",
       "name": "Rune Prison",
       "line": "dark-magic",
       "lineLabel": "Dark Magic",
@@ -17667,7 +17667,7 @@
       ]
     },
     {
-      "id": "skill-runeblades",
+      "id": "skill-arcanist-herald-of-the-tome-runeblades",
       "name": "Runeblades",
       "line": "herald-of-the-tome",
       "lineLabel": "Herald of the Tome",
@@ -17686,7 +17686,7 @@
       ]
     },
     {
-      "id": "skill-runemend",
+      "id": "skill-arcanist-curative-runeforms-runemend",
       "name": "Runemend",
       "line": "curative-runeforms",
       "lineLabel": "Curative Runeforms",
@@ -17705,7 +17705,7 @@
       ]
     },
     {
-      "id": "skill-runespite-ward",
+      "id": "skill-arcanist-soldier-of-apocrypha-runespite-ward",
       "name": "Runespite Ward",
       "line": "soldier-of-apocrypha",
       "lineLabel": "Soldier of Apocrypha",
@@ -17724,7 +17724,7 @@
       ]
     },
     {
-      "id": "skill-runic-defense",
+      "id": "skill-arcanist-soldier-of-apocrypha-runic-defense",
       "name": "Runic Defense",
       "line": "soldier-of-apocrypha",
       "lineLabel": "Soldier of Apocrypha",
@@ -17743,7 +17743,7 @@
       ]
     },
     {
-      "id": "skill-runic-jolt",
+      "id": "skill-arcanist-soldier-of-apocrypha-runic-jolt",
       "name": "Runic Jolt",
       "line": "soldier-of-apocrypha",
       "lineLabel": "Soldier of Apocrypha",
@@ -17762,7 +17762,7 @@
       ]
     },
     {
-      "id": "skill-rushed-ceremony",
+      "id": "skill-templar-restoring-light-rushed-ceremony",
       "name": "Rushed Ceremony",
       "line": "restoring-light",
       "lineLabel": "Restoring Light",
@@ -17781,7 +17781,7 @@
       ]
     },
     {
-      "id": "skill-sacred-ground",
+      "id": "skill-templar-restoring-light-sacred-ground",
       "name": "Sacred Ground",
       "line": "restoring-light",
       "lineLabel": "Restoring Light",
@@ -17791,7 +17791,7 @@
       "morphs": []
     },
     {
-      "id": "skill-sacrificial-bones",
+      "id": "skill-necromancer-grave-lord-sacrificial-bones",
       "name": "Sacrificial Bones",
       "line": "grave-lord",
       "lineLabel": "Grave Lord",
@@ -17810,7 +17810,7 @@
       ]
     },
     {
-      "id": "skill-savage-beast",
+      "id": "skill-warden-animal-companions-savage-beast",
       "name": "Savage Beast",
       "line": "animal-companions",
       "lineLabel": "Animal Companions",
@@ -17820,7 +17820,7 @@
       "morphs": []
     },
     {
-      "id": "skill-scorch",
+      "id": "skill-warden-animal-companions-scorch",
       "name": "Scorch",
       "line": "animal-companions",
       "lineLabel": "Animal Companions",
@@ -17839,7 +17839,7 @@
       ]
     },
     {
-      "id": "skill-searing-strike",
+      "id": "skill-dragonknight-ardent-flame-searing-strike",
       "name": "Searing Strike",
       "line": "ardent-flame",
       "lineLabel": "Ardent Flame",
@@ -17858,7 +17858,7 @@
       ]
     },
     {
-      "id": "skill-secluded-grove",
+      "id": "skill-warden-green-balance-secluded-grove",
       "name": "Secluded Grove",
       "line": "green-balance",
       "lineLabel": "Green Balance",
@@ -17877,7 +17877,7 @@
       ]
     },
     {
-      "id": "skill-shadow-barrier",
+      "id": "skill-nightblade-shadow-shadow-barrier",
       "name": "Shadow Barrier",
       "line": "shadow",
       "lineLabel": "Shadow",
@@ -17887,7 +17887,7 @@
       "morphs": []
     },
     {
-      "id": "skill-shadow-cloak",
+      "id": "skill-nightblade-shadow-shadow-cloak",
       "name": "Shadow Cloak",
       "line": "shadow",
       "lineLabel": "Shadow",
@@ -17906,7 +17906,7 @@
       ]
     },
     {
-      "id": "skill-share-the-spoils",
+      "id": "skill-nightblade-class-mastery-share-the-spoils",
       "name": "Share the Spoils",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -17916,7 +17916,7 @@
       "morphs": []
     },
     {
-      "id": "skill-shocking-siphon",
+      "id": "skill-necromancer-grave-lord-shocking-siphon",
       "name": "Shocking Siphon",
       "line": "grave-lord",
       "lineLabel": "Grave Lord",
@@ -17935,7 +17935,7 @@
       ]
     },
     {
-      "id": "skill-siphoning-strikes",
+      "id": "skill-nightblade-siphoning-siphoning-strikes",
       "name": "Siphoning Strikes",
       "line": "siphoning",
       "lineLabel": "Siphoning",
@@ -17954,7 +17954,7 @@
       ]
     },
     {
-      "id": "skill-skeletal-mage",
+      "id": "skill-necromancer-grave-lord-skeletal-mage",
       "name": "Skeletal Mage",
       "line": "grave-lord",
       "lineLabel": "Grave Lord",
@@ -17973,7 +17973,7 @@
       ]
     },
     {
-      "id": "skill-sleet-storm",
+      "id": "skill-warden-winters-embrace-sleet-storm",
       "name": "Sleet Storm",
       "line": "winters-embrace",
       "lineLabel": "Winter's Embrace",
@@ -17992,7 +17992,7 @@
       ]
     },
     {
-      "id": "skill-solar-flare",
+      "id": "skill-templar-dawns-wrath-solar-flare",
       "name": "Solar Flare",
       "line": "dawns-wrath",
       "lineLabel": "Dawn's Wrath",
@@ -18011,7 +18011,7 @@
       ]
     },
     {
-      "id": "skill-soul-shred",
+      "id": "skill-nightblade-siphoning-soul-shred",
       "name": "Soul Shred",
       "line": "siphoning",
       "lineLabel": "Siphoning",
@@ -18030,7 +18030,7 @@
       ]
     },
     {
-      "id": "skill-soul-siphoner",
+      "id": "skill-nightblade-siphoning-soul-siphoner",
       "name": "Soul Siphoner",
       "line": "siphoning",
       "lineLabel": "Siphoning",
@@ -18040,7 +18040,7 @@
       "morphs": []
     },
     {
-      "id": "skill-spear-shards",
+      "id": "skill-templar-aedric-spear-spear-shards",
       "name": "Spear Shards",
       "line": "aedric-spear",
       "lineLabel": "Aedric Spear",
@@ -18059,7 +18059,7 @@
       ]
     },
     {
-      "id": "skill-spear-wall",
+      "id": "skill-templar-aedric-spear-spear-wall",
       "name": "Spear Wall",
       "line": "aedric-spear",
       "lineLabel": "Aedric Spear",
@@ -18069,7 +18069,7 @@
       "morphs": []
     },
     {
-      "id": "skill-sphere-of-influence",
+      "id": "skill-sorcerer-class-mastery-sphere-of-influence",
       "name": "Sphere of Influence",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -18079,7 +18079,7 @@
       "morphs": []
     },
     {
-      "id": "skill-spirit-mender",
+      "id": "skill-necromancer-living-death-spirit-mender",
       "name": "Spirit Mender",
       "line": "living-death",
       "lineLabel": "Living Death",
@@ -18098,7 +18098,7 @@
       ]
     },
     {
-      "id": "skill-splintered-secrets",
+      "id": "skill-arcanist-herald-of-the-tome-splintered-secrets",
       "name": "Splintered Secrets",
       "line": "herald-of-the-tome",
       "lineLabel": "Herald of the Tome",
@@ -18108,7 +18108,7 @@
       "morphs": []
     },
     {
-      "id": "skill-static-reverberation",
+      "id": "skill-sorcerer-class-mastery-static-reverberation",
       "name": "Static Reverberation",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -18118,7 +18118,7 @@
       "morphs": []
     },
     {
-      "id": "skill-steadfast-candescence",
+      "id": "skill-templar-class-mastery-steadfast-candescence",
       "name": "Steadfast Candescence",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -18128,7 +18128,7 @@
       "morphs": []
     },
     {
-      "id": "skill-strife",
+      "id": "skill-nightblade-siphoning-strife",
       "name": "Strife",
       "line": "siphoning",
       "lineLabel": "Siphoning",
@@ -18147,7 +18147,7 @@
       ]
     },
     {
-      "id": "skill-summon-shade",
+      "id": "skill-nightblade-shadow-summon-shade",
       "name": "Summon Shade",
       "line": "shadow",
       "lineLabel": "Shadow",
@@ -18166,7 +18166,7 @@
       ]
     },
     {
-      "id": "skill-summon-storm-atronach",
+      "id": "skill-sorcerer-daedric-summoning-summon-storm-atronach",
       "name": "Summon Storm Atronach",
       "line": "daedric-summoning",
       "lineLabel": "Daedric Summoning",
@@ -18185,7 +18185,7 @@
       ]
     },
     {
-      "id": "skill-summon-unstable-familiar",
+      "id": "skill-sorcerer-daedric-summoning-summon-unstable-familiar",
       "name": "Summon Unstable Familiar",
       "line": "daedric-summoning",
       "lineLabel": "Daedric Summoning",
@@ -18204,7 +18204,7 @@
       ]
     },
     {
-      "id": "skill-summon-winged-twilight",
+      "id": "skill-sorcerer-daedric-summoning-summon-winged-twilight",
       "name": "Summon Winged Twilight",
       "line": "daedric-summoning",
       "lineLabel": "Daedric Summoning",
@@ -18223,7 +18223,7 @@
       ]
     },
     {
-      "id": "skill-sun-fire",
+      "id": "skill-templar-dawns-wrath-sun-fire",
       "name": "Sun Fire",
       "line": "dawns-wrath",
       "lineLabel": "Dawn's Wrath",
@@ -18242,7 +18242,7 @@
       ]
     },
     {
-      "id": "skill-sun-shield",
+      "id": "skill-templar-aedric-spear-sun-shield",
       "name": "Sun Shield",
       "line": "aedric-spear",
       "lineLabel": "Aedric Spear",
@@ -18261,7 +18261,7 @@
       ]
     },
     {
-      "id": "skill-superheated-ward",
+      "id": "skill-dragonknight-earthen-heart-superheated-ward",
       "name": "Superheated Ward",
       "line": "earthen-heart",
       "lineLabel": "Earthen Heart",
@@ -18280,7 +18280,7 @@
       ]
     },
     {
-      "id": "skill-surge",
+      "id": "skill-sorcerer-storm-calling-surge",
       "name": "Surge",
       "line": "storm-calling",
       "lineLabel": "Storm Calling",
@@ -18299,7 +18299,7 @@
       ]
     },
     {
-      "id": "skill-swarm",
+      "id": "skill-warden-animal-companions-swarm",
       "name": "Swarm",
       "line": "animal-companions",
       "lineLabel": "Animal Companions",
@@ -18318,7 +18318,7 @@
       ]
     },
     {
-      "id": "skill-teleport-strike",
+      "id": "skill-nightblade-assassination-teleport-strike",
       "name": "Teleport Strike",
       "line": "assassination",
       "lineLabel": "Assassination",
@@ -18337,7 +18337,7 @@
       ]
     },
     {
-      "id": "skill-the-imperfect-ring",
+      "id": "skill-arcanist-herald-of-the-tome-the-imperfect-ring",
       "name": "The Imperfect Ring",
       "line": "herald-of-the-tome",
       "lineLabel": "Herald of the Tome",
@@ -18356,7 +18356,7 @@
       ]
     },
     {
-      "id": "skill-the-storm-voice",
+      "id": "skill-dragonknight-draconic-power-the-storm-voice",
       "name": "The Storm Voice",
       "line": "draconic-power",
       "lineLabel": "Draconic Power",
@@ -18366,7 +18366,7 @@
       "morphs": []
     },
     {
-      "id": "skill-the-unblinking-eye",
+      "id": "skill-arcanist-herald-of-the-tome-the-unblinking-eye",
       "name": "The Unblinking Eye",
       "line": "herald-of-the-tome",
       "lineLabel": "Herald of the Tome",
@@ -18385,7 +18385,7 @@
       ]
     },
     {
-      "id": "skill-tome-bearers-inspiration",
+      "id": "skill-arcanist-herald-of-the-tome-tome-bearers-inspiration",
       "name": "Tome-Bearer's Inspiration",
       "line": "herald-of-the-tome",
       "lineLabel": "Herald of the Tome",
@@ -18404,7 +18404,7 @@
       ]
     },
     {
-      "id": "skill-transfer",
+      "id": "skill-nightblade-siphoning-transfer",
       "name": "Transfer",
       "line": "siphoning",
       "lineLabel": "Siphoning",
@@ -18414,7 +18414,7 @@
       "morphs": []
     },
     {
-      "id": "skill-traumatic-burns",
+      "id": "skill-dragonknight-ardent-flame-traumatic-burns",
       "name": "Traumatic Burns",
       "line": "ardent-flame",
       "lineLabel": "Ardent Flame",
@@ -18424,7 +18424,7 @@
       "morphs": []
     },
     {
-      "id": "skill-tundras-maw",
+      "id": "skill-warden-class-mastery-tundras-maw",
       "name": "Tundra's Maw",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -18434,7 +18434,7 @@
       "morphs": []
     },
     {
-      "id": "skill-unbound-potential",
+      "id": "skill-arcanist-class-mastery-unbound-potential",
       "name": "Unbound Potential",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -18444,7 +18444,7 @@
       "morphs": []
     },
     {
-      "id": "skill-undead-confederate",
+      "id": "skill-necromancer-living-death-undead-confederate",
       "name": "Undead Confederate",
       "line": "living-death",
       "lineLabel": "Living Death",
@@ -18454,7 +18454,7 @@
       "morphs": []
     },
     {
-      "id": "skill-unholy-knowledge",
+      "id": "skill-sorcerer-dark-magic-unholy-knowledge",
       "name": "Unholy Knowledge",
       "line": "dark-magic",
       "lineLabel": "Dark Magic",
@@ -18464,7 +18464,7 @@
       "morphs": []
     },
     {
-      "id": "skill-veiled-strike",
+      "id": "skill-nightblade-assassination-veiled-strike",
       "name": "Veiled Strike",
       "line": "assassination",
       "lineLabel": "Assassination",
@@ -18483,7 +18483,7 @@
       ]
     },
     {
-      "id": "skill-veils-forfeit",
+      "id": "skill-necromancer-class-mastery-veils-forfeit",
       "name": "Veil's Forfeit",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -18493,7 +18493,7 @@
       "morphs": []
     },
     {
-      "id": "skill-vitalizing-glyphic",
+      "id": "skill-arcanist-curative-runeforms-vitalizing-glyphic",
       "name": "Vitalizing Glyphic",
       "line": "curative-runeforms",
       "lineLabel": "Curative Runeforms",
@@ -18512,7 +18512,7 @@
       ]
     },
     {
-      "id": "skill-wellspring-of-the-abyss",
+      "id": "skill-arcanist-soldier-of-apocrypha-wellspring-of-the-abyss",
       "name": "Wellspring of the Abyss",
       "line": "soldier-of-apocrypha",
       "lineLabel": "Soldier of Apocrypha",
@@ -18522,7 +18522,7 @@
       "morphs": []
     },
     {
-      "id": "skill-wild-adaptation",
+      "id": "skill-warden-class-mastery-wild-adaptation",
       "name": "Wild Adaptation",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -18532,7 +18532,7 @@
       "morphs": []
     },
     {
-      "id": "skill-wildfire-embers",
+      "id": "skill-dragonknight-class-mastery-wildfire-embers",
       "name": "Wildfire Embers",
       "line": "class-mastery",
       "lineLabel": "Class Mastery",
@@ -18542,7 +18542,7 @@
       "morphs": []
     },
     {
-      "id": "skill-wing-buffet",
+      "id": "skill-dragonknight-draconic-power-wing-buffet",
       "name": "Wing Buffet",
       "line": "draconic-power",
       "lineLabel": "Draconic Power",
@@ -18561,7 +18561,7 @@
       ]
     },
     {
-      "id": "skill-world-in-ruin",
+      "id": "skill-dragonknight-draconic-power-world-in-ruin",
       "name": "World in Ruin",
       "line": "draconic-power",
       "lineLabel": "Draconic Power",

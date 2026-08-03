@@ -14,12 +14,29 @@ const CLASSES = [
   "arcanist",
 ];
 
+import { skills as seedSkills } from "@/data/skills";
+
 const file = path.resolve(__dirname, "..", "public", "dataset", "current.json");
 const dataset = parsePatchDataset(JSON.parse(fs.readFileSync(file, "utf8")));
 
 describe("public/dataset/current.json", () => {
   it("parses as a valid PatchDataset", () => {
     expect(dataset).not.toBeNull();
+  });
+
+  it("uses seed-compatible skill ids so diffs match existing entities", () => {
+    for (const s of dataset!.skills) {
+      expect(s.id).toMatch(/^skill-[a-z]+-[a-z0-9-]+$/);
+      expect(s.id.startsWith(`skill-${s.className}-${s.line}-`)).toBe(true);
+    }
+  });
+
+  it("matches the seed's class-skill ids closely enough to diff, not replace", () => {
+    const dsIds = new Set(dataset!.skills.map((s) => s.id));
+    const seedClass = seedSkills.filter((s) => s.className !== null);
+    const matched = seedClass.filter((s) => dsIds.has(s.id)).length;
+    // 79/84 at snapshot time; a convention drift would crater this.
+    expect(matched).toBeGreaterThanOrEqual(79);
   });
 
   it("carries the site's current patch", () => {
