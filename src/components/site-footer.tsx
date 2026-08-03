@@ -64,7 +64,11 @@ export function SiteFooter({ currentPatch, source }: { currentPatch: string; sou
           approved by ZeniMax Online Studios, Bethesda Softworks, or their affiliates. All game
           trademarks and copyrights belong to their respective owners. All guidance is original
           and derived from our patch-versioned database — currently {currentPatch} (source:{" "}
-          {source}).
+          {source} ·{" "}
+          <Link href="/admin" className="underline underline-offset-2 hover:text-foreground">
+            admin
+          </Link>
+          ).
         </p>
       </div>
     </footer>

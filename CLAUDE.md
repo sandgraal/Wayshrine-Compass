@@ -53,8 +53,10 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
   ingest auth pattern (missing secret → 503, mismatch → 401) and refuses (409) when the read
   source is seed or the requested patch isn't `db.currentPatch`; it never touches entity
   tables. The console at /admin/review lists every build with computed freshness + amber
-  reasons and takes the token in a per-tab field (never persisted). The secret value is held
-  only in the user's password manager.
+  reasons and takes the token in a per-tab field (never persisted). The read-only hub at
+  /admin (linked from the footer) shows pipeline status and the ingest_runs audit trail
+  (service-role read; the table has no public policy). The secret value is held only in the
+  user's password manager.
 
 ## Gotchas (learned the hard way)
 
