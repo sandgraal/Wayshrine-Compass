@@ -47,6 +47,14 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 - `DATASET_URL` is set in Vercel production: https://wayshrine-compass.vercel.app/dataset/current.json
   (the committed UESP-derived artifact — regenerate via `node scripts/build-dataset.mjs`,
   changes ship as reviewable PRs). The daily cron fetches, diffs, and persists it.
+- `ADMIN_SECRET` is set in Vercel production (sensitive). It authorizes
+  POST /api/admin/review — the human "mark reviewed" action that re-stamps a build's
+  `patch_verified` to the current patch and clears its ingest flags. The route mirrors the
+  ingest auth pattern (missing secret → 503, mismatch → 401) and refuses (409) when the read
+  source is seed or the requested patch isn't `db.currentPatch`; it never touches entity
+  tables. The console at /admin/review lists every build with computed freshness + amber
+  reasons and takes the token in a per-tab field (never persisted). The secret value is held
+  only in the user's password manager.
 
 ## Gotchas (learned the hard way)
 
@@ -64,9 +72,21 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 
 ## Open work items (in rough priority order)
 
-1. Real datamined dataset source → set `DATASET_URL`; the cron route, validation
-   (`parsePatchDataset`), pipeline, and transactional persistence are all ready for it.
-2. `SUPABASE_SERVICE_ROLE_KEY` in Vercel env (user action) to activate persistence.
-3. Admin review workflow: a "mark reviewed" action that re-stamps `patch_verified` (needs auth).
-4. Scribing (Grimoires/Scripts) and Class Mastery entities are not yet modeled in the schema.
-5. Planner DPS estimation (explicitly deferred in the v1 spec).
+(Done: real dataset source + `DATASET_URL`, service-role persistence, admin review workflow.)
+
+1. Renamed-skill build references: 4 seed skills no longer exist in the U50 dataset —
+   `fiery-breath`, `spiked-armor`, `stonefist` (dragonknight), `veiled-strike` (nightblade) —
+   so every build slotting them is amber with a "removed entity" reason. Blastbones was fixed
+   (seed renamed to Sacrificial Bones, morph-verified against the dataset), but these four
+   have no morph-verified successor in the dataset (candidates by line: dragonfire-breath,
+   burnished-scales, landslide, dark-veil — unconfirmed). Fixing means renaming/moving them in
+   `src/data/skills.ts` (build ids derive from skill names) and reseeding the live `builds`
+   rows (`scripts/seed-supabase.ts` or a targeted update).
+2. What Next card art from the user's generator (see memory: freshness icons landed, card art
+   pending).
+3. DLC gating data for new sets — UESP's export has no DLC field, so `dlcRequired` is null
+   for datamined sets; the What Next DLC-gate rules need another source.
+4. Builds expansion against the real catalog (the 28 seed builds only reference a slice of
+   the datamined sets/skills).
+5. Scribing (Grimoires/Scripts) and Class Mastery entities are not yet modeled in the schema.
+6. Planner DPS estimation (explicitly deferred in the v1 spec).
