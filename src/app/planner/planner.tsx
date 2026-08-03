@@ -3,21 +3,29 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AlertCircle, Check, Link2 } from "lucide-react";
-import type { ClassName, CpTree, EntityType, GearAssignment, GearSet, GearSlot, Skill } from "@/lib/types";
+import type { CpStar, CpTree, GearSet, GearSlot, Skill } from "@/lib/types";
 import { ALL_CLASSES, GEAR_SLOTS } from "@/lib/types";
-import type { Freshness } from "@/lib/freshness";
+import { computeFreshnessPreview } from "./freshness-preview";
 import { sets } from "@/data/sets";
 import { skills } from "@/data/skills";
 import { cpStars } from "@/data/cpStars";
 import { mundusStones } from "@/data/mundus";
 import { foods } from "@/data/food";
-import { buildBySlug } from "@/data/builds";
 import { computeStats, validateGear, validateSubclassLines } from "@/lib/planner/validate";
 import { cn } from "@/lib/utils";
 import { ClassSigil } from "@/components/illustrations";
-import { FreshnessBadge } from "@/components/freshness-badge";
-
-const TRAITS = ["Divines", "Sturdy", "Training", "Infused", "Bloodthirsty", "Arcane", "Robust", "Precise", "Defending", "Powered", "Nirnhoned", "Charged", "Sharpened"];
+import { CharacterPicker } from "./character-picker";
+import {
+  type PlannerState,
+  TRAITS,
+  allLines,
+  decodeState,
+  defaultState,
+  encodeState,
+  remapPortrait,
+  setById,
+  stateFromBuild,
+} from "./planner-state";
 
 const SLOT_LABEL: Record<GearSlot, string> = {
   head: "Head", shoulders: "Shoulders", chest: "Chest", hands: "Hands", waist: "Waist",
@@ -25,142 +33,20 @@ const SLOT_LABEL: Record<GearSlot, string> = {
   frontBarWeapon: "Front bar weapon", backBarWeapon: "Back bar weapon",
 };
 
-interface PlannerState {
-  className: ClassName;
-  lines: string[]; // up to 3 "class/line"
-  gear: GearAssignment[];
-  bar: { front: string[]; frontUlt: string; back: string[]; backUlt: string };
-  cp: Record<CpTree, string[]>;
-  mundusId: string;
-  foodId: string;
-}
-
-const setById = new Map(sets.map((s) => [s.id, s]));
-
-const allLines = (() => {
-  const seen = new Map<string, string>();
-  for (const s of skills) {
-    if (s.className) seen.set(`${s.className}/${s.line}`, `${s.className[0].toUpperCase()}${s.className.slice(1)} — ${s.lineLabel}`);
-  }
-  return [...seen.entries()].map(([id, label]) => ({ id, label }));
-})();
-
-function defaultState(): PlannerState {
-  return {
-    className: "sorcerer",
-    lines: ["sorcerer/dark-magic", "sorcerer/daedric-summoning", "sorcerer/storm-calling"],
-    gear: [],
-    bar: { front: [], frontUlt: "", back: [], backUlt: "" },
-    cp: { warfare: [], fitness: [], craft: [] },
-    mundusId: "mundus-thief",
-    foodId: "food-bewitched-sugar-skulls",
-  };
-}
-
-function stateFromBuild(slug: string): PlannerState | null {
-  const b = buildBySlug.get(slug);
-  if (!b) return null;
-  return {
-    className: b.className,
-    lines: [...b.subclassLines],
-    gear: b.gear.map((g) => ({ ...g })),
-    bar: { front: [...b.frontBar.skills], frontUlt: b.frontBar.ultimate, back: [...b.backBar.skills], backUlt: b.backBar.ultimate },
-    cp: { warfare: [...b.cp.warfare], fitness: [...b.cp.fitness], craft: [...b.cp.craft] },
-    mundusId: b.mundusId,
-    foodId: b.foodId,
-  };
-}
-
-function encodeState(s: PlannerState): string {
-  return encodeURIComponent(btoa(JSON.stringify(s)));
-}
-
-function decodeState(raw: string): PlannerState | null {
-  try {
-    return sanitizeState(JSON.parse(atob(decodeURIComponent(raw))));
-  } catch {
-    return null;
-  }
-}
-
-/**
- * The `b` query param is user-controlled input. Rebuild a well-formed state
- * from it, keeping only ids that exist in the entity database — a crafted
- * URL must degrade to a partial build, never crash the page.
- */
-function sanitizeState(parsed: unknown): PlannerState | null {
-  if (!parsed || typeof parsed !== "object") return null;
-  const o = parsed as Record<string, unknown>;
-  const className = o.className as ClassName;
-  if (!ALL_CLASSES.includes(className)) return null;
-
-  const strings = (v: unknown, keep: (s: string) => boolean, max: number): string[] =>
-    Array.isArray(v)
-      ? v.filter((x): x is string => typeof x === "string" && keep(x)).slice(0, max)
-      : [];
-
-  const isLine = (s: string) => allLines.some((l) => l.id === s);
-  const isActive = (s: string) => skills.some((sk) => sk.id === s && !sk.ultimate);
-  const isUlt = (v: unknown): v is string =>
-    typeof v === "string" && skills.some((sk) => sk.id === v && sk.ultimate);
-  const cpIn = (tree: CpTree) => (s: string) =>
-    cpStars.some((c) => c.id === s && c.tree === tree && c.slottable);
-
-  const gear: GearAssignment[] = [];
-  if (Array.isArray(o.gear)) {
-    for (const raw of o.gear.slice(0, GEAR_SLOTS.length * 2)) {
-      if (!raw || typeof raw !== "object") continue;
-      const g = raw as Record<string, unknown>;
-      const slot = g.slot as GearSlot;
-      if (!GEAR_SLOTS.includes(slot)) continue;
-      if (typeof g.setId !== "string" || !setById.has(g.setId)) continue;
-      if (gear.some((existing) => existing.slot === slot)) continue;
-      const trait = typeof g.trait === "string" && TRAITS.includes(g.trait) ? g.trait : "Divines";
-      gear.push({ slot, setId: g.setId, trait });
-    }
-  }
-
-  const bar = (o.bar && typeof o.bar === "object" ? o.bar : {}) as Record<string, unknown>;
-  const cp = (o.cp && typeof o.cp === "object" ? o.cp : {}) as Record<string, unknown>;
-
-  return {
-    className,
-    lines: strings(o.lines, isLine, 3),
-    gear,
-    bar: {
-      front: strings(bar.front, isActive, 5),
-      frontUlt: isUlt(bar.frontUlt) ? bar.frontUlt : "",
-      back: strings(bar.back, isActive, 5),
-      backUlt: isUlt(bar.backUlt) ? bar.backUlt : "",
-    },
-    cp: {
-      warfare: strings(cp.warfare, cpIn("warfare"), 4),
-      fitness: strings(cp.fitness, cpIn("fitness"), 4),
-      craft: strings(cp.craft, cpIn("craft"), 4),
-    },
-    mundusId:
-      typeof o.mundusId === "string" && mundusStones.some((m) => m.id === o.mundusId)
-        ? o.mundusId
-        : defaultState().mundusId,
-    foodId:
-      typeof o.foodId === "string" && foods.some((f) => f.id === o.foodId)
-        ? o.foodId
-        : defaultState().foodId,
-  };
-}
-
 export function Planner({
   currentPatch,
   liveSets,
   liveSkills,
+  liveCpStars,
 }: {
   currentPatch: string;
-  /** The active data facade's sets/skills (Supabase when configured, seed otherwise) — used for
-   * the freshness preview so its "changed this patch" check reads from the same source as
-   * `currentPatch`, instead of always the statically-imported seed data used for the rest of the
-   * planner's dropdowns and legality checks. */
+  /** The active data facade's sets/skills/CP stars (Supabase when configured, seed otherwise) —
+   * used for the freshness preview so its "changed this patch" check reads from the same source
+   * as `currentPatch`, instead of always the statically-imported seed data used for the rest of
+   * the planner's dropdowns and legality checks. */
   liveSets: GearSet[];
   liveSkills: Skill[];
+  liveCpStars: CpStar[];
 }) {
   const searchParams = useSearchParams();
   const [state, setState] = useState<PlannerState>(() => {
@@ -199,47 +85,28 @@ export function Planner({
   }, [state.lines]);
 
   /**
-   * Live freshness preview: any currently-slotted set or skill that changed
-   * in the current patch flags this draft, same rule the real db.freshness()
-   * engine applies to a saved Build — just evaluated against in-progress
-   * planner state rather than a stored one.
+   * Live freshness preview: any currently-slotted set, skill, or CP star that
+   * changed in the current patch — or is missing from the live game data —
+   * flags this draft, same conditions the real db.freshness() engine applies
+   * to a saved Build, just evaluated against in-progress planner state.
    */
   const liveSetById = useMemo(() => new Map(liveSets.map((s) => [s.id, s])), [liveSets]);
+  const liveSkillById = useMemo(() => new Map(liveSkills.map((s) => [s.id, s])), [liveSkills]);
+  const liveCpStarById = useMemo(() => new Map(liveCpStars.map((s) => [s.id, s])), [liveCpStars]);
 
-  const changedRefs = useMemo(() => {
-    const slottedSkillIds = [...state.bar.front, state.bar.frontUlt, ...state.bar.back, state.bar.backUlt].filter(
-      Boolean
-    );
-    const changedSets = state.gear
-      .map((g) => liveSetById.get(g.setId))
-      .filter((s): s is NonNullable<typeof s> => s !== undefined && s.lastChangedPatch === currentPatch)
-      .map((s) => ({ entityType: "set" as EntityType, entityId: s.id, entityName: s.name }));
-    const changedSkills = slottedSkillIds
-      .map((id) => liveSkills.find((s) => s.id === id))
-      .filter((s): s is NonNullable<typeof s> => s !== undefined && s.lastChangedPatch === currentPatch)
-      .map((s) => ({ entityType: "skill" as EntityType, entityId: s.id, entityName: s.name }));
-    const seen = new Set<string>();
-    return [...changedSets, ...changedSkills].filter((r) => {
-      const key = `${r.entityType}:${r.entityId}`;
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
-  }, [state.gear, state.bar, currentPatch, liveSetById, liveSkills]);
-
-  const plannerFreshness: Freshness =
-    changedRefs.length === 0
-      ? { status: "verified", reasons: [], patchVerified: currentPatch, patchesBehind: 0 }
-      : {
-          status: "needs_review",
-          reasons: changedRefs.map((r) => ({
-            ...r,
-            patch: currentPatch,
-            summary: `${r.entityName} changed in ${currentPatch} — this draft references it.`,
-          })),
-          patchVerified: currentPatch,
-          patchesBehind: 0,
-        };
+  const preview = useMemo(
+    () =>
+      computeFreshnessPreview(
+        {
+          setIds: state.gear.map((g) => g.setId),
+          skillIds: [...state.bar.front, state.bar.frontUlt, ...state.bar.back, state.bar.backUlt].filter(Boolean),
+          cpStarIds: [...state.cp.warfare, ...state.cp.fitness, ...state.cp.craft],
+        },
+        { setById: liveSetById, skillById: liveSkillById, cpStarById: liveCpStarById },
+        currentPatch
+      ),
+    [state.gear, state.bar, state.cp, currentPatch, liveSetById, liveSkillById, liveCpStarById]
+  );
 
   const update = (patch: Partial<PlannerState>) => {
     setState((s) => ({ ...s, ...patch }));
@@ -268,6 +135,13 @@ export function Planner({
   return (
     <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_320px]">
       <div className="space-y-6">
+        {/* Character portrait (cosmetic only) */}
+        <CharacterPicker
+          className={state.className}
+          portraitId={state.portraitId}
+          onSelect={(portraitId) => update({ portraitId })}
+        />
+
         {/* Class + subclass lines */}
         <section className="rounded-lg border border-border bg-card p-4">
           <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -285,6 +159,7 @@ export function Planner({
                     className: c,
                     lines: allLines.filter((l) => l.id.startsWith(`${c}/`)).map((l) => l.id).slice(0, 3),
                     bar: { front: [], frontUlt: "", back: [], backUlt: "" },
+                    portraitId: remapPortrait(state.portraitId, c),
                   })
                 }
                 className={cn(
@@ -498,20 +373,27 @@ export function Planner({
           {copied ? "Permalink copied" : "Copy shareable permalink"}
         </button>
 
-        <section className={cn("rounded-lg border bg-card p-4", changedRefs.length ? "border-needs-review/40" : "border-border")}>
+        <section className={cn("rounded-lg border bg-card p-4", preview.status === "needs_review" ? "border-needs-review/40" : "border-border")}>
           <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Freshness preview</h2>
           <div className="mt-2 flex flex-col gap-3">
-            <FreshnessBadge freshness={plannerFreshness} currentPatch={currentPatch} />
-            {changedRefs.length > 0 ? (
-              <div className="rounded-md border border-needs-review/40 bg-needs-review/10 px-3 py-2 text-xs">
-                {plannerFreshness.reasons.map((r) => (
-                  <p key={`${r.entityType}-${r.entityId}`}>{r.summary}</p>
-                ))}
-              </div>
+            {/* A draft is never "verified" — green is reserved for human-reviewed builds. */}
+            {preview.status === "needs_review" ? (
+              <>
+                <PreviewPill tone="needs-review" label="Needs review" />
+                <div className="rounded-md border border-needs-review/40 bg-needs-review/10 px-3 py-2 text-xs">
+                  {preview.reasons.map((r) => (
+                    <p key={`${r.entityType}-${r.entityId}`}>{r.summary}</p>
+                  ))}
+                </div>
+              </>
             ) : (
-              <p className="text-xs text-muted-foreground">
-                Nothing slotted in this draft has moved in {currentPatch}.
-              </p>
+              <>
+                <PreviewPill tone="neutral" label={`No ${currentPatch} changes detected`} />
+                <p className="text-xs text-muted-foreground">
+                  Nothing slotted in this draft has moved in {currentPatch}. Published builds earn a
+                  green badge only after human review.
+                </p>
+              </>
             )}
           </div>
         </section>
@@ -580,6 +462,24 @@ export function Planner({
         </section>
       </aside>
     </div>
+  );
+}
+
+/** Preview counterpart of FreshnessBadge — same pill shape, but with a neutral
+ * (never green) resting state, since a draft carries no review provenance. */
+function PreviewPill({ tone, label }: { tone: "needs-review" | "neutral"; label: string }) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 self-start rounded-full border px-2.5 py-0.5 text-xs font-medium whitespace-nowrap",
+        tone === "needs-review"
+          ? "border-needs-review/40 bg-needs-review/15 text-needs-review"
+          : "border-border bg-secondary text-muted-foreground"
+      )}
+    >
+      <span className={cn("size-1.5 rounded-full", tone === "needs-review" ? "bg-needs-review" : "bg-muted-foreground")} />
+      {label}
+    </span>
   );
 }
 

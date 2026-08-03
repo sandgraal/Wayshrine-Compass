@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { getDb } from "@/lib/data";
+import { changedReferencedEntities, type ChangedReferencedEntity } from "@/lib/entities";
 import { FreshnessBadge } from "@/components/freshness-badge";
-import { HeroScene, RuneDivider, ClassSigil } from "@/components/illustrations";
+import { RuneDivider, ClassSigil } from "@/components/illustrations";
+import { HeroVideo } from "@/components/hero-video";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,6 +17,12 @@ import type { Build } from "@/lib/types";
 import type { Freshness } from "@/lib/freshness";
 
 export const revalidate = 300;
+
+const KIND_LABEL: Record<ChangedReferencedEntity["entityType"], string> = {
+  set: "set",
+  skill: "skill",
+  cp_star: "CP star",
+};
 
 const FEATURED_SLUGS = [
   "nightblade-dps",
@@ -87,17 +95,17 @@ export default async function Home() {
     .filter((b): b is Build => Boolean(b))
     .map((build) => ({ build, freshness: db.freshness(build) }));
 
-  const changedThisPatch = [
-    ...db.sets.filter((s) => s.lastChangedPatch === db.currentPatch).map((s) => ({ name: s.name, kind: "set" as const })),
-    ...db.skills.filter((s) => s.lastChangedPatch === db.currentPatch).map((s) => ({ name: s.name, kind: "skill" as const })),
-    ...db.cpStars.filter((s) => s.lastChangedPatch === db.currentPatch).map((s) => ({ name: s.name, kind: "CP star" as const })),
-  ];
+  const changedThisPatch = changedReferencedEntities(
+    db.builds,
+    { sets: db.sets, skills: db.skills, cpStars: db.cpStars },
+    db.currentPatch
+  );
 
   return (
     <div>
       <section>
         <div className="hero-panel">
-          <HeroScene className="absolute inset-0 h-full w-full" />
+          <HeroVideo />
           <div className="relative z-10 flex flex-col gap-6 px-6 py-16 sm:px-12 sm:py-24">
             <span className="w-fit rounded-full border border-primary/40 bg-primary/10 px-3 py-1 font-mono text-xs text-primary">
               {db.currentPatch} IS LIVE
@@ -236,8 +244,12 @@ export default async function Home() {
             {changedThisPatch.length > 0 ? (
               <ul className="flex flex-col gap-1.5 text-muted-foreground">
                 {changedThisPatch.map((c) => (
-                  <li key={`${c.kind}-${c.name}`}>
-                    {c.name} <span className="text-xs uppercase tracking-wide">({c.kind})</span>
+                  <li key={`${c.entityType}:${c.entityId}`}>
+                    {c.name}{" "}
+                    <span className="text-xs uppercase tracking-wide">
+                      ({KIND_LABEL[c.entityType]}
+                      {c.removed && " — removed"})
+                    </span>
                   </li>
                 ))}
               </ul>
