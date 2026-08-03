@@ -31,7 +31,7 @@ export function FreshnessBadge({
         className
       )}
     >
-      <WayshrineIcon status={freshness.status} />
+      <WayshrineIcon key={freshness.status} status={freshness.status} />
       {LABELS[freshness.status](freshness, currentPatch)}
     </span>
   );
