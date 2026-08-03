@@ -12,7 +12,7 @@
       "name": "Abyssal Brace",
       "type": "dungeon",
       "source": "Scrivener's Hall",
-      "dlcRequired": null,
+      "dlcRequired": "scribes-of-fate",
       "bonuses": [
         {
           "pieces": 2,
@@ -41,7 +41,7 @@
       "name": "Adamant Lurker",
       "type": "overland",
       "source": "Necrom",
-      "dlcRequired": null,
+      "dlcRequired": "necrom",
       "bonuses": [
         {
           "pieces": 2,
@@ -91,7 +91,7 @@
       "name": "Aegis Caller",
       "type": "dungeon",
       "source": "Bangkorai, Unhallowed Grave",
-      "dlcRequired": null,
+      "dlcRequired": "harrowstorm",
       "bonuses": [
         {
           "pieces": 2,
@@ -116,7 +116,7 @@
       "name": "Aegis of Galenwe",
       "type": "trial",
       "source": "Summerset, Cloudrest",
-      "dlcRequired": null,
+      "dlcRequired": "summerset",
       "bonuses": [
         {
           "pieces": 2,
@@ -191,7 +191,7 @@
       "name": "Agility",
       "type": "pvp",
       "source": "Imperial City Treasure Vaults",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -312,7 +312,7 @@
       "name": "Amber Plasm",
       "type": "dungeon",
       "source": "Shadowfen, Ruins of Mazzatun",
-      "dlcRequired": null,
+      "dlcRequired": "shadows-of-the-hist",
       "bonuses": [
         {
           "pieces": 2,
@@ -370,7 +370,7 @@
       "name": "Ansuul's Torment",
       "type": "trial",
       "source": "Necrom, Sanity's Edge",
-      "dlcRequired": null,
+      "dlcRequired": "necrom",
       "bonuses": [
         {
           "pieces": 2,
@@ -395,7 +395,7 @@
       "name": "Anthelmir's Construct",
       "type": "monster",
       "source": "Aradros the Awakened in Oathsworn Pit, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "scions-of-ithelia",
       "bonuses": [
         {
           "pieces": 1,
@@ -412,7 +412,7 @@
       "name": "Apocryphal Inspiration",
       "type": "dungeon",
       "source": "Scrivener's Hall",
-      "dlcRequired": null,
+      "dlcRequired": "scribes-of-fate",
       "bonuses": [
         {
           "pieces": 2,
@@ -437,7 +437,7 @@
       "name": "Archdruid Devyric",
       "type": "monster",
       "source": "Archdruid Devyric in Earthen Root Enclave, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "lost-depths",
       "bonuses": [
         {
           "pieces": 1,
@@ -479,7 +479,7 @@
       "name": "Arkasis's Genius",
       "type": "dungeon",
       "source": "Blackreach, Stone Garden",
-      "dlcRequired": null,
+      "dlcRequired": "stonethorn",
       "bonuses": [
         {
           "pieces": 2,
@@ -625,7 +625,7 @@
       "name": "Arms of Relequen",
       "type": "trial",
       "source": "Summerset, Cloudrest",
-      "dlcRequired": null,
+      "dlcRequired": "summerset",
       "bonuses": [
         {
           "pieces": 2,
@@ -675,7 +675,7 @@
       "name": "Aspect of Mazzatun",
       "type": "dungeon",
       "source": "Shadowfen, Ruins of Mazzatun",
-      "dlcRequired": null,
+      "dlcRequired": "shadows-of-the-hist",
       "bonuses": [
         {
           "pieces": 2,
@@ -725,7 +725,7 @@
       "name": "Auroran's Thunder",
       "type": "dungeon",
       "source": "Gold Coast, Depths of Malatar",
-      "dlcRequired": null,
+      "dlcRequired": "wrathstone",
       "bonuses": [
         {
           "pieces": 2,
@@ -750,7 +750,7 @@
       "name": "Automated Defense",
       "type": "trial",
       "source": "Vvardenfell, Halls of Fabrication",
-      "dlcRequired": null,
+      "dlcRequired": "morrowind",
       "bonuses": [
         {
           "pieces": 2,
@@ -775,7 +775,7 @@
       "name": "Ayleid Refuge",
       "type": "overland",
       "source": "West Weald",
-      "dlcRequired": null,
+      "dlcRequired": "gold-road",
       "bonuses": [
         {
           "pieces": 2,
@@ -800,7 +800,7 @@
       "name": "Azureblight Reaper",
       "type": "dungeon",
       "source": "Grahtwood, Lair of Maarselok",
-      "dlcRequired": null,
+      "dlcRequired": "scalebreaker",
       "bonuses": [
         {
           "pieces": 2,
@@ -850,7 +850,7 @@
       "name": "Back-Alley Gourmand",
       "type": "overland",
       "source": "Galen",
-      "dlcRequired": null,
+      "dlcRequired": "firesong",
       "bonuses": [
         {
           "pieces": 2,
@@ -875,7 +875,7 @@
       "name": "Bahraha's Curse",
       "type": "overland",
       "source": "Hew's Bane",
-      "dlcRequired": null,
+      "dlcRequired": "thieves-guild",
       "bonuses": [
         {
           "pieces": 2,
@@ -904,7 +904,7 @@
       "name": "Bahsei's Mania",
       "type": "trial",
       "source": "Blackwood, Rockgrove",
-      "dlcRequired": null,
+      "dlcRequired": "blackwood",
       "bonuses": [
         {
           "pieces": 2,
@@ -929,7 +929,7 @@
       "name": "Balorgh",
       "type": "monster",
       "source": "Balorgh in March of Sacrifices, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "wolfhunter",
       "bonuses": [
         {
           "pieces": 1,
@@ -946,7 +946,7 @@
       "name": "Bani's Torment",
       "type": "dungeon",
       "source": "Wrothgar, Icereach",
-      "dlcRequired": null,
+      "dlcRequired": "harrowstorm",
       "bonuses": [
         {
           "pieces": 2,
@@ -996,7 +996,7 @@
       "name": "Baron Thirsk",
       "type": "monster",
       "source": "Baron Thirsk in Nobles District, Tel Var lockbox merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -1017,7 +1017,7 @@
       "name": "Baron Zaudrus",
       "type": "monster",
       "source": "Baron Zaudrus in The Cauldron, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "flames-of-ambition",
       "bonuses": [
         {
           "pieces": 1,
@@ -1042,7 +1042,7 @@
       "name": "Bastion of the Draoife",
       "type": "overland",
       "source": "Galen",
-      "dlcRequired": null,
+      "dlcRequired": "firesong",
       "bonuses": [
         {
           "pieces": 2,
@@ -1234,7 +1234,7 @@
       "name": "Black-Glove Grounding",
       "type": "dungeon",
       "source": "Oathsworn Pit",
-      "dlcRequired": null,
+      "dlcRequired": "scions-of-ithelia",
       "bonuses": [
         {
           "pieces": 2,
@@ -1259,7 +1259,7 @@
       "name": "Black Rose",
       "type": "pvp",
       "source": "Tel Var Merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -1288,7 +1288,7 @@
       "name": "Blessing of High Isle",
       "type": "overland",
       "source": "High Isle and Amenos",
-      "dlcRequired": null,
+      "dlcRequired": "high-isle",
       "bonuses": [
         {
           "pieces": 2,
@@ -1330,7 +1330,7 @@
       "name": "Blind Path Induction",
       "type": "dungeon",
       "source": "Wrothgar, Bedlam Veil",
-      "dlcRequired": null,
+      "dlcRequired": "scions-of-ithelia",
       "bonuses": [
         {
           "pieces": 2,
@@ -1355,7 +1355,7 @@
       "name": "Blood Moon",
       "type": "dungeon",
       "source": "Greenshade, March of Sacrifices",
-      "dlcRequired": null,
+      "dlcRequired": "wolfhunter",
       "bonuses": [
         {
           "pieces": 2,
@@ -1380,7 +1380,7 @@
       "name": "Blooddrinker",
       "type": "dungeon",
       "source": "Craglorn, Bloodroot Forge",
-      "dlcRequired": null,
+      "dlcRequired": "horns-of-the-reach",
       "bonuses": [
         {
           "pieces": 2,
@@ -1485,7 +1485,7 @@
       "name": "Bog Raider",
       "type": "overland",
       "source": "Blackwood",
-      "dlcRequired": null,
+      "dlcRequired": "blackwood",
       "bonuses": [
         {
           "pieces": 2,
@@ -1535,7 +1535,7 @@
       "name": "Brands of Imperium",
       "type": "dungeon",
       "source": "Imperial City, White-Gold Tower",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -1560,7 +1560,7 @@
       "name": "Briarheart",
       "type": "overland",
       "source": "Wrothgar",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -1585,7 +1585,7 @@
       "name": "Bright-Throat's Boast",
       "type": "overland",
       "source": "Murkmire",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 2,
@@ -1685,7 +1685,7 @@
       "name": "Call of the Undertaker",
       "type": "overland",
       "source": "Northern Elsweyr",
-      "dlcRequired": null,
+      "dlcRequired": "elsweyr",
       "bonuses": [
         {
           "pieces": 2,
@@ -1714,7 +1714,7 @@
       "name": "Caluurion's Legacy",
       "type": "dungeon",
       "source": "Bangkorai, Fang Lair",
-      "dlcRequired": null,
+      "dlcRequired": "dragon-bones",
       "bonuses": [
         {
           "pieces": 2,
@@ -1739,7 +1739,7 @@
       "name": "Camonna Tong",
       "type": "overland",
       "source": "Necrom",
-      "dlcRequired": null,
+      "dlcRequired": "necrom",
       "bonuses": [
         {
           "pieces": 2,
@@ -1777,7 +1777,7 @@
       "name": "Champion of the Hist",
       "type": "overland",
       "source": "Murkmire",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 2,
@@ -1806,7 +1806,7 @@
       "name": "Chaotic Whirlwind",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -1861,7 +1861,7 @@
       "name": "Cinders of Anthelmir",
       "type": "dungeon",
       "source": "Oathsworn Pit",
-      "dlcRequired": null,
+      "dlcRequired": "scions-of-ithelia",
       "bonuses": [
         {
           "pieces": 2,
@@ -1911,7 +1911,7 @@
       "name": "Claw of Yolnahkriin",
       "type": "trial",
       "source": "Elsweyr, Sunspire",
-      "dlcRequired": null,
+      "dlcRequired": "elsweyr",
       "bonuses": [
         {
           "pieces": 2,
@@ -2028,7 +2028,7 @@
       "name": "Concentrated Force",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -2041,7 +2041,7 @@
       "name": "Coral Riptide",
       "type": "trial",
       "source": "High Isle, Dreadsail Reef",
-      "dlcRequired": null,
+      "dlcRequired": "high-isle",
       "bonuses": [
         {
           "pieces": 2,
@@ -2095,7 +2095,7 @@
       "name": "Crafty Alfiq",
       "type": "overland",
       "source": "Northern Elsweyr",
-      "dlcRequired": null,
+      "dlcRequired": "elsweyr",
       "bonuses": [
         {
           "pieces": 2,
@@ -2145,7 +2145,7 @@
       "name": "Crimson Oath's Rive",
       "type": "dungeon",
       "source": "Blackwood, The Dread Cellar",
-      "dlcRequired": null,
+      "dlcRequired": "waking-flame",
       "bonuses": [
         {
           "pieces": 2,
@@ -2170,7 +2170,7 @@
       "name": "Crimson Twilight",
       "type": "dungeon",
       "source": "Western Skyrim, Castle Thorn",
-      "dlcRequired": null,
+      "dlcRequired": "stonethorn",
       "bonuses": [
         {
           "pieces": 2,
@@ -2220,7 +2220,7 @@
       "name": "Cruel Flurry",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -2258,7 +2258,7 @@
       "name": "Crushing Wall",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -2309,7 +2309,7 @@
       "name": "Curse of Doylemish",
       "type": "dungeon",
       "source": "Stormhaven, Scalecaller Peak",
-      "dlcRequired": null,
+      "dlcRequired": "dragon-bones",
       "bonuses": [
         {
           "pieces": 2,
@@ -2359,7 +2359,7 @@
       "name": "Dagon's Dominion",
       "type": "dungeon",
       "source": "Deshaan, The Cauldron",
-      "dlcRequired": null,
+      "dlcRequired": "flames-of-ambition",
       "bonuses": [
         {
           "pieces": 2,
@@ -2488,7 +2488,7 @@
       "name": "Dead-Water's Guile",
       "type": "overland",
       "source": "Murkmire",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 2,
@@ -2517,7 +2517,7 @@
       "name": "Deadlands Assassin",
       "type": "overland",
       "source": "Blackwood",
-      "dlcRequired": null,
+      "dlcRequired": "blackwood",
       "bonuses": [
         {
           "pieces": 2,
@@ -2634,7 +2634,7 @@
       "name": "Deeproot Zeal",
       "type": "dungeon",
       "source": "High Isle, Earthen Root Enclave",
-      "dlcRequired": null,
+      "dlcRequired": "lost-depths",
       "bonuses": [
         {
           "pieces": 2,
@@ -2684,7 +2684,7 @@
       "name": "Defensive Position",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -2697,7 +2697,7 @@
       "name": "Defiler",
       "type": "overland",
       "source": "Vvardenfell",
-      "dlcRequired": null,
+      "dlcRequired": "morrowind",
       "bonuses": [
         {
           "pieces": 2,
@@ -2810,7 +2810,7 @@
       "name": "Disciplined Slash",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -2823,7 +2823,7 @@
       "name": "Domihaus",
       "type": "monster",
       "source": "Domihaus the Bloody-Horned in Falkreath Hold, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "horns-of-the-reach",
       "bonuses": [
         {
           "pieces": 1,
@@ -2857,7 +2857,7 @@
       "name": "Dragonguard Elite",
       "type": "overland",
       "source": "Southern Elsweyr",
-      "dlcRequired": null,
+      "dlcRequired": "dragonhold",
       "bonuses": [
         {
           "pieces": 2,
@@ -2907,7 +2907,7 @@
       "name": "Dragon's Defilement",
       "type": "dungeon",
       "source": "Grahtwood, Lair of Maarselok",
-      "dlcRequired": null,
+      "dlcRequired": "scalebreaker",
       "bonuses": [
         {
           "pieces": 2,
@@ -2936,7 +2936,7 @@
       "name": "Drake's Rush",
       "type": "dungeon",
       "source": "Gold Coast, Black Drake Villa",
-      "dlcRequired": null,
+      "dlcRequired": "flames-of-ambition",
       "bonuses": [
         {
           "pieces": 2,
@@ -2986,7 +2986,7 @@
       "name": "Draugrkin's Grip",
       "type": "dungeon",
       "source": "Bangkorai, Unhallowed Grave",
-      "dlcRequired": null,
+      "dlcRequired": "harrowstorm",
       "bonuses": [
         {
           "pieces": 2,
@@ -3036,7 +3036,7 @@
       "name": "Draugr's Rest",
       "type": "dungeon",
       "source": "Craglorn, Falkreath Hold",
-      "dlcRequired": null,
+      "dlcRequired": "horns-of-the-reach",
       "bonuses": [
         {
           "pieces": 2,
@@ -3111,7 +3111,7 @@
       "name": "Dro'Zakar's Claws",
       "type": "dungeon",
       "source": "Northern Elsweyr, Moongrave Fane",
-      "dlcRequired": null,
+      "dlcRequired": "scalebreaker",
       "bonuses": [
         {
           "pieces": 2,
@@ -3264,7 +3264,7 @@
       "name": "Earthgore",
       "type": "monster",
       "source": "Earthgore Amalgam in Bloodroot Forge, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "horns-of-the-reach",
       "bonuses": [
         {
           "pieces": 1,
@@ -3306,7 +3306,7 @@
       "name": "Elemental Catalyst",
       "type": "dungeon",
       "source": "Blackreach, Stone Garden",
-      "dlcRequired": null,
+      "dlcRequired": "stonethorn",
       "bonuses": [
         {
           "pieces": 2,
@@ -3331,7 +3331,7 @@
       "name": "Elemental Succession",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -3406,7 +3406,7 @@
       "name": "Encratis's Behemoth",
       "type": "monster",
       "source": "Pyroturge Encratis in Black Drake Villa, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "flames-of-ambition",
       "bonuses": [
         {
           "pieces": 1,
@@ -3423,7 +3423,7 @@
       "name": "Endurance",
       "type": "pvp",
       "source": "Imperial City Treasure Vaults",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -3495,7 +3495,7 @@
       "name": "Essence Thief",
       "type": "dungeon",
       "source": "Imperial City, White-Gold Tower",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -3545,7 +3545,7 @@
       "name": "Eternal Vigor",
       "type": "overland",
       "source": "Western Skyrim",
-      "dlcRequired": null,
+      "dlcRequired": "greymoor",
       "bonuses": [
         {
           "pieces": 2,
@@ -3599,7 +3599,7 @@
       "name": "Euphotic Gatekeeper",
       "type": "monster",
       "source": "Zelvraak the Unbreathing in Graven Deep, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "lost-depths",
       "bonuses": [
         {
           "pieces": 1,
@@ -3616,7 +3616,7 @@
       "name": "Executioner's Blade",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -3629,7 +3629,7 @@
       "name": "Explosive Rebuke",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -3654,7 +3654,7 @@
       "name": "Eye of Nahviintaas",
       "type": "trial",
       "source": "Elsweyr, Sunspire",
-      "dlcRequired": null,
+      "dlcRequired": "elsweyr",
       "bonuses": [
         {
           "pieces": 2,
@@ -3679,7 +3679,7 @@
       "name": "Eye of the Grasp",
       "type": "overland",
       "source": "Deadlands",
-      "dlcRequired": null,
+      "dlcRequired": "deadlands",
       "bonuses": [
         {
           "pieces": 2,
@@ -3729,7 +3729,7 @@
       "name": "False God's Devotion",
       "type": "trial",
       "source": "Elsweyr, Sunspire",
-      "dlcRequired": null,
+      "dlcRequired": "elsweyr",
       "bonuses": [
         {
           "pieces": 2,
@@ -3846,7 +3846,7 @@
       "name": "Flame Blossom",
       "type": "dungeon",
       "source": "Craglorn, Bloodroot Forge",
-      "dlcRequired": null,
+      "dlcRequired": "horns-of-the-reach",
       "bonuses": [
         {
           "pieces": 2,
@@ -3871,7 +3871,7 @@
       "name": "Flanking Strategist",
       "type": "overland",
       "source": "Gold Coast",
-      "dlcRequired": null,
+      "dlcRequired": "dark-brotherhood",
       "bonuses": [
         {
           "pieces": 2,
@@ -3896,7 +3896,7 @@
       "name": "Foolkiller's Ward",
       "type": "dungeon",
       "source": "Deshaan, The Cauldron",
-      "dlcRequired": null,
+      "dlcRequired": "flames-of-ambition",
       "bonuses": [
         {
           "pieces": 2,
@@ -3946,7 +3946,7 @@
       "name": "Force Overflow",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -3984,7 +3984,7 @@
       "name": "Frenzied Momentum",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -3997,7 +3997,7 @@
       "name": "Frostbite",
       "type": "overland",
       "source": "Blackwood",
-      "dlcRequired": null,
+      "dlcRequired": "blackwood",
       "bonuses": [
         {
           "pieces": 2,
@@ -4022,7 +4022,7 @@
       "name": "Frozen Watcher",
       "type": "dungeon",
       "source": "Gold Coast, Depths of Malatar",
-      "dlcRequired": null,
+      "dlcRequired": "wrathstone",
       "bonuses": [
         {
           "pieces": 2,
@@ -4047,7 +4047,7 @@
       "name": "Galerion's Revenge",
       "type": "pvp",
       "source": "Tel Var Merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -4072,7 +4072,7 @@
       "name": "Gallant Charge",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 2,
@@ -4110,7 +4110,7 @@
       "name": "Glacial Guardian",
       "type": "dungeon",
       "source": "Summerset, Coral Aerie",
-      "dlcRequired": null,
+      "dlcRequired": "ascending-tide",
       "bonuses": [
         {
           "pieces": 2,
@@ -4135,7 +4135,7 @@
       "name": "Glorgoloch the Destroyer",
       "type": "monster",
       "source": "Glorgoloch the Destroyer in Arena District, Tel Var lockbox merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -4152,7 +4152,7 @@
       "name": "Glorious Defender",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -4177,7 +4177,7 @@
       "name": "Gossamer",
       "type": "dungeon",
       "source": "Shadowfen, Cradle of Shadows",
-      "dlcRequired": null,
+      "dlcRequired": "shadows-of-the-hist",
       "bonuses": [
         {
           "pieces": 2,
@@ -4202,7 +4202,7 @@
       "name": "Grace of Gloom",
       "type": "overland",
       "source": "Summerset",
-      "dlcRequired": null,
+      "dlcRequired": "summerset",
       "bonuses": [
         {
           "pieces": 2,
@@ -4257,7 +4257,7 @@
       "name": "Grave Guardian",
       "type": "dungeon",
       "source": "Bangkorai, Unhallowed Grave",
-      "dlcRequired": null,
+      "dlcRequired": "harrowstorm",
       "bonuses": [
         {
           "pieces": 2,
@@ -4282,7 +4282,7 @@
       "name": "Grave Inevitability",
       "type": "dungeon",
       "source": "High Isle, Graven Deep",
-      "dlcRequired": null,
+      "dlcRequired": "lost-depths",
       "bonuses": [
         {
           "pieces": 2,
@@ -4357,7 +4357,7 @@
       "name": "Grisly Gourmet",
       "type": "dungeon",
       "source": "Glenumbra, Red Petal Bastion",
-      "dlcRequired": null,
+      "dlcRequired": "waking-flame",
       "bonuses": [
         {
           "pieces": 2,
@@ -4403,7 +4403,7 @@
       "name": "Grundwulf",
       "type": "monster",
       "source": "Grundwulf in Moongrave Fane, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "scalebreaker",
       "bonuses": [
         {
           "pieces": 1,
@@ -4420,7 +4420,7 @@
       "name": "Gryphon's Ferocity",
       "type": "overland",
       "source": "Summerset",
-      "dlcRequired": null,
+      "dlcRequired": "summerset",
       "bonuses": [
         {
           "pieces": 2,
@@ -4445,7 +4445,7 @@
       "name": "Gryphon's Reprisal",
       "type": "dungeon",
       "source": "Summerset, Coral Aerie",
-      "dlcRequired": null,
+      "dlcRequired": "ascending-tide",
       "bonuses": [
         {
           "pieces": 2,
@@ -4470,7 +4470,7 @@
       "name": "Hagraven's Garden",
       "type": "dungeon",
       "source": "Craglorn, Bloodroot Forge",
-      "dlcRequired": null,
+      "dlcRequired": "horns-of-the-reach",
       "bonuses": [
         {
           "pieces": 2,
@@ -4495,7 +4495,7 @@
       "name": "Hand of Mephala",
       "type": "dungeon",
       "source": "Shadowfen, Cradle of Shadows",
-      "dlcRequired": null,
+      "dlcRequired": "shadows-of-the-hist",
       "bonuses": [
         {
           "pieces": 2,
@@ -4520,7 +4520,7 @@
       "name": "Hanu's Compassion",
       "type": "dungeon",
       "source": "Greenshade, March of Sacrifices",
-      "dlcRequired": null,
+      "dlcRequired": "wolfhunter",
       "bonuses": [
         {
           "pieces": 2,
@@ -4587,7 +4587,7 @@
       "name": "Haven of Ursus",
       "type": "dungeon",
       "source": "Greenshade, March of Sacrifices",
-      "dlcRequired": null,
+      "dlcRequired": "wolfhunter",
       "bonuses": [
         {
           "pieces": 2,
@@ -4716,7 +4716,7 @@
       "name": "Heem-Jas' Retribution",
       "type": "dungeon",
       "source": "Shadowfen, Ruins of Mazzatun",
-      "dlcRequired": null,
+      "dlcRequired": "shadows-of-the-hist",
       "bonuses": [
         {
           "pieces": 2,
@@ -4770,7 +4770,7 @@
       "name": "Hex Siphon",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -4799,7 +4799,7 @@
       "name": "Hexos' Ward",
       "type": "overland",
       "source": "Deadlands",
-      "dlcRequired": null,
+      "dlcRequired": "deadlands",
       "bonuses": [
         {
           "pieces": 2,
@@ -4824,7 +4824,7 @@
       "name": "Hide of Morihaus",
       "type": "overland",
       "source": "Gold Coast",
-      "dlcRequired": null,
+      "dlcRequired": "dark-brotherhood",
       "bonuses": [
         {
           "pieces": 2,
@@ -4982,7 +4982,7 @@
       "name": "Hiti's Hearth",
       "type": "dungeon",
       "source": "Wrothgar, Icereach",
-      "dlcRequired": null,
+      "dlcRequired": "harrowstorm",
       "bonuses": [
         {
           "pieces": 2,
@@ -5007,7 +5007,7 @@
       "name": "Hollowfang Thirst",
       "type": "dungeon",
       "source": "Northern Elsweyr, Moongrave Fane",
-      "dlcRequired": null,
+      "dlcRequired": "scalebreaker",
       "bonuses": [
         {
           "pieces": 2,
@@ -5082,7 +5082,7 @@
       "name": "Hunt Leader",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -5124,7 +5124,7 @@
       "name": "Icy Conjurer",
       "type": "dungeon",
       "source": "Eastmarch, Frostvault",
-      "dlcRequired": null,
+      "dlcRequired": "wrathstone",
       "bonuses": [
         {
           "pieces": 2,
@@ -5166,7 +5166,7 @@
       "name": "Immolator Charr",
       "type": "monster",
       "source": "Immolator Charr in Temple District, Tel Var lockbox merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -5212,7 +5212,7 @@
       "name": "Imperial Physique",
       "type": "pvp",
       "source": "Tel Var Merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -5362,7 +5362,7 @@
       "name": "Inventor's Guard",
       "type": "trial",
       "source": "Vvardenfell, Halls of Fabrication",
-      "dlcRequired": null,
+      "dlcRequired": "morrowind",
       "bonuses": [
         {
           "pieces": 2,
@@ -5412,7 +5412,7 @@
       "name": "Ironblood",
       "type": "dungeon",
       "source": "Craglorn, Falkreath Hold",
-      "dlcRequired": null,
+      "dlcRequired": "horns-of-the-reach",
       "bonuses": [
         {
           "pieces": 2,
@@ -5466,7 +5466,7 @@
       "name": "Jailer's Tenacity",
       "type": "dungeon",
       "source": "Reaper's March, Moon Hunter Keep",
-      "dlcRequired": null,
+      "dlcRequired": "wolfhunter",
       "bonuses": [
         {
           "pieces": 2,
@@ -5533,7 +5533,7 @@
       "name": "Jorvuld's Guidance",
       "type": "dungeon",
       "source": "Stormhaven, Scalecaller Peak",
-      "dlcRequired": null,
+      "dlcRequired": "dragon-bones",
       "bonuses": [
         {
           "pieces": 2,
@@ -5616,7 +5616,7 @@
       "name": "Kargaeda",
       "type": "monster",
       "source": "Varallion in Coral Aerie, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "ascending-tide",
       "bonuses": [
         {
           "pieces": 1,
@@ -5637,7 +5637,7 @@
       "name": "Kinras's Wrath",
       "type": "dungeon",
       "source": "Gold Coast, Black Drake Villa",
-      "dlcRequired": null,
+      "dlcRequired": "flames-of-ambition",
       "bonuses": [
         {
           "pieces": 2,
@@ -5662,7 +5662,7 @@
       "name": "Kjalnar's Nightmare",
       "type": "monster",
       "source": "Kjalnar Tombskald in Unhallowed Grave, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "harrowstorm",
       "bonuses": [
         {
           "pieces": 1,
@@ -5775,7 +5775,7 @@
       "name": "Kraglen's Howl",
       "type": "dungeon",
       "source": "Blackreach, Stone Garden",
-      "dlcRequired": null,
+      "dlcRequired": "stonethorn",
       "bonuses": [
         {
           "pieces": 2,
@@ -5850,7 +5850,7 @@
       "name": "Kyne's Wind",
       "type": "trial",
       "source": "Greymoor, Kyne's Aegis",
-      "dlcRequired": null,
+      "dlcRequired": "greymoor",
       "bonuses": [
         {
           "pieces": 2,
@@ -5875,7 +5875,7 @@
       "name": "Kynmarcher's Cruelty",
       "type": "overland",
       "source": "Deadlands",
-      "dlcRequired": null,
+      "dlcRequired": "deadlands",
       "bonuses": [
         {
           "pieces": 2,
@@ -5900,7 +5900,7 @@
       "name": "Lady Malygda",
       "type": "monster",
       "source": "Lady Malygda in Arboretum District, Tel Var lockbox merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -5917,7 +5917,7 @@
       "name": "Lady Thorn",
       "type": "monster",
       "source": "Lady Thorn in Castle Thorn, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "stonethorn",
       "bonuses": [
         {
           "pieces": 1,
@@ -6009,7 +6009,7 @@
       "name": "Leeching Plate",
       "type": "dungeon",
       "source": "Imperial City, Imperial City Prison",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -6172,7 +6172,7 @@
       "name": "Livewire",
       "type": "overland",
       "source": "Clockwork City",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -6197,7 +6197,7 @@
       "name": "Lord Warden",
       "type": "monster",
       "source": "Lord Warden Dusk in Imperial City Prison, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -6214,7 +6214,7 @@
       "name": "Lucent Echoes",
       "type": "trial",
       "source": "Lucent Citadel",
-      "dlcRequired": null,
+      "dlcRequired": "gold-road",
       "bonuses": [
         {
           "pieces": 2,
@@ -6239,7 +6239,7 @@
       "name": "Lunar Bastion",
       "type": "trial",
       "source": "Reaper's March, Maw of Lorkhaj",
-      "dlcRequired": null,
+      "dlcRequired": "thieves-guild",
       "bonuses": [
         {
           "pieces": 2,
@@ -6264,7 +6264,7 @@
       "name": "Maarselok",
       "type": "monster",
       "source": "Maarselok in Lair of Maarselok, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "scalebreaker",
       "bonuses": [
         {
           "pieces": 1,
@@ -6281,7 +6281,7 @@
       "name": "Macabre Vintage",
       "type": "overland",
       "source": "West Weald",
-      "dlcRequired": null,
+      "dlcRequired": "gold-road",
       "bonuses": [
         {
           "pieces": 2,
@@ -6310,7 +6310,7 @@
       "name": "Mad Tinkerer",
       "type": "overland",
       "source": "Clockwork City",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -6360,7 +6360,7 @@
       "name": "Magma Incarnate",
       "type": "monster",
       "source": "Magma Incarnate in The Dread Cellar, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "waking-flame",
       "bonuses": [
         {
           "pieces": 1,
@@ -6419,7 +6419,7 @@
       "name": "Maligalig's Maelstrom",
       "type": "dungeon",
       "source": "Summerset, Coral Aerie",
-      "dlcRequired": null,
+      "dlcRequired": "ascending-tide",
       "bonuses": [
         {
           "pieces": 2,
@@ -6444,7 +6444,7 @@
       "name": "Mantle of Siroria",
       "type": "trial",
       "source": "Summerset, Cloudrest",
-      "dlcRequired": null,
+      "dlcRequired": "summerset",
       "bonuses": [
         {
           "pieces": 2,
@@ -6498,7 +6498,7 @@
       "name": "Marauder's Haste",
       "type": "overland",
       "source": "Southern Elsweyr",
-      "dlcRequired": null,
+      "dlcRequired": "dragonhold",
       "bonuses": [
         {
           "pieces": 2,
@@ -6523,7 +6523,7 @@
       "name": "Mark of the Pariah",
       "type": "overland",
       "source": "Wrothgar",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -6586,7 +6586,7 @@
       "name": "Master Architect",
       "type": "trial",
       "source": "Vvardenfell, Halls of Fabrication",
-      "dlcRequired": null,
+      "dlcRequired": "morrowind",
       "bonuses": [
         {
           "pieces": 2,
@@ -6682,7 +6682,7 @@
       "name": "Mender's Ward",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 2,
@@ -6695,7 +6695,7 @@
       "name": "Merciless Charge",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -6733,7 +6733,7 @@
       "name": "Meritorious Service",
       "type": "pvp",
       "source": "Tel Var Merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -6787,7 +6787,7 @@
       "name": "Mighty Chudan",
       "type": "monster",
       "source": "Tree-Minder Na-Kesh in Ruins of Mazzatun, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "shadows-of-the-hist",
       "bonuses": [
         {
           "pieces": 1,
@@ -6808,7 +6808,7 @@
       "name": "Mighty Glacier",
       "type": "dungeon",
       "source": "Eastmarch, Frostvault",
-      "dlcRequired": null,
+      "dlcRequired": "wrathstone",
       "bonuses": [
         {
           "pieces": 2,
@@ -6837,7 +6837,7 @@
       "name": "Molag Kena",
       "type": "monster",
       "source": "Molag Kena in White-Gold Tower, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -6854,7 +6854,7 @@
       "name": "Moon Hunter",
       "type": "dungeon",
       "source": "Reaper's March, Moon Hunter Keep",
-      "dlcRequired": null,
+      "dlcRequired": "wolfhunter",
       "bonuses": [
         {
           "pieces": 2,
@@ -6879,7 +6879,7 @@
       "name": "Moondancer",
       "type": "trial",
       "source": "Reaper's March, Maw of Lorkhaj",
-      "dlcRequired": null,
+      "dlcRequired": "thieves-guild",
       "bonuses": [
         {
           "pieces": 2,
@@ -6904,7 +6904,7 @@
       "name": "Mora Scribe's Thesis",
       "type": "trial",
       "source": "Lucent Citadel",
-      "dlcRequired": null,
+      "dlcRequired": "gold-road",
       "bonuses": [
         {
           "pieces": 2,
@@ -6967,7 +6967,7 @@
       "name": "Mother Ciannait",
       "type": "monster",
       "source": "Mother Ciannait in Icereach, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "harrowstorm",
       "bonuses": [
         {
           "pieces": 1,
@@ -7034,7 +7034,7 @@
       "name": "Nazaray",
       "type": "monster",
       "source": "Captain Numirril in Shipwright's Regret, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "ascending-tide",
       "bonuses": [
         {
           "pieces": 1,
@@ -7331,7 +7331,7 @@
       "name": "Nix-Hound's Howl",
       "type": "dungeon",
       "source": "Stonefalls, Bal Sunnar",
-      "dlcRequired": null,
+      "dlcRequired": "scribes-of-fate",
       "bonuses": [
         {
           "pieces": 2,
@@ -7456,7 +7456,7 @@
       "name": "Nunatak",
       "type": "monster",
       "source": "Nunatak in Memorial District, Tel Var lockbox merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -7702,7 +7702,7 @@
       "name": "Ozezan the Inferno",
       "type": "monster",
       "source": "Valinna in Scrivener's Hall, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "scribes-of-fate",
       "bonuses": [
         {
           "pieces": 1,
@@ -7719,7 +7719,7 @@
       "name": "Pangrit Denmother",
       "type": "dungeon",
       "source": "High Isle, Graven Deep",
-      "dlcRequired": null,
+      "dlcRequired": "lost-depths",
       "bonuses": [
         {
           "pieces": 2,
@@ -7748,7 +7748,7 @@
       "name": "Para Bellum",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -7773,7 +7773,7 @@
       "name": "Peace and Serenity",
       "type": "trial",
       "source": "Necrom, Sanity's Edge",
-      "dlcRequired": null,
+      "dlcRequired": "necrom",
       "bonuses": [
         {
           "pieces": 2,
@@ -7798,7 +7798,7 @@
       "name": "Pearlescent Ward",
       "type": "trial",
       "source": "High Isle, Dreadsail Reef",
-      "dlcRequired": null,
+      "dlcRequired": "high-isle",
       "bonuses": [
         {
           "pieces": 2,
@@ -7861,7 +7861,7 @@
       "name": "Perfected Aegis of Galenwe",
       "type": "trial",
       "source": "Summerset, Cloudrest",
-      "dlcRequired": null,
+      "dlcRequired": "summerset",
       "bonuses": [
         {
           "pieces": 2,
@@ -7890,7 +7890,7 @@
       "name": "Perfected Ansuul's Torment",
       "type": "trial",
       "source": "Necrom, Sanity's Edge",
-      "dlcRequired": null,
+      "dlcRequired": "necrom",
       "bonuses": [
         {
           "pieces": 2,
@@ -7919,7 +7919,7 @@
       "name": "Perfected Arms of Relequen",
       "type": "trial",
       "source": "Summerset, Cloudrest",
-      "dlcRequired": null,
+      "dlcRequired": "summerset",
       "bonuses": [
         {
           "pieces": 2,
@@ -7948,7 +7948,7 @@
       "name": "Perfected Bahsei's Mania",
       "type": "trial",
       "source": "Blackwood, Rockgrove",
-      "dlcRequired": null,
+      "dlcRequired": "blackwood",
       "bonuses": [
         {
           "pieces": 2,
@@ -7994,7 +7994,7 @@
       "name": "Perfected Chaotic Whirlwind",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -8011,7 +8011,7 @@
       "name": "Perfected Claw of Yolnahkriin",
       "type": "trial",
       "source": "Elsweyr, Sunspire",
-      "dlcRequired": null,
+      "dlcRequired": "elsweyr",
       "bonuses": [
         {
           "pieces": 2,
@@ -8040,7 +8040,7 @@
       "name": "Perfected Concentrated Force",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -8057,7 +8057,7 @@
       "name": "Perfected Coral Riptide",
       "type": "trial",
       "source": "High Isle, Dreadsail Reef",
-      "dlcRequired": null,
+      "dlcRequired": "high-isle",
       "bonuses": [
         {
           "pieces": 2,
@@ -8086,7 +8086,7 @@
       "name": "Perfected Cruel Flurry",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 1,
@@ -8103,7 +8103,7 @@
       "name": "Perfected Crushing Wall",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 1,
@@ -8120,7 +8120,7 @@
       "name": "Perfected Defensive Position",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -8154,7 +8154,7 @@
       "name": "Perfected Disciplined Slash",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -8171,7 +8171,7 @@
       "name": "Perfected Executioner's Blade",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 1,
@@ -8188,7 +8188,7 @@
       "name": "Perfected Eye of Nahviintaas",
       "type": "trial",
       "source": "Elsweyr, Sunspire",
-      "dlcRequired": null,
+      "dlcRequired": "elsweyr",
       "bonuses": [
         {
           "pieces": 2,
@@ -8217,7 +8217,7 @@
       "name": "Perfected False God's Devotion",
       "type": "trial",
       "source": "Elsweyr, Sunspire",
-      "dlcRequired": null,
+      "dlcRequired": "elsweyr",
       "bonuses": [
         {
           "pieces": 2,
@@ -8246,7 +8246,7 @@
       "name": "Perfected Force Overflow",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 1,
@@ -8263,7 +8263,7 @@
       "name": "Perfected Frenzied Momentum",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 1,
@@ -8280,7 +8280,7 @@
       "name": "Perfected Gallant Charge",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 1,
@@ -8314,7 +8314,7 @@
       "name": "Perfected Kyne's Wind",
       "type": "trial",
       "source": "Greymoor, Kyne's Aegis",
-      "dlcRequired": null,
+      "dlcRequired": "greymoor",
       "bonuses": [
         {
           "pieces": 2,
@@ -8343,7 +8343,7 @@
       "name": "Perfected Lucent Echoes",
       "type": "trial",
       "source": "Lucent Citadel",
-      "dlcRequired": null,
+      "dlcRequired": "gold-road",
       "bonuses": [
         {
           "pieces": 2,
@@ -8372,7 +8372,7 @@
       "name": "Perfected Mantle of Siroria",
       "type": "trial",
       "source": "Summerset, Cloudrest",
-      "dlcRequired": null,
+      "dlcRequired": "summerset",
       "bonuses": [
         {
           "pieces": 2,
@@ -8405,7 +8405,7 @@
       "name": "Perfected Mender's Ward",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 1,
@@ -8422,7 +8422,7 @@
       "name": "Perfected Merciless Charge",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 1,
@@ -8439,7 +8439,7 @@
       "name": "Perfected Mora Scribe's Thesis",
       "type": "trial",
       "source": "Lucent Citadel",
-      "dlcRequired": null,
+      "dlcRequired": "gold-road",
       "bonuses": [
         {
           "pieces": 2,
@@ -8468,7 +8468,7 @@
       "name": "Perfected Peace and Serenity",
       "type": "trial",
       "source": "Necrom, Sanity's Edge",
-      "dlcRequired": null,
+      "dlcRequired": "necrom",
       "bonuses": [
         {
           "pieces": 2,
@@ -8497,7 +8497,7 @@
       "name": "Perfected Pearlescent Ward",
       "type": "trial",
       "source": "High Isle, Dreadsail Reef",
-      "dlcRequired": null,
+      "dlcRequired": "high-isle",
       "bonuses": [
         {
           "pieces": 2,
@@ -8526,7 +8526,7 @@
       "name": "Perfected Piercing Spray",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -8543,7 +8543,7 @@
       "name": "Perfected Pillager's Profit",
       "type": "trial",
       "source": "High Isle, Dreadsail Reef",
-      "dlcRequired": null,
+      "dlcRequired": "high-isle",
       "bonuses": [
         {
           "pieces": 2,
@@ -8572,7 +8572,7 @@
       "name": "Perfected Point-Blank Snipe",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 1,
@@ -8589,7 +8589,7 @@
       "name": "Perfected Precise Regeneration",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 1,
@@ -8623,7 +8623,7 @@
       "name": "Perfected Radial Uppercut",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 1,
@@ -8640,7 +8640,7 @@
       "name": "Perfected Rampaging Slash",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 1,
@@ -8661,7 +8661,7 @@
       "name": "Perfected Roaring Opportunist",
       "type": "trial",
       "source": "Greymoor, Kyne's Aegis",
-      "dlcRequired": null,
+      "dlcRequired": "greymoor",
       "bonuses": [
         {
           "pieces": 2,
@@ -8690,7 +8690,7 @@
       "name": "Perfected Saxhleel Champion",
       "type": "trial",
       "source": "Blackwood, Rockgrove",
-      "dlcRequired": null,
+      "dlcRequired": "blackwood",
       "bonuses": [
         {
           "pieces": 2,
@@ -8719,7 +8719,7 @@
       "name": "Perfected Slivers of the Null Arca",
       "type": "trial",
       "source": "Lucent Citadel",
-      "dlcRequired": null,
+      "dlcRequired": "gold-road",
       "bonuses": [
         {
           "pieces": 2,
@@ -8748,7 +8748,7 @@
       "name": "Perfected Spectral Cloak",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 1,
@@ -8782,7 +8782,7 @@
       "name": "Perfected Stone-Talker's Oath",
       "type": "trial",
       "source": "Blackwood, Rockgrove",
-      "dlcRequired": null,
+      "dlcRequired": "blackwood",
       "bonuses": [
         {
           "pieces": 2,
@@ -8811,7 +8811,7 @@
       "name": "Perfected Sul-Xan's Torment",
       "type": "trial",
       "source": "Blackwood, Rockgrove",
-      "dlcRequired": null,
+      "dlcRequired": "blackwood",
       "bonuses": [
         {
           "pieces": 2,
@@ -8840,7 +8840,7 @@
       "name": "Perfected Test of Resolve",
       "type": "trial",
       "source": "Necrom, Sanity's Edge",
-      "dlcRequired": null,
+      "dlcRequired": "necrom",
       "bonuses": [
         {
           "pieces": 2,
@@ -8869,7 +8869,7 @@
       "name": "Perfected Thunderous Volley",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 1,
@@ -8886,7 +8886,7 @@
       "name": "Perfected Timeless Blessing",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 1,
@@ -8920,7 +8920,7 @@
       "name": "Perfected Tooth of Lokkestiiz",
       "type": "trial",
       "source": "Elsweyr, Sunspire",
-      "dlcRequired": null,
+      "dlcRequired": "elsweyr",
       "bonuses": [
         {
           "pieces": 2,
@@ -8949,7 +8949,7 @@
       "name": "Perfected Transformative Hope",
       "type": "trial",
       "source": "Necrom, Sanity's Edge",
-      "dlcRequired": null,
+      "dlcRequired": "necrom",
       "bonuses": [
         {
           "pieces": 2,
@@ -8978,7 +8978,7 @@
       "name": "Perfected Vestment of Olorime",
       "type": "trial",
       "source": "Summerset, Cloudrest",
-      "dlcRequired": null,
+      "dlcRequired": "summerset",
       "bonuses": [
         {
           "pieces": 2,
@@ -9007,7 +9007,7 @@
       "name": "Perfected Virulent Shot",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 1,
@@ -9024,7 +9024,7 @@
       "name": "Perfected Void Bash",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 1,
@@ -9041,7 +9041,7 @@
       "name": "Perfected Vrol's Command",
       "type": "trial",
       "source": "Greymoor, Kyne's Aegis",
-      "dlcRequired": null,
+      "dlcRequired": "greymoor",
       "bonuses": [
         {
           "pieces": 2,
@@ -9070,7 +9070,7 @@
       "name": "Perfected Whorl of the Depths",
       "type": "trial",
       "source": "High Isle, Dreadsail Reef",
-      "dlcRequired": null,
+      "dlcRequired": "high-isle",
       "bonuses": [
         {
           "pieces": 2,
@@ -9099,7 +9099,7 @@
       "name": "Perfected Wild Impulse",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 1,
@@ -9116,7 +9116,7 @@
       "name": "Perfected Wrath of Elements",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 1,
@@ -9133,7 +9133,7 @@
       "name": "Perfected Xoryn's Masterpiece",
       "type": "trial",
       "source": "Lucent Citadel",
-      "dlcRequired": null,
+      "dlcRequired": "gold-road",
       "bonuses": [
         {
           "pieces": 2,
@@ -9162,7 +9162,7 @@
       "name": "Perfected Yandir's Might",
       "type": "trial",
       "source": "Greymoor, Kyne's Aegis",
-      "dlcRequired": null,
+      "dlcRequired": "greymoor",
       "bonuses": [
         {
           "pieces": 2,
@@ -9191,7 +9191,7 @@
       "name": "Permafrost",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -9216,7 +9216,7 @@
       "name": "Pestilent Host",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -9245,7 +9245,7 @@
       "name": "Phoenix",
       "type": "pvp",
       "source": "Tel Var Merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -9270,7 +9270,7 @@
       "name": "Phoenix Moth Theurge",
       "type": "overland",
       "source": "Galen",
-      "dlcRequired": null,
+      "dlcRequired": "firesong",
       "bonuses": [
         {
           "pieces": 2,
@@ -9295,7 +9295,7 @@
       "name": "Phylactery's Grasp",
       "type": "dungeon",
       "source": "High Isle, Graven Deep",
-      "dlcRequired": null,
+      "dlcRequired": "lost-depths",
       "bonuses": [
         {
           "pieces": 2,
@@ -9320,7 +9320,7 @@
       "name": "Piercing Spray",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -9333,7 +9333,7 @@
       "name": "Pillager's Profit",
       "type": "trial",
       "source": "High Isle, Dreadsail Reef",
-      "dlcRequired": null,
+      "dlcRequired": "high-isle",
       "bonuses": [
         {
           "pieces": 2,
@@ -9358,7 +9358,7 @@
       "name": "Pillar of Nirn",
       "type": "dungeon",
       "source": "Craglorn, Falkreath Hold",
-      "dlcRequired": null,
+      "dlcRequired": "horns-of-the-reach",
       "bonuses": [
         {
           "pieces": 2,
@@ -9425,7 +9425,7 @@
       "name": "Plague Slinger",
       "type": "dungeon",
       "source": "Stormhaven, Scalecaller Peak",
-      "dlcRequired": null,
+      "dlcRequired": "dragon-bones",
       "bonuses": [
         {
           "pieces": 2,
@@ -9475,7 +9475,7 @@
       "name": "Point-Blank Snipe",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -9513,7 +9513,7 @@
       "name": "Powerful Assault",
       "type": "pvp",
       "source": "Tel Var Merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -9563,7 +9563,7 @@
       "name": "Precise Regeneration",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -9576,7 +9576,7 @@
       "name": "Prior Thierric",
       "type": "monster",
       "source": "Prior Thierric Sarazen in Red Petal Bastion, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "waking-flame",
       "bonuses": [
         {
           "pieces": 1,
@@ -9681,7 +9681,7 @@
       "name": "Radial Uppercut",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 2,
@@ -9694,7 +9694,7 @@
       "name": "Radiant Bastion",
       "type": "overland",
       "source": "The Reach",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -9719,7 +9719,7 @@
       "name": "Rage of the Ursauk",
       "type": "dungeon",
       "source": "High Isle, Earthen Root Enclave",
-      "dlcRequired": null,
+      "dlcRequired": "lost-depths",
       "bonuses": [
         {
           "pieces": 2,
@@ -9769,7 +9769,7 @@
       "name": "Rampaging Slash",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -9865,7 +9865,7 @@
       "name": "Reactive Armor",
       "type": "pvp",
       "source": "Tel Var Merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -9940,7 +9940,7 @@
       "name": "Reflected Fury",
       "type": "dungeon",
       "source": "Wrothgar, Bedlam Veil",
-      "dlcRequired": null,
+      "dlcRequired": "scions-of-ithelia",
       "bonuses": [
         {
           "pieces": 2,
@@ -9965,7 +9965,7 @@
       "name": "Renald's Resolve",
       "type": "dungeon",
       "source": "Northern Elsweyr, Moongrave Fane",
-      "dlcRequired": null,
+      "dlcRequired": "scalebreaker",
       "bonuses": [
         {
           "pieces": 2,
@@ -10016,7 +10016,7 @@
       "name": "Ritemaster's Bond",
       "type": "dungeon",
       "source": "Stonefalls, Bal Sunnar",
-      "dlcRequired": null,
+      "dlcRequired": "scribes-of-fate",
       "bonuses": [
         {
           "pieces": 2,
@@ -10041,7 +10041,7 @@
       "name": "Roar of Alkosh",
       "type": "trial",
       "source": "Reaper's March, Maw of Lorkhaj",
-      "dlcRequired": null,
+      "dlcRequired": "thieves-guild",
       "bonuses": [
         {
           "pieces": 2,
@@ -10066,7 +10066,7 @@
       "name": "Roaring Opportunist",
       "type": "trial",
       "source": "Greymoor, Kyne's Aegis",
-      "dlcRequired": null,
+      "dlcRequired": "greymoor",
       "bonuses": [
         {
           "pieces": 2,
@@ -10216,7 +10216,7 @@
       "name": "Roksa the Warped",
       "type": "monster",
       "source": "Roksa the Warped in Bal Sunnar, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "scribes-of-fate",
       "bonuses": [
         {
           "pieces": 1,
@@ -10254,7 +10254,7 @@
       "name": "Runecarver's Blaze",
       "type": "dungeon",
       "source": "Scrivener's Hall",
-      "dlcRequired": null,
+      "dlcRequired": "scribes-of-fate",
       "bonuses": [
         {
           "pieces": 2,
@@ -10279,7 +10279,7 @@
       "name": "Rush of Agony",
       "type": "dungeon",
       "source": "Blackwood, The Dread Cellar",
-      "dlcRequired": null,
+      "dlcRequired": "waking-flame",
       "bonuses": [
         {
           "pieces": 2,
@@ -10354,7 +10354,7 @@
       "name": "Savage Werewolf",
       "type": "dungeon",
       "source": "Reaper's March, Moon Hunter Keep",
-      "dlcRequired": null,
+      "dlcRequired": "wolfhunter",
       "bonuses": [
         {
           "pieces": 2,
@@ -10379,7 +10379,7 @@
       "name": "Saxhleel Champion",
       "type": "trial",
       "source": "Blackwood, Rockgrove",
-      "dlcRequired": null,
+      "dlcRequired": "blackwood",
       "bonuses": [
         {
           "pieces": 2,
@@ -10404,7 +10404,7 @@
       "name": "Scathing Mage",
       "type": "dungeon",
       "source": "Imperial City, Imperial City Prison",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -10429,7 +10429,7 @@
       "name": "Scavenging Demise",
       "type": "dungeon",
       "source": "Gold Coast, Depths of Malatar",
-      "dlcRequired": null,
+      "dlcRequired": "wrathstone",
       "bonuses": [
         {
           "pieces": 2,
@@ -10454,7 +10454,7 @@
       "name": "Scorion's Feast",
       "type": "dungeon",
       "source": "Blackwood, The Dread Cellar",
-      "dlcRequired": null,
+      "dlcRequired": "waking-flame",
       "bonuses": [
         {
           "pieces": 2,
@@ -10568,7 +10568,7 @@
       "name": "Senchal Defender",
       "type": "overland",
       "source": "Southern Elsweyr",
-      "dlcRequired": null,
+      "dlcRequired": "dragonhold",
       "bonuses": [
         {
           "pieces": 2,
@@ -10998,7 +10998,7 @@
       "name": "Sheer Venom",
       "type": "dungeon",
       "source": "Imperial City, Imperial City Prison",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -11048,7 +11048,7 @@
       "name": "Shield Breaker",
       "type": "pvp",
       "source": "Tel Var Merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -11173,7 +11173,7 @@
       "name": "Silver Rose Vigil",
       "type": "dungeon",
       "source": "Glenumbra, Red Petal Bastion",
-      "dlcRequired": null,
+      "dlcRequired": "waking-flame",
       "bonuses": [
         {
           "pieces": 2,
@@ -11198,7 +11198,7 @@
       "name": "Sithis' Touch",
       "type": "overland",
       "source": "Gold Coast",
-      "dlcRequired": null,
+      "dlcRequired": "dark-brotherhood",
       "bonuses": [
         {
           "pieces": 2,
@@ -11269,7 +11269,7 @@
       "name": "Slivers of the Null Arca",
       "type": "trial",
       "source": "Lucent Citadel",
-      "dlcRequired": null,
+      "dlcRequired": "gold-road",
       "bonuses": [
         {
           "pieces": 2,
@@ -11319,7 +11319,7 @@
       "name": "Sluthrug's Hunger",
       "type": "dungeon",
       "source": "Oathsworn Pit",
-      "dlcRequired": null,
+      "dlcRequired": "scions-of-ithelia",
       "bonuses": [
         {
           "pieces": 2,
@@ -11491,7 +11491,7 @@
       "name": "Spectral Cloak",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 2,
@@ -11554,7 +11554,7 @@
       "name": "Spell Power Cure",
       "type": "dungeon",
       "source": "Imperial City, White-Gold Tower",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -11704,7 +11704,7 @@
       "name": "Spriggan's Vigor",
       "type": "dungeon",
       "source": "Rivenspire, Shipwright's Regret",
-      "dlcRequired": null,
+      "dlcRequired": "ascending-tide",
       "bonuses": [
         {
           "pieces": 2,
@@ -11754,7 +11754,7 @@
       "name": "Steadfast's Mettle",
       "type": "overland",
       "source": "High Isle and Amenos",
-      "dlcRequired": null,
+      "dlcRequired": "high-isle",
       "bonuses": [
         {
           "pieces": 2,
@@ -11817,7 +11817,7 @@
       "name": "Stone Husk",
       "type": "monster",
       "source": "Arkasis the Mad Alchemist in Stone Garden, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "stonethorn",
       "bonuses": [
         {
           "pieces": 1,
@@ -11834,7 +11834,7 @@
       "name": "Stone-Talker's Oath",
       "type": "trial",
       "source": "Blackwood, Rockgrove",
-      "dlcRequired": null,
+      "dlcRequired": "blackwood",
       "bonuses": [
         {
           "pieces": 2,
@@ -11859,7 +11859,7 @@
       "name": "Stonekeeper",
       "type": "monster",
       "source": "The Stonekeeper in Frostvault, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "wrathstone",
       "bonuses": [
         {
           "pieces": 1,
@@ -11884,7 +11884,7 @@
       "name": "Stone's Accord",
       "type": "dungeon",
       "source": "High Isle, Earthen Root Enclave",
-      "dlcRequired": null,
+      "dlcRequired": "lost-depths",
       "bonuses": [
         {
           "pieces": 2,
@@ -11909,7 +11909,7 @@
       "name": "Storm-Cursed's Revenge",
       "type": "dungeon",
       "source": "Rivenspire, Shipwright's Regret",
-      "dlcRequired": null,
+      "dlcRequired": "ascending-tide",
       "bonuses": [
         {
           "pieces": 2,
@@ -12093,7 +12093,7 @@
       "name": "Sul-Xan's Torment",
       "type": "trial",
       "source": "Blackwood, Rockgrove",
-      "dlcRequired": null,
+      "dlcRequired": "blackwood",
       "bonuses": [
         {
           "pieces": 2,
@@ -12239,7 +12239,7 @@
       "name": "Symmetry of the Weald",
       "type": "overland",
       "source": "West Weald",
-      "dlcRequired": null,
+      "dlcRequired": "gold-road",
       "bonuses": [
         {
           "pieces": 2,
@@ -12264,7 +12264,7 @@
       "name": "Symphony of Blades",
       "type": "monster",
       "source": "Symphony of Blades in Depths of Malatar, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "wrathstone",
       "bonuses": [
         {
           "pieces": 1,
@@ -12319,7 +12319,7 @@
       "name": "Systres' Scowl",
       "type": "overland",
       "source": "High Isle and Amenos",
-      "dlcRequired": null,
+      "dlcRequired": "high-isle",
       "bonuses": [
         {
           "pieces": 2,
@@ -12344,7 +12344,7 @@
       "name": "Syvarra's Scales",
       "type": "overland",
       "source": "Hew's Bane",
-      "dlcRequired": null,
+      "dlcRequired": "thieves-guild",
       "bonuses": [
         {
           "pieces": 2,
@@ -12373,7 +12373,7 @@
       "name": "Talfyg's Treachery",
       "type": "dungeon",
       "source": "Western Skyrim, Castle Thorn",
-      "dlcRequired": null,
+      "dlcRequired": "stonethorn",
       "bonuses": [
         {
           "pieces": 2,
@@ -12398,7 +12398,7 @@
       "name": "Tarnished Nightmare",
       "type": "dungeon",
       "source": "Wrothgar, Bedlam Veil",
-      "dlcRequired": null,
+      "dlcRequired": "scions-of-ithelia",
       "bonuses": [
         {
           "pieces": 2,
@@ -12473,7 +12473,7 @@
       "name": "Telvanni Enforcer",
       "type": "dungeon",
       "source": "Stonefalls, Bal Sunnar",
-      "dlcRequired": null,
+      "dlcRequired": "scribes-of-fate",
       "bonuses": [
         {
           "pieces": 2,
@@ -12498,7 +12498,7 @@
       "name": "Test of Resolve",
       "type": "trial",
       "source": "Necrom, Sanity's Edge",
-      "dlcRequired": null,
+      "dlcRequired": "necrom",
       "bonuses": [
         {
           "pieces": 2,
@@ -12573,7 +12573,7 @@
       "name": "The Blind",
       "type": "monster",
       "source": "The Blind in Bedlam Veil, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "scions-of-ithelia",
       "bonuses": [
         {
           "pieces": 1,
@@ -12733,7 +12733,7 @@
       "name": "Thews of the Harbinger",
       "type": "pvp",
       "source": "Tel Var Merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -12796,7 +12796,7 @@
       "name": "Thunder Caller",
       "type": "dungeon",
       "source": "Glenumbra, Red Petal Bastion",
-      "dlcRequired": null,
+      "dlcRequired": "waking-flame",
       "bonuses": [
         {
           "pieces": 2,
@@ -12846,7 +12846,7 @@
       "name": "Thunderous Volley",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -12859,7 +12859,7 @@
       "name": "Thurvokun",
       "type": "monster",
       "source": "Thurvokun in Fang Lair, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "dragon-bones",
       "bonuses": [
         {
           "pieces": 1,
@@ -12876,7 +12876,7 @@
       "name": "Timeless Blessing",
       "type": "trial",
       "source": "Clockwork City, Asylum Sanctorium",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -12889,7 +12889,7 @@
       "name": "Titanborn Strength",
       "type": "dungeon",
       "source": "Wrothgar, Icereach",
-      "dlcRequired": null,
+      "dlcRequired": "harrowstorm",
       "bonuses": [
         {
           "pieces": 2,
@@ -12927,7 +12927,7 @@
       "name": "Tooth of Lokkestiiz",
       "type": "trial",
       "source": "Elsweyr, Sunspire",
-      "dlcRequired": null,
+      "dlcRequired": "elsweyr",
       "bonuses": [
         {
           "pieces": 2,
@@ -13082,7 +13082,7 @@
       "name": "Transformative Hope",
       "type": "trial",
       "source": "Necrom, Sanity's Edge",
-      "dlcRequired": null,
+      "dlcRequired": "necrom",
       "bonuses": [
         {
           "pieces": 2,
@@ -13107,7 +13107,7 @@
       "name": "Trappings of Invigoration",
       "type": "dungeon",
       "source": "Bangkorai, Fang Lair",
-      "dlcRequired": null,
+      "dlcRequired": "dragon-bones",
       "bonuses": [
         {
           "pieces": 2,
@@ -13203,7 +13203,7 @@
       "name": "Trinimac's Valor",
       "type": "overland",
       "source": "Wrothgar",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -13228,7 +13228,7 @@
       "name": "True-Sworn Fury",
       "type": "dungeon",
       "source": "Gold Coast, Black Drake Villa",
-      "dlcRequired": null,
+      "dlcRequired": "flames-of-ambition",
       "bonuses": [
         {
           "pieces": 2,
@@ -13253,7 +13253,7 @@
       "name": "Turning Tide",
       "type": "dungeon",
       "source": "Rivenspire, Shipwright's Regret",
-      "dlcRequired": null,
+      "dlcRequired": "ascending-tide",
       "bonuses": [
         {
           "pieces": 2,
@@ -13332,7 +13332,7 @@
       "name": "Twilight Remedy",
       "type": "trial",
       "source": "Reaper's March, Maw of Lorkhaj",
-      "dlcRequired": null,
+      "dlcRequired": "thieves-guild",
       "bonuses": [
         {
           "pieces": 2,
@@ -13407,7 +13407,7 @@
       "name": "Tzogvin's Warband",
       "type": "dungeon",
       "source": "Eastmarch, Frostvault",
-      "dlcRequired": null,
+      "dlcRequired": "wrathstone",
       "bonuses": [
         {
           "pieces": 2,
@@ -13432,7 +13432,7 @@
       "name": "Ulfnor's Favor",
       "type": "dungeon",
       "source": "Bangkorai, Fang Lair",
-      "dlcRequired": null,
+      "dlcRequired": "dragon-bones",
       "bonuses": [
         {
           "pieces": 2,
@@ -13561,7 +13561,7 @@
       "name": "Unfathomable Darkness",
       "type": "overland",
       "source": "Clockwork City",
-      "dlcRequired": null,
+      "dlcRequired": "clockwork-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -13586,7 +13586,7 @@
       "name": "Unleashed Ritualist",
       "type": "dungeon",
       "source": "Deshaan, The Cauldron",
-      "dlcRequired": null,
+      "dlcRequired": "flames-of-ambition",
       "bonuses": [
         {
           "pieces": 2,
@@ -13611,7 +13611,7 @@
       "name": "Unleashed Terror",
       "type": "dungeon",
       "source": "Western Skyrim, Castle Thorn",
-      "dlcRequired": null,
+      "dlcRequired": "stonethorn",
       "bonuses": [
         {
           "pieces": 2,
@@ -13823,7 +13823,7 @@
       "name": "Velidreth",
       "type": "monster",
       "source": "Velidreth in Cradle of Shadows, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "shadows-of-the-hist",
       "bonuses": [
         {
           "pieces": 1,
@@ -13874,7 +13874,7 @@
       "name": "Venomous Smite",
       "type": "overland",
       "source": "Western Skyrim",
-      "dlcRequired": null,
+      "dlcRequired": "greymoor",
       "bonuses": [
         {
           "pieces": 2,
@@ -13899,7 +13899,7 @@
       "name": "Vestment of Olorime",
       "type": "trial",
       "source": "Summerset, Cloudrest",
-      "dlcRequired": null,
+      "dlcRequired": "summerset",
       "bonuses": [
         {
           "pieces": 2,
@@ -13949,7 +13949,7 @@
       "name": "Vesture of Darloc Brae",
       "type": "overland",
       "source": "Northern Elsweyr",
-      "dlcRequired": null,
+      "dlcRequired": "elsweyr",
       "bonuses": [
         {
           "pieces": 2,
@@ -13974,7 +13974,7 @@
       "name": "Vicecanon of Venom",
       "type": "pvp",
       "source": "Tel Var Merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -14082,7 +14082,7 @@
       "name": "Virulent Shot",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 2,
@@ -14095,7 +14095,7 @@
       "name": "Vivec's Duality",
       "type": "overland",
       "source": "Necrom",
-      "dlcRequired": null,
+      "dlcRequired": "necrom",
       "bonuses": [
         {
           "pieces": 2,
@@ -14120,7 +14120,7 @@
       "name": "Void Bash",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -14133,7 +14133,7 @@
       "name": "Voidcaller",
       "type": "overland",
       "source": "The Reach",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -14158,7 +14158,7 @@
       "name": "Vrol's Command",
       "type": "trial",
       "source": "Greymoor, Kyne's Aegis",
-      "dlcRequired": null,
+      "dlcRequired": "greymoor",
       "bonuses": [
         {
           "pieces": 2,
@@ -14183,7 +14183,7 @@
       "name": "Vykosa",
       "type": "monster",
       "source": "Vykosa in Moon Hunter Keep, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "wolfhunter",
       "bonuses": [
         {
           "pieces": 1,
@@ -14200,7 +14200,7 @@
       "name": "War Machine",
       "type": "trial",
       "source": "Vvardenfell, Halls of Fabrication",
-      "dlcRequired": null,
+      "dlcRequired": "morrowind",
       "bonuses": [
         {
           "pieces": 2,
@@ -14225,7 +14225,7 @@
       "name": "War Maiden",
       "type": "overland",
       "source": "Vvardenfell",
-      "dlcRequired": null,
+      "dlcRequired": "morrowind",
       "bonuses": [
         {
           "pieces": 2,
@@ -14275,7 +14275,7 @@
       "name": "Warrior-Poet",
       "type": "overland",
       "source": "Vvardenfell",
-      "dlcRequired": null,
+      "dlcRequired": "morrowind",
       "bonuses": [
         {
           "pieces": 2,
@@ -14462,7 +14462,7 @@
       "name": "Whorl of the Depths",
       "type": "trial",
       "source": "High Isle, Dreadsail Reef",
-      "dlcRequired": null,
+      "dlcRequired": "high-isle",
       "bonuses": [
         {
           "pieces": 2,
@@ -14487,7 +14487,7 @@
       "name": "Widowmaker",
       "type": "dungeon",
       "source": "Shadowfen, Cradle of Shadows",
-      "dlcRequired": null,
+      "dlcRequired": "shadows-of-the-hist",
       "bonuses": [
         {
           "pieces": 2,
@@ -14512,7 +14512,7 @@
       "name": "Wild Impulse",
       "type": "arena",
       "source": "Blackrose Prison",
-      "dlcRequired": null,
+      "dlcRequired": "murkmire",
       "bonuses": [
         {
           "pieces": 2,
@@ -14575,7 +14575,7 @@
       "name": "Willpower",
       "type": "pvp",
       "source": "Imperial City Treasure Vaults",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 2,
@@ -14592,7 +14592,7 @@
       "name": "Winterborn",
       "type": "arena",
       "source": "Maelstrom Arena",
-      "dlcRequired": null,
+      "dlcRequired": "orsinium",
       "bonuses": [
         {
           "pieces": 2,
@@ -14617,7 +14617,7 @@
       "name": "Winter's Respite",
       "type": "overland",
       "source": "Western Skyrim",
-      "dlcRequired": null,
+      "dlcRequired": "greymoor",
       "bonuses": [
         {
           "pieces": 2,
@@ -14642,7 +14642,7 @@
       "name": "Wisdom of Vanus",
       "type": "overland",
       "source": "Summerset",
-      "dlcRequired": null,
+      "dlcRequired": "summerset",
       "bonuses": [
         {
           "pieces": 2,
@@ -14696,7 +14696,7 @@
       "name": "Witch-Knight's Defiance",
       "type": "overland",
       "source": "The Reach",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -14775,7 +14775,7 @@
       "name": "Wrath of Elements",
       "type": "arena",
       "source": "Vateshran Hollows",
-      "dlcRequired": null,
+      "dlcRequired": "markarth",
       "bonuses": [
         {
           "pieces": 2,
@@ -14855,7 +14855,7 @@
       "name": "Xoryn's Masterpiece",
       "type": "trial",
       "source": "Lucent Citadel",
-      "dlcRequired": null,
+      "dlcRequired": "gold-road",
       "bonuses": [
         {
           "pieces": 2,
@@ -14880,7 +14880,7 @@
       "name": "Yandir's Might",
       "type": "trial",
       "source": "Greymoor, Kyne's Aegis",
-      "dlcRequired": null,
+      "dlcRequired": "greymoor",
       "bonuses": [
         {
           "pieces": 2,
@@ -14930,7 +14930,7 @@
       "name": "Zaan",
       "type": "monster",
       "source": "Dragon Bones in Scalecaller Peak, Urgarlag Chief-bane",
-      "dlcRequired": null,
+      "dlcRequired": "dragon-bones",
       "bonuses": [
         {
           "pieces": 1,
@@ -14947,7 +14947,7 @@
       "name": "Z'en's Redress",
       "type": "dungeon",
       "source": "Grahtwood, Lair of Maarselok",
-      "dlcRequired": null,
+      "dlcRequired": "scalebreaker",
       "bonuses": [
         {
           "pieces": 2,
@@ -14972,7 +14972,7 @@
       "name": "Zoal the Ever-Wakeful",
       "type": "monster",
       "source": "Zoal the Ever-Wakeful in Elven Gardens District, Tel Var lockbox merchant",
-      "dlcRequired": null,
+      "dlcRequired": "imperial-city",
       "bonuses": [
         {
           "pieces": 1,
