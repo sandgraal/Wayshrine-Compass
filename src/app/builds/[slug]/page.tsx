@@ -6,6 +6,8 @@ import { getDb } from "@/lib/data";
 import { builds as seedBuilds } from "@/data/builds";
 import { BuildGuidance } from "@/components/build-guidance";
 import { FreshnessBadge } from "@/components/freshness-badge";
+import { CharacterPortrait, PortraitWash } from "@/components/character-portrait";
+import { portraitForBuild } from "@/lib/portraits";
 import { ClassSigil, RuneDivider } from "@/components/illustrations";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -97,6 +99,7 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
   if (!build) notFound();
 
   const freshness = db.freshness(build);
+  const portrait = portraitForBuild(build);
   const mundus = db.mundusById.get(build.mundusId);
   const food = db.foodById.get(build.foodId);
 
@@ -111,10 +114,30 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
 
   return (
     <div>
-      <div className="mb-8 flex flex-wrap items-start gap-4">
-        <span className="sigil-ring size-14">
-          <ClassSigil name={build.className} className="size-7" />
-        </span>
+      <div className="relative isolate mb-8 flex flex-wrap items-start gap-6">
+        {portrait && <PortraitWash portrait={portrait} />}
+        {portrait ? (
+          <CharacterPortrait
+            portrait={portrait}
+            sizes="(min-width: 640px) 15rem, 60vw"
+            priority
+            className="aspect-[3/4] w-40 flex-none rounded-xl border border-border shadow-[0_12px_40px_-12px_rgba(0,0,0,0.6)] sm:w-60"
+          >
+            <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-b from-transparent to-black/75" />
+            <div className="absolute inset-x-3 bottom-2.5 flex flex-col">
+              <span className="text-sm font-semibold capitalize text-white">
+                {portrait.race} {build.className}
+              </span>
+              <span className="text-xs capitalize text-white/70">
+                {build.role} · {build.contentType}
+              </span>
+            </div>
+          </CharacterPortrait>
+        ) : (
+          <span className="sigil-ring size-14">
+            <ClassSigil name={build.className} className="size-7" />
+          </span>
+        )}
         <div className="flex flex-1 flex-col gap-2">
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-2xl font-bold sm:text-3xl">{build.name}</h1>
