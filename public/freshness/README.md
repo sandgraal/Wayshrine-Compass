@@ -8,10 +8,15 @@ wayshrine-dim.png     needs_review  amber ember glow
 wayshrine-unlit.png   stale         extinguished dark stone
 ```
 
-Derived from the generated icon sheet
-`~/Downloads/ESO/download/Game_map_marker_icons_black_202608022035.jpeg`
-(column C active / column I inactive), not hand-generated. Pipeline, run
-anywhere with the sheet converted to `sheet.png`:
+Derived from the generated (AI, project-owned) icon sheet vendored at
+`src/assets/freshness/wayshrine-icon-sheet.jpeg`
+(sha256 c3bdc95afde3ecac68f108abcd0530f5bf54848092c7fe04e5209299103291d0;
+column C active / column I inactive), not hand-generated. Pipeline, from the
+repo root:
+
+```bash
+ffmpeg -i src/assets/freshness/wayshrine-icon-sheet.jpeg sheet.png
+```
 
 ```bash
 # crop the two source icons
