@@ -77,6 +77,9 @@ function stripEsoCodes(s) {
     .replace(/\|c[0-9a-fA-F]{6}/g, "")
     .replace(/\|r/g, "")
     .replace(/\|t[^|]*\|t/g, "")
+    // Dynamic character-state tail ("Current bonus: 0 ...") appears in set and
+    // skill text too, not only CP stars — never part of the definition.
+    .replace(/\n+Current bonus:.*$/is, "")
     .trim();
 }
 

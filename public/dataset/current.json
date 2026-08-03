@@ -2057,7 +2057,7 @@
         },
         {
           "pieces": 5,
-          "effect": "Increases your Weapon and Spell Damage by up to 600, based on your missing Stamina, reaching the maximum at 50% Stamina.\n\nCurrent bonus: 0 Weapon and Spell Damage."
+          "effect": "Increases your Weapon and Spell Damage by up to 600, based on your missing Stamina, reaching the maximum at 50% Stamina."
         }
       ]
     },
@@ -6577,7 +6577,7 @@
       "bonuses": [
         {
           "pieces": 1,
-          "effect": "Gain 100 Weapon and Spell Damage and 1157 Armor for every set you are wearing 3 or more pieces of.\n\nCurrent bonus: 0 Weapon and Spell Damage and 0 Armor."
+          "effect": "Gain 100 Weapon and Spell Damage and 1157 Armor for every set you are wearing 3 or more pieces of."
         }
       ]
     },
@@ -6920,7 +6920,7 @@
         },
         {
           "pieces": 5,
-          "effect": "Increase your Critical Chance by 128 for every Major Buff active on you, up to 1536 Critical Chance. \n\nIncrease your Critical Damage done by 1% for every Minor Buff active on you, up to 12% Critical Damage done.\n\nCurrent Bonus: 0 Critical Chance and 0% Critical Damage"
+          "effect": "Increase your Critical Chance by 128 for every Major Buff active on you, up to 1536 Critical Chance. \n\nIncrease your Critical Damage done by 1% for every Minor Buff active on you, up to 12% Critical Damage done."
         }
       ]
     },
@@ -6933,7 +6933,7 @@
       "bonuses": [
         {
           "pieces": 1,
-          "effect": "Gain up to 1528 Critical Chance and 10% increased Inspiration, Alliance Rank, Alliance skill, and 15% monster kill experience based off how many books of Shalidor's Library have been collected.\n\nCurrent Bonus:\n229 Critical Chance\n1% Inspiration, Alliance Rank, and Alliance skill\n2% monster kill experience."
+          "effect": "Gain up to 1528 Critical Chance and 10% increased Inspiration, Alliance Rank, Alliance skill, and 15% monster kill experience based off how many books of Shalidor's Library have been collected."
         }
       ]
     },
@@ -8077,7 +8077,7 @@
         },
         {
           "pieces": 5,
-          "effect": "Increases your Weapon and Spell Damage by up to 600, based on your missing Stamina, reaching the maximum at 50% Stamina.\n\nCurrent bonus: 0 Weapon and Spell Damage."
+          "effect": "Increases your Weapon and Spell Damage by up to 600, based on your missing Stamina, reaching the maximum at 50% Stamina."
         }
       ]
     },
@@ -8459,7 +8459,7 @@
         },
         {
           "pieces": 5,
-          "effect": "Increase your Critical Chance by 128 for every Major Buff active on you, up to 1536 Critical Chance. \n\nIncrease your Critical Damage done by 1% for every Minor Buff active on you, up to 12% Critical Damage done.\n\nCurrent Bonus: 0 Critical Chance and 0% Critical Damage"
+          "effect": "Increase your Critical Chance by 128 for every Major Buff active on you, up to 1536 Critical Chance. \n\nIncrease your Critical Damage done by 1% for every Minor Buff active on you, up to 12% Critical Damage done."
         }
       ]
     },
@@ -15051,7 +15051,7 @@
       "line": "animal-companions",
       "lineLabel": "Animal Companions",
       "ultimate": false,
-      "description": "Increases your Critical Damage by 5% for each Animal Companion ability slotted.\n\nCurrent Bonus: 0%.",
+      "description": "Increases your Critical Damage by 5% for each Animal Companion ability slotted.",
       "className": "warden",
       "morphs": []
     },
@@ -15843,7 +15843,7 @@
       "line": "shadow",
       "lineLabel": "Shadow",
       "ultimate": false,
-      "description": "Increases your Max Health by 5% for each Shadow ability slotted.\n\nCurrent bonus: 0%.",
+      "description": "Increases your Max Health by 5% for each Shadow ability slotted.",
       "className": "nightblade",
       "morphs": []
     },
@@ -16103,7 +16103,7 @@
       "line": "green-balance",
       "lineLabel": "Green Balance",
       "ultimate": false,
-      "description": "Increases your healing done with Green Balance abilities by 5% for each Green Balance ability slotted.\n\nCurrent Bonus: 0%.",
+      "description": "Increases your healing done with Green Balance abilities by 5% for each Green Balance ability slotted.",
       "className": "warden",
       "morphs": []
     },
@@ -16182,7 +16182,7 @@
       "line": "storm-calling",
       "lineLabel": "Storm Calling",
       "ultimate": false,
-      "description": "Increases your Weapon and Spell Damage by 108 for each Sorcerer ability slotted.\n\nCurrent bonus: 0.",
+      "description": "Increases your Weapon and Spell Damage by 108 for each Sorcerer ability slotted.",
       "className": "sorcerer",
       "morphs": []
     },
@@ -16414,7 +16414,7 @@
       "line": "winters-embrace",
       "lineLabel": "Winter's Embrace",
       "ultimate": false,
-      "description": "Increases your Physical and Spell Resistance by 1240 for each Winter's Embrace ability slotted.\n\nCurrent Bonus: 0.",
+      "description": "Increases your Physical and Spell Resistance by 1240 for each Winter's Embrace ability slotted.",
       "className": "warden",
       "morphs": []
     },
@@ -16626,7 +16626,7 @@
       "line": "bone-tyrant",
       "lineLabel": "Bone Tyrant",
       "ultimate": false,
-      "description": "Increase your Healing Received by 3% for each Bone Tyrant ability slotted.\n\nCurrent bonus: 0%.",
+      "description": "Increase your Healing Received by 3% for each Bone Tyrant ability slotted.",
       "className": "necromancer",
       "morphs": []
     },
@@ -17354,7 +17354,7 @@
       "line": "assassination",
       "lineLabel": "Assassination",
       "ultimate": false,
-      "description": "Increases your Critical Chance rating by 438 for each Nightblade ability slotted, increasing your chance to critically strike by 2% per ability.\n\nCurrent bonus: 0.",
+      "description": "Increases your Critical Chance rating by 438 for each Nightblade ability slotted, increasing your chance to critically strike by 2% per ability.",
       "className": "nightblade",
       "morphs": []
     },
@@ -18035,7 +18035,7 @@
       "line": "siphoning",
       "lineLabel": "Siphoning",
       "ultimate": false,
-      "description": "Increases your healing done by 3% for each Siphoning ability slotted. \n\nCurrent bonus: 0%.",
+      "description": "Increases your healing done by 3% for each Siphoning ability slotted.",
       "className": "nightblade",
       "morphs": []
     },
@@ -18103,7 +18103,7 @@
       "line": "herald-of-the-tome",
       "lineLabel": "Herald of the Tome",
       "ultimate": false,
-      "description": "What they don't know can kill them. Increase your Physical and Spell Penetration by 1240 per Herald of the Tome ability slotted.\n\nCurrent bonus: 0.",
+      "description": "What they don't know can kill them. Increase your Physical and Spell Penetration by 1240 per Herald of the Tome ability slotted.",
       "className": "arcanist",
       "morphs": []
     },
@@ -18517,7 +18517,7 @@
       "line": "soldier-of-apocrypha",
       "lineLabel": "Soldier of Apocrypha",
       "ultimate": false,
-      "description": "Apocryphal knowledge bubbles up from the depths of your psyche, increasing your Health, Magicka, and Stamina Recovery by 81 for each Soldier of Apocrypha ability slotted.\n\nCurrent bonus: 0.",
+      "description": "Apocryphal knowledge bubbles up from the depths of your psyche, increasing your Health, Magicka, and Stamina Recovery by 81 for each Soldier of Apocrypha ability slotted.",
       "className": "arcanist",
       "morphs": []
     },

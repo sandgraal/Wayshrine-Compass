@@ -22,10 +22,17 @@ describe("public/dataset/current.json", () => {
     expect(dataset).not.toBeNull();
   });
 
-  it("has expected entity volumes", () => {
-    expect(dataset!.sets.length).toBeGreaterThanOrEqual(600);
-    expect(dataset!.skills.length).toBeGreaterThanOrEqual(150);
-    expect(dataset!.cpStars.length).toBeGreaterThanOrEqual(100);
+  it("carries the site's current patch", () => {
+    // A PTS dump or parser regression must not publish under the wrong patch.
+    expect(dataset!.patch.code).toBe("U50");
+  });
+
+  it("has exactly the committed snapshot's entity counts", () => {
+    // Dataset changes arrive as reviewed PRs, so pin exact counts — a partial
+    // extraction after an upstream schema change must fail, not shrink quietly.
+    expect(dataset!.sets.length).toBe(641);
+    expect(dataset!.skills.length).toBe(245);
+    expect(dataset!.cpStars.length).toBe(118);
   });
 
   it("only uses allowed set types", () => {
