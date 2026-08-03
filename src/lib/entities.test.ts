@@ -24,9 +24,32 @@ describe("changedReferencedEntities", () => {
     const referenced = new Set(
       builds.flatMap((b) => buildEntityRefs(b).map((r) => `${r.entityType}:${r.entityId}`))
     );
+    const sourceByKey = new Map(
+      [
+        ...sets.map((e) => ["set:" + e.id, e] as const),
+        ...skills.map((e) => ["skill:" + e.id, e] as const),
+        ...cpStars.map((e) => ["cp_star:" + e.id, e] as const),
+      ]
+    );
     expect(changed.length).toBeGreaterThan(0);
     for (const c of changed) {
       expect(referenced.has(`${c.entityType}:${c.entityId}`)).toBe(true);
+      expect(c.removed).toBe(false);
+      expect(sourceByKey.get(`${c.entityType}:${c.entityId}`)?.lastChangedPatch).toBe("U50");
     }
+  });
+
+  it("counts a referenced tracked entity with no current row as removed", () => {
+    // Simulate an ingest that deleted Whorl of the Depths while a build
+    // still references it — mirrors the freshness.ts removed-entity rule.
+    const removedId = "set-whorl-of-the-depths";
+    expect(sets.some((s) => s.id === removedId)).toBe(true);
+    const result = changedReferencedEntities(
+      builds,
+      { sets: sets.filter((s) => s.id !== removedId), skills, cpStars },
+      "U50"
+    );
+    const entry = result.find((c) => c.entityId === removedId);
+    expect(entry).toEqual({ entityType: "set", entityId: removedId, name: removedId, removed: true });
   });
 });

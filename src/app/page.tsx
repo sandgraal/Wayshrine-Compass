@@ -245,7 +245,10 @@ export default async function Home() {
                 {changedThisPatch.map((c) => (
                   <li key={`${c.entityType}:${c.entityId}`}>
                     {c.name}{" "}
-                    <span className="text-xs uppercase tracking-wide">({KIND_LABEL[c.entityType]})</span>
+                    <span className="text-xs uppercase tracking-wide">
+                      ({KIND_LABEL[c.entityType]}
+                      {c.removed && " — removed"})
+                    </span>
                   </li>
                 ))}
               </ul>
