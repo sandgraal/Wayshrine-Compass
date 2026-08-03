@@ -15,6 +15,10 @@ const CLASSES = [
 ];
 
 import { skills as seedSkills } from "@/data/skills";
+import { ALL_DLC_IDS } from "@/data/zones";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore — plain .mjs module, no type declarations
+import { resolveSetDlc } from "./build-dataset.mjs";
 
 const file = path.resolve(__dirname, "..", "public", "dataset", "current.json");
 const dataset = parsePatchDataset(JSON.parse(fs.readFileSync(file, "utf8")));
@@ -49,6 +53,61 @@ describe("public/dataset/current.json", () => {
     expect(dataset!.sets.length).toBe(641);
     expect(dataset!.skills.length).toBe(433);
     expect(dataset!.cpStars.length).toBe(118);
+  });
+
+  it("resolves DLC gates per set type (table-driven resolver contract)", () => {
+    const cases: [string, string, string | null][] = [
+      // dungeon/trial: the *dungeon* segment names the gate, not the zone
+      ["dungeon", "Summerset, Coral Aerie", "ascending-tide"],
+      ["dungeon", "Blackwood, The Dread Cellar", "waking-flame"],
+      ["dungeon", "Scrivener's Hall", "scribes-of-fate"],
+      ["dungeon", "Auridon, The Banished Cells", null],
+      ["trial", "Greymoor, Kyne's Aegis", "greymoor"],
+      ["trial", "Lucent Citadel", "gold-road"],
+      ["trial", "Craglorn, Aetherian Archive", null],
+      // monster: dungeon in "Boss in Dungeon", roman wing suffix stripped
+      ["monster", "Balorgh in March of Sacrifices, Urgarlag Chief-bane", "wolfhunter"],
+      ["monster", "Allene Pellingare or Varaine Pellingare in Wayrest Sewers II, Maj al-Ragath", null],
+      ["monster", "Baron Thirsk in Nobles District, Tel Var lockbox merchant", "imperial-city"],
+      // whole-source types
+      ["overland", "Western Skyrim", "greymoor"],
+      ["overland", "Auridon", null],
+      ["arena", "Maelstrom Arena", "orsinium"],
+      ["pvp", "Imperial City Treasure Vaults", "imperial-city"],
+      ["pvp", "Rewards for the Worthy", null],
+      // conservative nulls regardless of place
+      ["crafted", "Vvardenfell, Marandus", null],
+      ["mythic", "Fragment Leads", null],
+    ];
+    for (const [type, source, expected] of cases) {
+      const unmapped = new Map<string, number>();
+      expect(resolveSetDlc(type, source, unmapped), `${type} :: ${source}`).toBe(expected);
+      expect(unmapped.size, `${type} :: ${source} should be a known place`).toBe(0);
+    }
+    // Unknown places stay null and are recorded, keyed by the extracted place.
+    const unmapped = new Map<string, number>();
+    expect(resolveSetDlc("dungeon", "Fake Zone, Fake Dungeon", unmapped)).toBeNull();
+    expect(unmapped.get("Fake Dungeon")).toBe(1);
+  });
+
+  it("gates a healthy share of sets behind known DLC ids", () => {
+    const gated = dataset!.sets.filter((s) => s.dlcRequired !== null);
+    // 310 at snapshot time; a mapping regression (or an upstream sources-field
+    // change) collapsing DLC coverage must fail loudly, not silently un-gate.
+    expect(gated.length).toBeGreaterThanOrEqual(100);
+    for (const s of gated) {
+      // Every emitted id must be ownable in a profile, or the What Next
+      // engine would treat the set as permanently inaccessible.
+      expect(ALL_DLC_IDS, `${s.id} dlcRequired=${s.dlcRequired}`).toContain(s.dlcRequired);
+    }
+  });
+
+  it("keeps crafted and mythic sets ungated", () => {
+    for (const s of dataset!.sets) {
+      if (s.type === "crafted" || s.type === "mythic") {
+        expect(s.dlcRequired, s.id).toBeNull();
+      }
+    }
   });
 
   it("only uses allowed set types", () => {
