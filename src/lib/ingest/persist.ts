@@ -86,6 +86,46 @@ export async function persistIngest(
   if (error) throw new Error(`ingest_apply failed (transaction rolled back): ${error.message}`);
 }
 
+/** One row of the ingest audit trail, summarized for the admin dashboard. */
+export interface IngestRunSummary {
+  id: number;
+  ranAt: string;
+  fromPatch: string | null;
+  toPatch: string | null;
+  changes: number;
+  flaggedBuilds: number;
+}
+
+/**
+ * Recent ingest_runs rows for the admin dashboard. ingest_runs has no public
+ * read policy (audit trail), so this reads via the service role — server-side
+ * only. Callers must check persistenceConfigured() first.
+ */
+export async function fetchRecentIngestRuns(limit = 10): Promise<IngestRunSummary[]> {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
+  const { data, error } = await supabase
+    .from("ingest_runs")
+    .select("id, ran_at, from_patch, to_patch, report, flagged")
+    .order("ran_at", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(`ingest_runs read failed: ${error.message}`);
+
+  return (data ?? []).map((r) => ({
+    id: Number(r.id),
+    ranAt: String(r.ran_at),
+    fromPatch: (r.from_patch as string | null) ?? null,
+    toPatch: (r.to_patch as string | null) ?? null,
+    changes: Array.isArray((r.report as { changes?: unknown[] } | null)?.changes)
+      ? (r.report as { changes: unknown[] }).changes.length
+      : 0,
+    flaggedBuilds: Array.isArray(r.flagged) ? r.flagged.length : 0,
+  }));
+}
+
 /** The build row changed between the reviewer's read and the re-stamp. */
 export class ReviewConflictError extends Error {}
 
