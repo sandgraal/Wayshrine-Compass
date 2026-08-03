@@ -54,6 +54,7 @@ export function CharacterPicker({
               <button
                 key={r}
                 onClick={() => setRace(r)}
+                aria-pressed={race === r}
                 className={cn(
                   "rounded-full border px-2.5 py-1 text-xs capitalize",
                   race === r
