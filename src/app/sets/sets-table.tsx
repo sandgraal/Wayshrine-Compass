@@ -2,8 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { GearSet } from "@/lib/types";
-import type { Freshness } from "@/lib/freshness";
-import { FreshnessBadge } from "@/components/freshness-badge";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,28 +16,26 @@ import {
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 
 /**
- * A set's freshness badge: verified unless it changed in the current patch,
- * in which case needs_review naming the set and patch. Mirrors the rule
- * db.freshness() applies to builds, evaluated directly against one entity.
+ * Sets have no human review step, so they never earn the build badge's green
+ * "verified" state (see src/lib/freshness.ts). This shows raw provenance
+ * instead: amber naming the patch when the set changed in the current patch,
+ * a neutral "last changed" note otherwise.
  */
-function setFreshness(set: GearSet, currentPatch: string): Freshness {
-  if (set.lastChangedPatch !== currentPatch) {
-    return { status: "verified", reasons: [], patchVerified: currentPatch, patchesBehind: 0 };
-  }
-  return {
-    status: "needs_review",
-    reasons: [
-      {
-        entityType: "set",
-        entityId: set.id,
-        entityName: set.name,
-        patch: currentPatch,
-        summary: `${set.name} changed in ${currentPatch}.`,
-      },
-    ],
-    patchVerified: currentPatch,
-    patchesBehind: 0,
-  };
+function LastChangedIndicator({ set, currentPatch }: { set: GearSet; currentPatch: string }) {
+  const changedNow = set.lastChangedPatch === currentPatch;
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium whitespace-nowrap",
+        changedNow
+          ? "bg-needs-review/15 text-needs-review border-needs-review/40"
+          : "border-border bg-secondary text-muted-foreground"
+      )}
+    >
+      <span className={cn("size-1.5 rounded-full", changedNow ? "bg-needs-review" : "bg-muted-foreground/50")} />
+      {changedNow ? `Changed in ${currentPatch}` : `Last changed ${set.lastChangedPatch}`}
+    </span>
+  );
 }
 
 export function SetsTable({ sets, currentPatch }: { sets: GearSet[]; currentPatch: string }) {
@@ -92,7 +89,7 @@ export function SetsTable({ sets, currentPatch }: { sets: GearSet[]; currentPatc
               <TableHead>Type</TableHead>
               <TableHead>Bonus</TableHead>
               <TableHead>Source</TableHead>
-              <TableHead>Freshness</TableHead>
+              <TableHead>Last changed</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -120,7 +117,7 @@ export function SetsTable({ sets, currentPatch }: { sets: GearSet[]; currentPatc
                 </TableCell>
                 <TableCell className="text-muted-foreground">{s.source}</TableCell>
                 <TableCell>
-                  <FreshnessBadge freshness={setFreshness(s, currentPatch)} currentPatch={currentPatch} />
+                  <LastChangedIndicator set={s} currentPatch={currentPatch} />
                 </TableCell>
               </TableRow>
             ))}

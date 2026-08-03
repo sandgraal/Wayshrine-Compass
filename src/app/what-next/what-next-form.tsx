@@ -5,6 +5,7 @@ import { Clock, Sparkles } from "lucide-react";
 import type { PlayerGoal, PlayerPlatform, PlayerProfile } from "@/lib/types";
 import { ALL_CLASSES } from "@/lib/types";
 import { whatNext } from "@/lib/engine/whatNext";
+import { ActionThumb } from "./action-thumb";
 import { companions } from "@/data/companions";
 import { ALL_DLC_IDS } from "@/data/zones";
 import { cn } from "@/lib/utils";
@@ -185,6 +186,7 @@ export function WhatNextForm() {
           {actions.map((action, i) => (
             <li key={action.id} className="rounded-lg border border-border bg-card p-4">
               <div className="flex items-start gap-3">
+                <ActionThumb actionId={action.id} />
                 <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
                   {i + 1}
                 </span>

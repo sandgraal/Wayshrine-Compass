@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { CompassMark } from "@/components/illustrations";
 
 export function SiteFooter({ currentPatch, source }: { currentPatch: string; source: string }) {
@@ -15,6 +16,14 @@ export function SiteFooter({ currentPatch, source }: { currentPatch: string; sou
               A patch-aware companion for tracking builds, gear sets and champion point trees
               across every update.
             </p>
+            <Image
+              src="/brand/emblem.webp"
+              alt=""
+              aria-hidden
+              width={96}
+              height={96}
+              className="mt-2 rounded-xl border border-border/60 opacity-80"
+            />
           </div>
           <div className="flex gap-10">
             <div className="flex flex-col gap-2 text-sm">
