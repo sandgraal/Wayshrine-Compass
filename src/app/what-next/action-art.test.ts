@@ -20,8 +20,10 @@ describe("action art map", () => {
     expect(uncovered).toEqual([]);
   });
 
-  it("maps dynamic companion actions to the shared companion art", () => {
-    expect(actionArt("unlock-companion-companion-bastian")).toBe("/whatnext/unlock-companion.webp");
+  it("returns undefined for companion actions when the shared file has not shipped", () => {
+    // No files are in SHIPPED_IDS yet; actionArt() must return undefined so
+    // ActionThumb never mounts-then-fails before art lands in public/whatnext/.
+    expect(actionArt("unlock-companion-companion-bastian")).toBeUndefined();
     expect(engineSource).toContain("id: `unlock-companion-${c.id}`");
   });
 
