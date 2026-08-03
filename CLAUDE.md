@@ -41,11 +41,12 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
   (public), `INGEST_SECRET` + `CRON_SECRET` (sensitive). The INGEST_SECRET value is known to
   no one — it was generated and piped in directly; rotate it when something actually needs to
   call POST /api/ingest.
-- `SUPABASE_SERVICE_ROLE_KEY` is NOT set anywhere. Until the user adds it
-  (`vercel env add SUPABASE_SERVICE_ROLE_KEY production --sensitive`, value from the Supabase
-  dashboard), ingest runs are dry runs. Never fetch or store this key via tooling.
-- `DATASET_URL` is unset — the daily cron (`/api/cron/ingest`) reports "skipped" until a real
-  patch-dataset source exists. Wiring one is the top open work item.
+- `SUPABASE_SERVICE_ROLE_KEY` IS set in Vercel production (sensitive; added by the user
+  2026-08-03). Ingest runs now PERSIST — treat dataset changes as live data mutations.
+  Never fetch or store this key via tooling.
+- `DATASET_URL` is set in Vercel production: https://wayshrine-compass.vercel.app/dataset/current.json
+  (the committed UESP-derived artifact — regenerate via `node scripts/build-dataset.mjs`,
+  changes ship as reviewable PRs). The daily cron fetches, diffs, and persists it.
 
 ## Gotchas (learned the hard way)
 

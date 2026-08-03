@@ -167,7 +167,6 @@ function transformSkills(raw) {
     if (!groups.has(key)) groups.set(key, { className, lineName, rows: [] });
     groups.get(key).rows.push(row);
   }
-  const usedIds = new Map();
   for (const { className, lineName, rows: group } of groups.values()) {
     group.sort((a, b) => Number(a.rank) - Number(b.rank));
     const baseName = group[0].baseName;
@@ -187,11 +186,12 @@ function transformSkills(raw) {
     }
     // Seed/DB id convention: skill-<class>-<line>-<slug> (src/data/skills.ts),
     // so datasets diff against existing entities instead of replacing them all.
-    let id = `skill-${kebab(className)}-${kebab(lineName)}-${kebab(baseName)}`;
-    if (usedIds.has(id)) id = `${id}-${kebab(String(baseRow.abilityId ?? usedIds.size))}`;
-    usedIds.set(id, true);
+    // Collisions are resolved in a second pass below so ids never depend on
+    // upstream row order.
+    const id = `skill-${kebab(className)}-${kebab(lineName)}-${kebab(baseName)}`;
     skills.push({
       id,
+      abilityId: baseRow.abilityId,
       name: baseName,
       line: kebab(lineName),
       lineLabel: lineName,
@@ -200,6 +200,23 @@ function transformSkills(raw) {
       className: className.toLowerCase(),
       morphs,
     });
+  }
+  // Order-independent collision handling: every member of a colliding
+  // candidate-id group gets its stable abilityId suffix (no first-wins bias).
+  const byCandidate = new Map();
+  for (const s of skills) byCandidate.set(s.id, [...(byCandidate.get(s.id) ?? []), s]);
+  for (const [candidate, members] of byCandidate) {
+    if (members.length < 2) continue;
+    for (const s of members) {
+      if (!s.abilityId) throw new Error(`Colliding skill id ${candidate} lacks a stable abilityId`);
+      s.id = `${candidate}-${kebab(String(s.abilityId))}`;
+    }
+  }
+  for (const s of skills) delete s.abilityId;
+  const dupes = new Set();
+  for (const s of skills) {
+    if (dupes.has(s.id)) throw new Error(`Unresolvable duplicate skill id: ${s.id}`);
+    dupes.add(s.id);
   }
   skills.sort((a, b) => a.id.localeCompare(b.id));
   return { skills };
