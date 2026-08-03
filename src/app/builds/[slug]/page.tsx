@@ -131,12 +131,18 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
               {build.patchVerified}
             </span>
           </div>
+          <p className="text-xs text-muted-foreground">
+            Skill lines:{" "}
+            {build.subclassLines
+              .map((l) => db.skills.find((s) => `${s.className}/${s.line}` === l)?.lineLabel ?? l.split("/")[1])
+              .join(" / ")}
+          </p>
         </div>
-        <Link href={`/planner?from=${build.slug}`} className="no-underline">
-          <Button size="sm" variant="outline">
+        <Button asChild size="sm" variant="outline">
+          <Link href={`/planner?from=${build.slug}`}>
             <GitFork className="size-3.5" /> Fork in planner
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
 
       {freshness.status !== "verified" && (

@@ -26,7 +26,11 @@ function SkillRow({ s, currentPatch }: { s: Skill; currentPatch: string }) {
       <div className="flex flex-wrap items-center gap-2">
         <span className={cn("text-sm font-medium", s.ultimate && "text-primary")}>{s.name}</span>
         <Badge variant={s.ultimate ? "default" : "secondary"}>{s.ultimate ? "Ultimate" : "Active"}</Badge>
-        {changed && <Badge variant="destructive">Changed in {currentPatch}</Badge>}
+        {changed && (
+          <Badge variant="outline" className="border-needs-review/40 bg-needs-review/15 text-needs-review">
+            Changed in {currentPatch}
+          </Badge>
+        )}
       </div>
       <p className="text-sm text-muted-foreground">{s.description}</p>
       <p className="text-xs text-muted-foreground">{s.morphs.map((m) => m.name).join(" · ")}</p>
@@ -53,9 +57,9 @@ export function SkillsExplorer({
     <div>
       <div className="mb-8 flex flex-wrap items-end gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label>Class</Label>
+          <Label id="skills-class-label">Class</Label>
           <Select value={cls} onValueChange={(v) => setCls(v as ClassName)}>
-            <SelectTrigger className="w-48">
+            <SelectTrigger className="w-48" aria-labelledby="skills-class-label">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

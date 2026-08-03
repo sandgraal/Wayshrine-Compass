@@ -17,7 +17,7 @@ export default async function PlannerPage() {
         you go. Share it with a permalink, or fork any published build.
       </p>
       <Suspense>
-        <Planner currentPatch={db.currentPatch} />
+        <Planner currentPatch={db.currentPatch} liveSets={db.sets} liveSkills={db.skills} />
       </Suspense>
       <div className="py-6">
         <RuneDivider />

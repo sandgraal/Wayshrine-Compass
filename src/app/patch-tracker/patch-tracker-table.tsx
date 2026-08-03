@@ -37,9 +37,9 @@ export function PatchTrackerTable({ rows, currentPatch }: { rows: Row[]; current
     <div>
       <div className="mb-6 flex flex-wrap items-end gap-4">
         <div className="flex flex-col gap-1.5">
-          <Label>Role</Label>
+          <Label id="patch-tracker-role-label">Role</Label>
           <Select value={role} onValueChange={(v) => setRole(v as Role | "all")}>
-            <SelectTrigger className="w-40">
+            <SelectTrigger className="w-40" aria-labelledby="patch-tracker-role-label">
               <SelectValue placeholder="All roles" />
             </SelectTrigger>
             <SelectContent>
@@ -53,9 +53,9 @@ export function PatchTrackerTable({ rows, currentPatch }: { rows: Row[]; current
           </Select>
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label>Freshness</Label>
+          <Label id="patch-tracker-freshness-label">Freshness</Label>
           <Select value={fresh} onValueChange={(v) => setFresh(v as Freshness["status"] | "all")}>
-            <SelectTrigger className="w-44">
+            <SelectTrigger className="w-44" aria-labelledby="patch-tracker-freshness-label">
               <SelectValue placeholder="Any freshness" />
             </SelectTrigger>
             <SelectContent>

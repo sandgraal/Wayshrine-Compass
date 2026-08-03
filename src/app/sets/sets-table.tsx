@@ -65,9 +65,9 @@ export function SetsTable({ sets, currentPatch }: { sets: GearSet[]; currentPatc
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <Label>Type</Label>
+          <Label id="set-type-label">Type</Label>
           <Select value={type} onValueChange={setType}>
-            <SelectTrigger className="w-44">
+            <SelectTrigger className="w-44" aria-labelledby="set-type-label">
               <SelectValue placeholder="All types" />
             </SelectTrigger>
             <SelectContent>
@@ -97,7 +97,7 @@ export function SetsTable({ sets, currentPatch }: { sets: GearSet[]; currentPatc
           </TableHeader>
           <TableBody>
             {filtered.map((s) => (
-              <TableRow key={s.id} id={s.id}>
+              <TableRow key={s.id} id={s.id} className="scroll-mt-24">
                 <TableCell className="font-medium">
                   <span className="flex items-center gap-2">
                     {s.name}
@@ -109,8 +109,14 @@ export function SetsTable({ sets, currentPatch }: { sets: GearSet[]; currentPatc
                     {s.type}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-muted-foreground">
-                  {s.bonuses[s.bonuses.length - 1]?.effect}
+                <TableCell className="whitespace-normal text-muted-foreground">
+                  <ul className="flex flex-col gap-0.5">
+                    {s.bonuses.map((b) => (
+                      <li key={b.pieces}>
+                        <span className="font-mono text-foreground">{b.pieces}pc</span> {b.effect}
+                      </li>
+                    ))}
+                  </ul>
                 </TableCell>
                 <TableCell className="text-muted-foreground">{s.source}</TableCell>
                 <TableCell>

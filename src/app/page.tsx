@@ -56,11 +56,9 @@ function BuildCard({ build, freshness, currentPatch }: { build: Build; freshness
         {freshness.status === "verified" &&
           `Verified against ${currentPatch}, ${build.subclassLines.length} skill lines tracked.`}
       </p>
-      <Link href={`/builds/${build.slug}`} className="mt-auto no-underline">
-        <Button size="sm" variant="outline" className="w-full">
-          Open build
-        </Button>
-      </Link>
+      <Button asChild size="sm" variant="outline" className="mt-auto w-full">
+        <Link href={`/builds/${build.slug}`}>Open build</Link>
+      </Button>
     </div>
   );
 }
@@ -112,14 +110,12 @@ export default async function Home() {
               Tamriel, and flags the moment an update makes one of them obsolete.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link href="/builds" className="no-underline">
-                <Button size="lg">Browse a build</Button>
-              </Link>
-              <Link href="/patch-tracker" className="no-underline">
-                <Button size="lg" variant="outline">
-                  See what changed in {db.currentPatch}
-                </Button>
-              </Link>
+              <Button asChild size="lg">
+                <Link href="/builds">Browse a build</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/patch-tracker">See what changed in {db.currentPatch}</Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -184,9 +180,9 @@ export default async function Home() {
             <span className="font-mono text-xs text-primary">FEATURED BUILDS</span>
             <h2 className="text-2xl font-bold">A build for every role, kept current</h2>
           </div>
-          <Link href="/builds" className="no-underline">
-            <Button variant="ghost">View all {db.builds.length} builds &rarr;</Button>
-          </Link>
+          <Button asChild variant="ghost">
+            <Link href="/builds">View all {db.builds.length} builds &rarr;</Link>
+          </Button>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map(({ build, freshness }) => (
@@ -250,11 +246,9 @@ export default async function Home() {
             )}
           </CardContent>
           <CardFooter className="border-t border-border">
-            <Link href="/patch-tracker" className="no-underline">
-              <Button size="sm" variant="ghost">
-                Review the full patch tracker
-              </Button>
-            </Link>
+            <Button asChild size="sm" variant="ghost">
+              <Link href="/patch-tracker">Review the full patch tracker</Link>
+            </Button>
           </CardFooter>
         </Card>
       </section>

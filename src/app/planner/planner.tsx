@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AlertCircle, Check, Link2 } from "lucide-react";
-import type { ClassName, CpTree, EntityType, GearAssignment, GearSlot } from "@/lib/types";
+import type { ClassName, CpTree, EntityType, GearAssignment, GearSet, GearSlot, Skill } from "@/lib/types";
 import { ALL_CLASSES, GEAR_SLOTS } from "@/lib/types";
 import type { Freshness } from "@/lib/freshness";
 import { sets } from "@/data/sets";
@@ -149,7 +149,19 @@ function sanitizeState(parsed: unknown): PlannerState | null {
   };
 }
 
-export function Planner({ currentPatch }: { currentPatch: string }) {
+export function Planner({
+  currentPatch,
+  liveSets,
+  liveSkills,
+}: {
+  currentPatch: string;
+  /** The active data facade's sets/skills (Supabase when configured, seed otherwise) — used for
+   * the freshness preview so its "changed this patch" check reads from the same source as
+   * `currentPatch`, instead of always the statically-imported seed data used for the rest of the
+   * planner's dropdowns and legality checks. */
+  liveSets: GearSet[];
+  liveSkills: Skill[];
+}) {
   const searchParams = useSearchParams();
   const [state, setState] = useState<PlannerState>(() => {
     const encoded = searchParams.get("b");
@@ -192,16 +204,18 @@ export function Planner({ currentPatch }: { currentPatch: string }) {
    * engine applies to a saved Build — just evaluated against in-progress
    * planner state rather than a stored one.
    */
+  const liveSetById = useMemo(() => new Map(liveSets.map((s) => [s.id, s])), [liveSets]);
+
   const changedRefs = useMemo(() => {
     const slottedSkillIds = [...state.bar.front, state.bar.frontUlt, ...state.bar.back, state.bar.backUlt].filter(
       Boolean
     );
     const changedSets = state.gear
-      .map((g) => setById.get(g.setId))
+      .map((g) => liveSetById.get(g.setId))
       .filter((s): s is NonNullable<typeof s> => s !== undefined && s.lastChangedPatch === currentPatch)
       .map((s) => ({ entityType: "set" as EntityType, entityId: s.id, entityName: s.name }));
     const changedSkills = slottedSkillIds
-      .map((id) => skills.find((s) => s.id === id))
+      .map((id) => liveSkills.find((s) => s.id === id))
       .filter((s): s is NonNullable<typeof s> => s !== undefined && s.lastChangedPatch === currentPatch)
       .map((s) => ({ entityType: "skill" as EntityType, entityId: s.id, entityName: s.name }));
     const seen = new Set<string>();
@@ -211,7 +225,7 @@ export function Planner({ currentPatch }: { currentPatch: string }) {
       seen.add(key);
       return true;
     });
-  }, [state.gear, state.bar, currentPatch]);
+  }, [state.gear, state.bar, currentPatch, liveSetById, liveSkills]);
 
   const plannerFreshness: Freshness =
     changedRefs.length === 0
