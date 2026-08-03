@@ -97,9 +97,11 @@ export interface IngestRunSummary {
 }
 
 /**
- * Recent ingest_runs rows for the admin dashboard. ingest_runs has no public
- * read policy (audit trail), so this reads via the service role — server-side
- * only. Callers must check persistenceConfigured() first.
+ * Recent ingest runs for the admin dashboard, via the ingest_run_summaries
+ * view (supabase/migrations/0003) so the counts are computed in Postgres and
+ * full report payloads never leave the database. The view is security_invoker
+ * over a table with no public read policy, so this reads via the service
+ * role — server-side only. Callers must check persistenceConfigured() first.
  */
 export async function fetchRecentIngestRuns(limit = 10): Promise<IngestRunSummary[]> {
   const supabase = createClient(
@@ -108,21 +110,19 @@ export async function fetchRecentIngestRuns(limit = 10): Promise<IngestRunSummar
   );
 
   const { data, error } = await supabase
-    .from("ingest_runs")
-    .select("id, ran_at, from_patch, to_patch, report, flagged")
+    .from("ingest_run_summaries")
+    .select("id, ran_at, from_patch, to_patch, changes, flagged_builds")
     .order("ran_at", { ascending: false })
     .limit(limit);
-  if (error) throw new Error(`ingest_runs read failed: ${error.message}`);
+  if (error) throw new Error(`ingest_run_summaries read failed: ${error.message}`);
 
   return (data ?? []).map((r) => ({
     id: Number(r.id),
     ranAt: String(r.ran_at),
     fromPatch: (r.from_patch as string | null) ?? null,
     toPatch: (r.to_patch as string | null) ?? null,
-    changes: Array.isArray((r.report as { changes?: unknown[] } | null)?.changes)
-      ? (r.report as { changes: unknown[] }).changes.length
-      : 0,
-    flaggedBuilds: Array.isArray(r.flagged) ? r.flagged.length : 0,
+    changes: Number(r.changes ?? 0),
+    flaggedBuilds: Number(r.flagged_builds ?? 0),
   }));
 }
 

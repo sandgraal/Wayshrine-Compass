@@ -18,7 +18,10 @@ export const metadata: Metadata = { title: "Admin" };
 export const dynamic = "force-dynamic";
 
 export default async function AdminHubPage() {
-  const db = await getDb({ fresh: true });
+  // Normal cached read: this page is read-only and publicly linked, so it
+  // must not turn crawler traffic into full-table Supabase fetches. Only the
+  // review console (which acts on what it shows) bypasses the cache.
+  const db = await getDb();
 
   const counts = { verified: 0, needs_review: 0, stale: 0 };
   for (const build of db.builds) counts[db.freshness(build).status] += 1;
