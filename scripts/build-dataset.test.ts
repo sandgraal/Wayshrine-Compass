@@ -1,0 +1,59 @@
+import { describe, expect, it } from "vitest";
+import fs from "node:fs";
+import path from "node:path";
+import { parsePatchDataset } from "@/lib/ingest/parse";
+
+const SET_TYPES = ["crafted", "overland", "dungeon", "trial", "arena", "pvp", "monster", "mythic"];
+const CLASSES = [
+  "dragonknight",
+  "sorcerer",
+  "nightblade",
+  "templar",
+  "warden",
+  "necromancer",
+  "arcanist",
+];
+
+const file = path.resolve(__dirname, "..", "public", "dataset", "current.json");
+const dataset = parsePatchDataset(JSON.parse(fs.readFileSync(file, "utf8")));
+
+describe("public/dataset/current.json", () => {
+  it("parses as a valid PatchDataset", () => {
+    expect(dataset).not.toBeNull();
+  });
+
+  it("has expected entity volumes", () => {
+    expect(dataset!.sets.length).toBeGreaterThanOrEqual(600);
+    expect(dataset!.skills.length).toBeGreaterThanOrEqual(150);
+    expect(dataset!.cpStars.length).toBeGreaterThanOrEqual(100);
+  });
+
+  it("only uses allowed set types", () => {
+    for (const set of dataset!.sets) {
+      expect(SET_TYPES).toContain(set.type);
+    }
+  });
+
+  it("covers all three CP trees", () => {
+    const trees = new Set(dataset!.cpStars.map((s) => s.tree));
+    expect(trees).toEqual(new Set(["warfare", "fitness", "craft"]));
+  });
+
+  it("has at least one ultimate per class", () => {
+    for (const className of CLASSES) {
+      const ults = dataset!.skills.filter((s) => s.className === className && s.ultimate);
+      expect(ults.length, `${className} ultimates`).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  it("contains no ESO color codes in any effect or description", () => {
+    const texts: string[] = [
+      ...dataset!.sets.flatMap((s) => s.bonuses.map((b) => b.effect)),
+      ...dataset!.skills.flatMap((s) => [s.description, ...s.morphs.map((m) => m.description)]),
+      ...dataset!.cpStars.map((s) => s.effect),
+    ];
+    for (const text of texts) {
+      expect(text).not.toContain("|c");
+    }
+  });
+});
