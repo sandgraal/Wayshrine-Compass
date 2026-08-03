@@ -1,6 +1,13 @@
 import { describe, it, expect } from "vitest";
+import { readdirSync } from "node:fs";
 import { ALL_CLASSES } from "@/lib/types";
-import { PORTRAITS, portraitForBuild, portraitsForClass } from "@/lib/portraits";
+import {
+  ALL_RACES,
+  PORTRAITS,
+  portraitForBuild,
+  portraitsForClass,
+  portraitsMatching,
+} from "@/lib/portraits";
 
 describe("portrait catalog", () => {
   it("has a unique id per portrait", () => {
@@ -8,15 +15,38 @@ describe("portrait catalog", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it("covers every class, so no build falls back for lack of art", () => {
+  it("matches the files actually in public/chars", () => {
+    // The manifest is hand-maintained; drift either way means a build renders a
+    // 404 or a delivered portrait is silently unreachable.
+    const onDisk = readdirSync("public/chars")
+      .filter((f) => f.endsWith(".webp"))
+      .map((f) => f.replace(/\.webp$/, ""))
+      .sort();
+    expect(PORTRAITS.map((p) => p.id).sort()).toEqual(onDisk);
+  });
+
+  it("covers every race and class, so no build falls back for lack of art", () => {
     for (const className of ALL_CLASSES) {
       expect(portraitsForClass(className).length).toBeGreaterThan(0);
+    }
+    for (const race of ALL_RACES) {
+      expect(portraitsMatching({ race }).length).toBeGreaterThan(0);
+    }
+  });
+
+  it("offers both genders for every race and class combination", () => {
+    for (const race of ALL_RACES) {
+      for (const className of ALL_CLASSES) {
+        for (const gender of ["male", "female"] as const) {
+          expect(portraitsMatching({ race, className, gender }).length).toBeGreaterThan(0);
+        }
+      }
     }
   });
 
   it("points every portrait at a /chars asset matching its id", () => {
     for (const p of PORTRAITS) {
-      expect(p.src).toBe(`/chars/${p.id}.jpeg`);
+      expect(p.src).toBe(`/chars/${p.id}.webp`);
     }
   });
 
@@ -29,13 +59,10 @@ describe("portrait catalog", () => {
 
   it("is deterministic in the build id", () => {
     const build = { id: "nightblade-dps", className: "nightblade" as const };
-    expect(portraitForBuild(build)?.id).toBe(portraitForBuild(build)?.id);
     expect(portraitForBuild(build)?.id).toBe(portraitForBuild({ ...build })?.id);
   });
 
   it("spreads builds of one class across the art available to it", () => {
-    // Nightblade has four portraits; the four seed builds should not all land
-    // on the same one, or the catalog's variety is wasted.
     const picked = new Set(
       ["dps", "tank", "healer", "leveling"].map(
         (role) => portraitForBuild({ id: `nightblade-${role}`, className: "nightblade" })?.id

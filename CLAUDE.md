@@ -25,12 +25,13 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 - All written guidance is original — never scrape or copy competitor guides.
 - Character portraits (`src/lib/portraits.ts`) are decorative only — never a data source, never
   an input to freshness. A build's portrait is picked by hashing its own id, so it must stay
-  stable across deploys. Art files live in `public/chars/` (see the README there); every
-  portrait falls back to the class sigil, so a missing file must never break a page.
+  stable across deploys. Art files live in `public/chars/` (207 WebPs; see the README there,
+  and keep the manifest in portraits.ts in sync — tested); every portrait falls back to the
+  class sigil, so a missing file must never break a page.
 
 ## Commands
 
-- `npm test` — vitest (36 tests; acceptance tests live next to their modules)
+- `npm test` — vitest (38 tests; acceptance tests live next to their modules)
 - `npm run lint` / `npm run build`
 - Seed a Supabase project: `scripts/seed-supabase.ts` (see supabase/README.md)
 
