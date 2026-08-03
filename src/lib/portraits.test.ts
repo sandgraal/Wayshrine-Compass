@@ -4,6 +4,7 @@ import { ALL_CLASSES } from "@/lib/types";
 import {
   ALL_RACES,
   PORTRAITS,
+  pickPortrait,
   portraitForBuild,
   portraitsForClass,
   portraitsMatching,
@@ -60,6 +61,21 @@ describe("portrait catalog", () => {
   it("is deterministic in the build id", () => {
     const build = { id: "nightblade-dps", className: "nightblade" as const };
     expect(portraitForBuild(build)?.id).toBe(portraitForBuild({ ...build })?.id);
+  });
+
+  it("keeps a build's portrait when unrelated art is added or removed", () => {
+    // Rendezvous hashing: a build only remaps when its own winner appears or
+    // disappears, so catalog growth must not reshuffle existing assignments.
+    const options = portraitsForClass("nightblade");
+    const winner = pickPortrait("nightblade-dps", options);
+    expect(winner).toBeDefined();
+
+    const withoutLoser = options.filter((p) => p.id !== winner!.id).slice(1);
+    expect(pickPortrait("nightblade-dps", [winner!, ...withoutLoser])?.id).toBe(winner!.id);
+
+    const newcomer = { ...winner!, id: "zz-hypothetical-new-portrait" };
+    const grown = pickPortrait("nightblade-dps", [...options, newcomer]);
+    expect([winner!.id, newcomer.id]).toContain(grown?.id);
   });
 
   it("spreads builds of one class across the art available to it", () => {

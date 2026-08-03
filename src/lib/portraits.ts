@@ -40,6 +40,11 @@ export interface Portrait {
   /** 1 for the base portrait, 2+ for alternate art of the same character. */
   variant: number;
   src: string;
+  /**
+   * Description for contexts where the image is the content (e.g. a picker
+   * thumbnail). Build cards and heroes render portraits decoratively with an
+   * empty alt instead — the race/class is adjacent text there.
+   */
   alt: string;
 }
 
@@ -326,9 +331,26 @@ function hash(key: string): number {
  * Pick a portrait for a build. Deterministic in the build's own id, so a given
  * build keeps its character across renders and deploys while builds of the same
  * class still spread across the available art.
+ *
+ * Rendezvous hashing (highest score of hash(buildId, portraitId) wins) rather
+ * than modulo over the catalog size: adding or removing art then only remaps
+ * builds whose own winner appeared or disappeared, instead of reshuffling every
+ * build of the class.
  */
 export function portraitForBuild(build: { id: string; className: ClassName }): Portrait | undefined {
-  const options = portraitsForClass(build.className);
-  if (options.length === 0) return undefined;
-  return options[hash(build.id) % options.length];
+  return pickPortrait(build.id, portraitsForClass(build.className));
+}
+
+/** Rendezvous selection over an explicit option list; exported for testing. */
+export function pickPortrait(buildId: string, options: Portrait[]): Portrait | undefined {
+  let best: Portrait | undefined;
+  let bestScore = -1;
+  for (const p of options) {
+    const score = hash(`${buildId} ${p.id}`);
+    if (score > bestScore) {
+      best = p;
+      bestScore = score;
+    }
+  }
+  return best;
 }
