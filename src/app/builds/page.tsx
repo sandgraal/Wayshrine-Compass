@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getDb } from "@/lib/data";
 import { ALL_CLASSES, type ClassName } from "@/lib/types";
 import { FreshnessBadge } from "@/components/freshness-badge";
+import { ClassSigil } from "@/components/illustrations";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Builds" };
@@ -39,8 +40,9 @@ export default async function BuildsPage({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold">Builds</h1>
-      <p className="mt-1 text-sm text-muted-foreground">
+      <span className="font-mono text-xs text-primary">BUILDS</span>
+      <h1 className="mt-2 text-2xl font-bold sm:text-3xl">Every tracked build, checked against {db.currentPatch}</h1>
+      <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
         Every build carries a patch badge. Amber means the diff engine found a change that may affect
         it; the build page names the exact entity.
       </p>
@@ -76,20 +78,28 @@ export default async function BuildsPage({
             <Link
               key={build.id}
               href={`/builds/${build.slug}`}
-              className="rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/50"
+              className="wc-card-hover flex flex-col gap-4 rounded-xl border border-border bg-card p-5 no-underline"
             >
-              <div className="flex items-start justify-between gap-2">
-                <h2 className="font-semibold">{build.name}</h2>
+              <div className="flex items-start gap-3">
+                <span className="sigil-ring size-10">
+                  <ClassSigil name={build.className} className="size-5" />
+                </span>
+                <div className="flex flex-col gap-1">
+                  <h2 className="text-base font-semibold leading-tight text-foreground">{build.name}</h2>
+                  <p className="text-xs capitalize text-muted-foreground">
+                    {build.contentType}
+                    {build.subclassLines.some((l) => !l.startsWith(build.className)) && " · subclassed"}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="rounded-md border border-border bg-secondary px-2 py-0.5 text-xs capitalize text-muted-foreground">
+                  {build.role}
+                </span>
                 <FreshnessBadge freshness={freshness} currentPatch={db.currentPatch} />
               </div>
-              <p className="mt-1 text-sm capitalize text-muted-foreground">
-                {build.contentType} · {build.role}
-                {build.subclassLines.some((l) => !l.startsWith(build.className)) && " · subclassed"}
-              </p>
               {freshness.status === "needs_review" && (
-                <p className="mt-2 line-clamp-2 text-xs text-needs-review">
-                  {freshness.reasons[0]?.summary}
-                </p>
+                <p className="line-clamp-2 text-xs text-needs-review">{freshness.reasons[0]?.summary}</p>
               )}
             </Link>
           );

@@ -3,8 +3,9 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AlertCircle, Check, Link2 } from "lucide-react";
-import type { ClassName, CpTree, GearAssignment, GearSlot } from "@/lib/types";
+import type { ClassName, CpTree, EntityType, GearAssignment, GearSlot } from "@/lib/types";
 import { ALL_CLASSES, GEAR_SLOTS } from "@/lib/types";
+import type { Freshness } from "@/lib/freshness";
 import { sets } from "@/data/sets";
 import { skills } from "@/data/skills";
 import { cpStars } from "@/data/cpStars";
@@ -13,6 +14,8 @@ import { foods } from "@/data/food";
 import { buildBySlug } from "@/data/builds";
 import { computeStats, validateGear, validateSubclassLines } from "@/lib/planner/validate";
 import { cn } from "@/lib/utils";
+import { ClassSigil } from "@/components/illustrations";
+import { FreshnessBadge } from "@/components/freshness-badge";
 
 const TRAITS = ["Divines", "Sturdy", "Training", "Infused", "Bloodthirsty", "Arcane", "Robust", "Precise", "Defending", "Powered", "Nirnhoned", "Charged", "Sharpened"];
 
@@ -146,7 +149,7 @@ function sanitizeState(parsed: unknown): PlannerState | null {
   };
 }
 
-export function Planner() {
+export function Planner({ currentPatch }: { currentPatch: string }) {
   const searchParams = useSearchParams();
   const [state, setState] = useState<PlannerState>(() => {
     const encoded = searchParams.get("b");
@@ -183,6 +186,47 @@ export function Planner() {
     return skills.filter((s) => s.className === null || lineSet.has(`${s.className}/${s.line}`));
   }, [state.lines]);
 
+  /**
+   * Live freshness preview: any currently-slotted set or skill that changed
+   * in the current patch flags this draft, same rule the real db.freshness()
+   * engine applies to a saved Build — just evaluated against in-progress
+   * planner state rather than a stored one.
+   */
+  const changedRefs = useMemo(() => {
+    const slottedSkillIds = [...state.bar.front, state.bar.frontUlt, ...state.bar.back, state.bar.backUlt].filter(
+      Boolean
+    );
+    const changedSets = state.gear
+      .map((g) => setById.get(g.setId))
+      .filter((s): s is NonNullable<typeof s> => s !== undefined && s.lastChangedPatch === currentPatch)
+      .map((s) => ({ entityType: "set" as EntityType, entityId: s.id, entityName: s.name }));
+    const changedSkills = slottedSkillIds
+      .map((id) => skills.find((s) => s.id === id))
+      .filter((s): s is NonNullable<typeof s> => s !== undefined && s.lastChangedPatch === currentPatch)
+      .map((s) => ({ entityType: "skill" as EntityType, entityId: s.id, entityName: s.name }));
+    const seen = new Set<string>();
+    return [...changedSets, ...changedSkills].filter((r) => {
+      const key = `${r.entityType}:${r.entityId}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [state.gear, state.bar, currentPatch]);
+
+  const plannerFreshness: Freshness =
+    changedRefs.length === 0
+      ? { status: "verified", reasons: [], patchVerified: currentPatch, patchesBehind: 0 }
+      : {
+          status: "needs_review",
+          reasons: changedRefs.map((r) => ({
+            ...r,
+            patch: currentPatch,
+            summary: `${r.entityName} changed in ${currentPatch} — this draft references it.`,
+          })),
+          patchVerified: currentPatch,
+          patchesBehind: 0,
+        };
+
   const update = (patch: Partial<PlannerState>) => {
     setState((s) => ({ ...s, ...patch }));
     setCopied(false);
@@ -212,7 +256,12 @@ export function Planner() {
       <div className="space-y-6">
         {/* Class + subclass lines */}
         <section className="rounded-lg border border-border bg-card p-4">
-          <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Class &amp; skill lines</h2>
+          <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            <span className="sigil-ring size-7">
+              <ClassSigil name={state.className} className="size-3.5" />
+            </span>
+            Class &amp; skill lines
+          </h2>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {ALL_CLASSES.map((c) => (
               <button
@@ -434,6 +483,24 @@ export function Planner() {
           {copied ? <Check className="size-4" /> : <Link2 className="size-4" />}
           {copied ? "Permalink copied" : "Copy shareable permalink"}
         </button>
+
+        <section className={cn("rounded-lg border bg-card p-4", changedRefs.length ? "border-needs-review/40" : "border-border")}>
+          <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Freshness preview</h2>
+          <div className="mt-2 flex flex-col gap-3">
+            <FreshnessBadge freshness={plannerFreshness} currentPatch={currentPatch} />
+            {changedRefs.length > 0 ? (
+              <div className="rounded-md border border-needs-review/40 bg-needs-review/10 px-3 py-2 text-xs">
+                {plannerFreshness.reasons.map((r) => (
+                  <p key={`${r.entityType}-${r.entityId}`}>{r.summary}</p>
+                ))}
+              </div>
+            ) : (
+              <p className="text-xs text-muted-foreground">
+                Nothing slotted in this draft has moved in {currentPatch}.
+              </p>
+            )}
+          </div>
+        </section>
 
         <section className="rounded-lg border border-border bg-card p-4">
           <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Legality</h2>
