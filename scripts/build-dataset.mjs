@@ -55,6 +55,173 @@ const SET_TYPE_MAP = {
   Mythic: "mythic",
 };
 
+/**
+ * Explicit place-name -> DLC id mapping (ids from src/data/zones.ts
+ * ALL_DLC_IDS; the dataset test cross-checks every emitted id against it).
+ * setSummary's `sources` field names zones/dungeons/trials/arenas; the DLC a
+ * set requires follows from the *place* that drops it. Dungeon sources read
+ * "Zone, Dungeon" where the zone is only the location — e.g. "Summerset,
+ * Coral Aerie" needs Ascending Tide, not Summerset — so dungeon/trial lookups
+ * key on the last segment. `null` marks a known base-game place; places
+ * missing from this table stay null too but are counted as unmapped in the
+ * build summary so coverage gaps are visible.
+ */
+const PLACE_DLC = {
+  // Base-game zones (overland + starter islands + Cyrodiil + Craglorn).
+  "Alik'r Desert": null,
+  Auridon: null,
+  Bangkorai: null,
+  Coldharbour: null,
+  Craglorn: null,
+  Deshaan: null,
+  Eastmarch: null,
+  Glenumbra: null,
+  Grahtwood: null,
+  Greenshade: null,
+  "Malabal Tor": null,
+  "Reaper's March": null,
+  Rivenspire: null,
+  Shadowfen: null,
+  Stonefalls: null,
+  Stormhaven: null,
+  "The Rift": null,
+  "Khenarthi's Roost, Betnikh, Stros M'Kai, Bal Foyen, Bleakrock Isle": null,
+  // DLC/chapter zones.
+  Wrothgar: "orsinium",
+  "Hew's Bane": "thieves-guild",
+  "Gold Coast": "dark-brotherhood",
+  Vvardenfell: "morrowind",
+  "Clockwork City": "clockwork-city",
+  Summerset: "summerset",
+  Murkmire: "murkmire",
+  "Northern Elsweyr": "elsweyr",
+  "Southern Elsweyr": "dragonhold",
+  "Western Skyrim": "greymoor",
+  "The Reach": "markarth",
+  Blackwood: "blackwood",
+  Deadlands: "deadlands",
+  "High Isle and Amenos": "high-isle",
+  Galen: "firesong",
+  Necrom: "necrom",
+  "West Weald": "gold-road",
+  Solstice: "seasons-of-the-worm-cult",
+  // Base-game group dungeons.
+  "Arx Corinium": null,
+  "Banished Cells": null,
+  "The Banished Cells": null,
+  "Blackheart Haven": null,
+  "Blessed Crucible": null,
+  "City of Ash": null,
+  "Crypt of Hearts": null,
+  "Darkshade Caverns": null,
+  "Direfrost Keep": null,
+  "Elden Hollow": null,
+  "Fungal Grotto": null,
+  "Selene's Web": null,
+  Spindleclutch: null,
+  "Tempest Island": null,
+  "Vaults of Madness": null,
+  Volenfell: null,
+  "Wayrest Sewers": null,
+  // DLC group dungeons.
+  "Imperial City Prison": "imperial-city",
+  "White-Gold Tower": "imperial-city",
+  "Cradle of Shadows": "shadows-of-the-hist",
+  "Ruins of Mazzatun": "shadows-of-the-hist",
+  "Bloodroot Forge": "horns-of-the-reach",
+  "Falkreath Hold": "horns-of-the-reach",
+  "Fang Lair": "dragon-bones",
+  "Scalecaller Peak": "dragon-bones",
+  "March of Sacrifices": "wolfhunter",
+  "Moon Hunter Keep": "wolfhunter",
+  "Depths of Malatar": "wrathstone",
+  Frostvault: "wrathstone",
+  "Lair of Maarselok": "scalebreaker",
+  "Moongrave Fane": "scalebreaker",
+  Icereach: "harrowstorm",
+  "Unhallowed Grave": "harrowstorm",
+  "Castle Thorn": "stonethorn",
+  "Stone Garden": "stonethorn",
+  "Black Drake Villa": "flames-of-ambition",
+  "The Cauldron": "flames-of-ambition",
+  "Red Petal Bastion": "waking-flame",
+  "The Dread Cellar": "waking-flame",
+  "Coral Aerie": "ascending-tide",
+  "Shipwright's Regret": "ascending-tide",
+  "Earthen Root Enclave": "lost-depths",
+  "Graven Deep": "lost-depths",
+  "Bal Sunnar": "scribes-of-fate",
+  "Scrivener's Hall": "scribes-of-fate",
+  "Bedlam Veil": "scions-of-ithelia",
+  "Oathsworn Pit": "scions-of-ithelia",
+  // Trials.
+  "Craglorn Trials": null,
+  "Aetherian Archive": null,
+  "Hel Ra Citadel": null,
+  "Sanctum Ophidia": null,
+  "Maw of Lorkhaj": "thieves-guild",
+  "Halls of Fabrication": "morrowind",
+  "Asylum Sanctorium": "clockwork-city",
+  Cloudrest: "summerset",
+  Sunspire: "elsweyr",
+  "Kyne's Aegis": "greymoor",
+  Rockgrove: "blackwood",
+  "Dreadsail Reef": "high-isle",
+  "Sanity's Edge": "necrom",
+  "Lucent Citadel": "gold-road",
+  "Ossein Cage": "seasons-of-the-worm-cult",
+  // Arenas.
+  "Dragonstar Arena": null,
+  "Maelstrom Arena": "orsinium",
+  "Blackrose Prison": "murkmire",
+  "Vateshran Hollows": "markarth",
+  // Imperial City districts (monster-shoulder sources name the district boss).
+  "Arboretum District": "imperial-city",
+  "Arena District": "imperial-city",
+  "Elven Gardens District": "imperial-city",
+  "Memorial District": "imperial-city",
+  "Nobles District": "imperial-city",
+  "Temple District": "imperial-city",
+  // PvP sources (full source strings; Battlegrounds and Cyrodiil are base).
+  Battlegrounds: null,
+  Cyrodiil: null,
+  "Cyrodiil, Bruma": null,
+  "Cyrodiil, Cropsford": null,
+  "Cyrodiil, Vlastarus": null,
+  "Cyrodiil, Elite Gear Vendor": null,
+  "Elite Gear Vendors": null,
+  "Rewards for the Worthy": null,
+  "Rewards of the Worthy": null,
+  "Imperial City Treasure Vaults": "imperial-city",
+  "Tel Var Merchant": "imperial-city",
+};
+
+/**
+ * Resolve a set's DLC gate from its type + source string. Conservative:
+ * crafted sets stay null (stations sit in DLC zones but the gear itself is
+ * tradeable and wearable by anyone), mythics stay null (leads span many
+ * DLCs), and any place not in PLACE_DLC stays null and is reported.
+ */
+function resolveSetDlc(type, source, unmapped) {
+  if (type === "crafted" || type === "mythic") return null;
+  let key;
+  if (type === "dungeon" || type === "trial") {
+    // "Zone, Dungeon" -> the dungeon names the gate; single names stand alone.
+    const parts = source.split(",");
+    key = parts[parts.length - 1].trim();
+  } else if (type === "monster") {
+    // "Boss in Dungeon II, Vendor" -> dungeon (roman numerals name the wing,
+    // both wings of a base dungeon are base and DLC dungeons have no wings).
+    const m = source.match(/\bin ([^,]+)/);
+    key = m ? m[1].trim().replace(/\s+I{1,2}$/, "") : source;
+  } else {
+    key = source; // overland zones, arenas, pvp sources match whole
+  }
+  if (key in PLACE_DLC) return PLACE_DLC[key];
+  unmapped.set(key, (unmapped.get(key) ?? 0) + 1);
+  return null;
+}
+
 // disciplineIndex -> tree, verified empirically against known stars:
 //   Steed's Blessing (craft) = 1, Deadly Aim / Master-at-Arms (warfare) = 2,
 //   Boundless Vitality (fitness) = 3.
@@ -126,6 +293,7 @@ function transformSets(raw) {
   const rows = JSON.parse(raw).setSummary;
   const sets = [];
   let skipped = 0;
+  const unmapped = new Map();
   const bonusRe = /^\((\d+)\s+items?\)\s*(.+)$/s;
   for (const row of rows) {
     const type = SET_TYPE_MAP[row.type];
@@ -141,18 +309,20 @@ function transformSets(raw) {
       if (m) bonuses.push({ pieces: Number(m[1]), effect: m[2].trim() });
       else bonuses.push({ pieces: 1, effect: desc });
     }
+    const source = row.sources && row.sources.trim() ? row.sources.trim() : row.type;
     sets.push({
       id: `set-${row.indexName}`,
       name: row.setName,
       type,
-      source: row.sources && row.sources.trim() ? row.sources.trim() : row.type,
-      // UESP setSummary has no DLC field; left null (see public/dataset/README.md).
-      dlcRequired: null,
+      source,
+      // UESP setSummary has no DLC field; derived from the source place name
+      // via PLACE_DLC (see public/dataset/README.md).
+      dlcRequired: resolveSetDlc(type, source, unmapped),
       bonuses,
     });
   }
   sets.sort((a, b) => a.id.localeCompare(b.id));
-  return { sets, skipped };
+  return { sets, skipped, unmapped };
 }
 
 function transformSkills(raw) {
@@ -321,7 +491,7 @@ async function main() {
     const versionsRaw = await fetchText("https://esoapi.uesp.net/", "apiVersions");
     patch = parsePatchFromVersions(versionsRaw);
   }
-  const { sets, skipped } = transformSets(setRaw);
+  const { sets, skipped, unmapped } = transformSets(setRaw);
   const { skills } = transformSkills(skillRaw);
   const { cpStars } = transformCpStars(cpRaw);
 
@@ -336,6 +506,14 @@ async function main() {
   console.log("");
   console.log(`patch:     ${patch.code} (${patch.name}, released ~${patch.releasedAt})`);
   console.log(`sets:      ${sets.length} (skipped ${skipped} with type ""/Class/Other)`);
+  const withDlc = sets.filter((s) => s.dlcRequired !== null).length;
+  console.log(`set DLC:   ${withDlc} gated / ${sets.length - withDlc} base-or-unmapped`);
+  if (unmapped.size) {
+    console.log(`unmapped set sources (left null — extend PLACE_DLC to cover):`);
+    for (const [place, n] of [...unmapped.entries()].sort((a, b) => b[1] - a[1])) {
+      console.log(`  ${n.toString().padStart(3)}  ${place}`);
+    }
+  }
   console.log(`skills:    ${skills.length} (${ultimates} ultimates)`);
   console.log(`cpStars:   ${cpStars.length} (${slottables} slottable)`);
   console.log(`wrote ${path.relative(ROOT, OUT_FILE)}`);

@@ -15,6 +15,7 @@ const CLASSES = [
 ];
 
 import { skills as seedSkills } from "@/data/skills";
+import { ALL_DLC_IDS } from "@/data/zones";
 
 const file = path.resolve(__dirname, "..", "public", "dataset", "current.json");
 const dataset = parsePatchDataset(JSON.parse(fs.readFileSync(file, "utf8")));
@@ -49,6 +50,26 @@ describe("public/dataset/current.json", () => {
     expect(dataset!.sets.length).toBe(641);
     expect(dataset!.skills.length).toBe(433);
     expect(dataset!.cpStars.length).toBe(118);
+  });
+
+  it("gates a healthy share of sets behind known DLC ids", () => {
+    const gated = dataset!.sets.filter((s) => s.dlcRequired !== null);
+    // 310 at snapshot time; a mapping regression (or an upstream sources-field
+    // change) collapsing DLC coverage must fail loudly, not silently un-gate.
+    expect(gated.length).toBeGreaterThanOrEqual(100);
+    for (const s of gated) {
+      // Every emitted id must be ownable in a profile, or the What Next
+      // engine would treat the set as permanently inaccessible.
+      expect(ALL_DLC_IDS, `${s.id} dlcRequired=${s.dlcRequired}`).toContain(s.dlcRequired);
+    }
+  });
+
+  it("keeps crafted and mythic sets ungated", () => {
+    for (const s of dataset!.sets) {
+      if (s.type === "crafted" || s.type === "mythic") {
+        expect(s.dlcRequired, s.id).toBeNull();
+      }
+    }
   });
 
   it("only uses allowed set types", () => {
