@@ -46,7 +46,26 @@ export const ACTION_ART: Partial<Record<string, string>> = {
  * any id absent from this set so no request is fired before the file ships.
  */
 const SHIPPED_IDS = new Set<string>([
-  // e.g. "set-mundus",
+  "set-mundus",
+  "mount-training",
+  "zone-story",
+  "collect-skyshards",
+  "unlock-wayshrines",
+  "daily-random-normal",
+  "training-gear",
+  "join-guilds",
+  "craft-certification",
+  "price-tracking",
+  "overland-zone",
+  "dungeon-normal-rotation",
+  "vet-dungeon-progression",
+  "first-normal-trial",
+  "level-first-trials",
+  "pvp-intro",
+  "unlock-scribing",
+  "unlock-subclassing",
+  "slot-cp",
+  "unlock-companion",
 ]);
 
 export function actionArt(actionId: string): string | undefined {
