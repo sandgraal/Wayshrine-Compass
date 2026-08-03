@@ -1,4 +1,5 @@
 import type { Freshness } from "@/lib/freshness";
+import { WayshrineIcon } from "@/components/wayshrine-icon";
 import { cn } from "@/lib/utils";
 
 const LABELS: Record<Freshness["status"], (f: Freshness, current: string) => string> = {
@@ -30,13 +31,7 @@ export function FreshnessBadge({
         className
       )}
     >
-      <span
-        className={cn("size-1.5 rounded-full", {
-          "bg-verified": freshness.status === "verified",
-          "bg-needs-review": freshness.status === "needs_review",
-          "bg-stale": freshness.status === "stale",
-        })}
-      />
+      <WayshrineIcon key={freshness.status} status={freshness.status} />
       {LABELS[freshness.status](freshness, currentPatch)}
     </span>
   );
