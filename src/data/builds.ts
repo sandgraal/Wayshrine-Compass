@@ -1374,7 +1374,7 @@ const authoredBuilds: Build[] = [
       [
         classSkill("sorcerer", "storm-calling", "Lightning Form").id,
         classSkill("sorcerer", "daedric-summoning", "Conjured Ward").id,
-        classSkill("sorcerer", "dark-magic", "Encase").id,
+        classSkill("sorcerer", "storm-calling", "Bolt Escape").id,
         weaponSkill("destruction-staff", "Wall of Elements").id,
         weaponSkill("mages-guild", "Magelight").id,
       ],
@@ -1436,7 +1436,7 @@ const authoredBuilds: Build[] = [
     mundusId: "mundus-shadow",
     foodId: "food-artaeum-takeaway-broth",
     guidance: pvpGuidance(
-      "Open from Shadowy Disguise for a guaranteed-crit Surprise Attack, then chain Merciless Resolve's spectral bow, Killer's Blade, and Incapacitating Strike for the kill. Cloak is both your opener and your escape — if the burst fails, vanish, reposition, and re-open rather than fighting fair. Keep Cripple rolling so no one kites you, and hold Incap for when the target has already been forced to defend."
+      "Open from Shadowy Disguise and burst before you're seen — fire your Merciless Resolve spectral bow, weave Killer's Blade, and chain Incapacitating Strike to amplify the hit. Cloak is both your opener and your escape — if the burst fails, vanish, reposition, and re-open rather than fighting fair. Keep Cripple rolling so no one kites you, and hold Incap for when the target has already been forced to defend."
     ),
   }),
   finalize({
@@ -1448,7 +1448,7 @@ const authoredBuilds: Build[] = [
     contentType: "pvp",
     gear: gearTemplate({
       bodySet: "set-rallying-cry",
-      jewelrySet: "set-powerful-assault",
+      jewelrySet: "set-jorvulds-guidance",
       monsterSet: "set-nazaray",
       bodyTrait: "Impenetrable",
       jewelryTrait: "Infused",
@@ -1484,7 +1484,7 @@ const authoredBuilds: Build[] = [
     mundusId: "mundus-atronach",
     foodId: "food-ghastly-eye-bowl",
     guidance: pvpGuidance(
-      "A group healer lives or dies on purge and burst-heal timing under Battle Spirit. Keep Extended Ritual down and hit its purge charges on cue to strip snares, Negates, and DoT bombs off your group. Breath of Life is your panic single-target save; Rite of Passage is only safe when a body blocks for you. Rallying Cry's shared Weapon Damage and Powerful Assault turn your team's assault ultimates into a real damage buff, so cast on the push."
+      "A group healer lives or dies on purge and burst-heal timing under Battle Spirit. Keep Extended Ritual down and hit its purge charges on cue to strip snares, Negates, and DoT bombs off your group. Breath of Life is your panic single-target save; Rite of Passage is only safe when a body blocks for you. Rallying Cry rewards your critical heals with a shared Weapon Damage and Critical Resistance buff, and Jorvuld's Guidance stretches your Major and Minor buffs so the group stays covered between casts."
     ),
   }),
   finalize({
@@ -1674,7 +1674,7 @@ const authoredBuilds: Build[] = [
     mundusId: "mundus-shadow",
     foodId: "food-artaeum-takeaway-broth",
     guidance: stamDpsGuidance(
-      "The stamina Nightblade is all pressure and weaving. Rapid Strikes is your spammable, Rending Slashes and Debilitate keep two bleeds ticking, and Relentless Focus builds a spectral bow you fire on cooldown for burst. Incapacitating Strike both executes and buffs your damage — hold it for the target's low-health window. Endless Hail on the bow bar is your only set-and-forget; everything else rewards active weaving."
+      "The stamina Nightblade is all pressure and weaving. Rapid Strikes is your spammable, Rending Slashes keeps a bleed ticking while Debilitate lays down a Magic damage-over-time snare, and Relentless Focus builds a spectral bow you fire on cooldown for burst. Incapacitating Strike doesn't execute — it amplifies your damage, so pop it and finish with Killer's Blade in the low-health window. Endless Hail on the bow bar is your only set-and-forget; everything else rewards active weaving."
     ),
   }),
   finalize({
@@ -1718,7 +1718,7 @@ const authoredBuilds: Build[] = [
     mundusId: "mundus-shadow",
     foodId: "food-artaeum-takeaway-broth",
     guidance: stamDpsGuidance(
-      "Stamina Sorcerer trades the pet playstyle for raw weaving. Crystal Weapon is a hard-hitting stamina spammable that also shreds a little Resistance, Hurricane wraps you in a scaling area DoT, and Critical Surge turns your crits into self-healing so you can stay aggressive. Haunting Curse ticks in the background for free burst; keep Hardened Ward up when a mechanic is inbound and otherwise just weave."
+      "Stamina Sorcerer trades the pet playstyle for raw weaving. Crystal Weapon isn't your spammable — it's a pre-cast that empowers your next couple of attacks and shreds a little Resistance, so refresh it on cooldown and spend filler globals on Rapid Strikes. Hurricane wraps you in a scaling area DoT, and Critical Surge turns your crits into self-healing so you can stay aggressive. Haunting Curse ticks in the background for free burst; keep Hardened Ward up when a mechanic is inbound and otherwise just weave."
     ),
   }),
   finalize({

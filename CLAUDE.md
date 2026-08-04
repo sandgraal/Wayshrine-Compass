@@ -31,7 +31,7 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 
 ## Commands
 
-- `npm test` — vitest (177 tests; acceptance tests live next to their modules)
+- `npm test` — vitest (185 tests; acceptance tests live next to their modules)
 - `npm run lint` / `npm run build`
 - Seed a Supabase project: `scripts/seed-supabase.ts` (see supabase/README.md)
 - Scaffold new seed sets/skills from the artifact (correct-by-construction ids, tiers,

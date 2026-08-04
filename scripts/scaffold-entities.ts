@@ -100,7 +100,7 @@ export function isSlottableSkill(skill: Pick<ArtifactSkill, "ultimate" | "morphs
   return skill.ultimate === true || (Array.isArray(skill.morphs) && skill.morphs.length > 0);
 }
 
-export function scaffoldSkill(skill: ArtifactSkill): string {
+export function scaffoldSkill(skill: ArtifactSkill, patchCode: string): string {
   if (!isSlottableSkill(skill)) {
     throw new Error(
       `${skill.id} is a passive (no morphs) and cannot be slotted on a bar — pick an active or ultimate.`
@@ -109,14 +109,15 @@ export function scaffoldSkill(skill: ArtifactSkill): string {
   const cls = skill.className === null ? "null" : `"${skill.className}"`;
   const morphs = skill.morphs.map((m) => `"${m.name}"`).join(", ");
   const ult = skill.ultimate ? "ult: true, " : "";
+  const patch = `patch: { first: "${patchCode}", last: "${patchCode}" }`;
   const firstSentence = (skill.description || "").split(/(?<=\.)\s/)[0].replace(/"/g, "'");
   return [
     `// ref (paraphrase — do not copy): ${firstSentence}`,
-    `sk(${cls}, "${skill.line}", "${skill.lineLabel}", "${skill.name}", { ${ult}desc: "TODO original one-line summary", morphs: [${morphs}] }),`,
+    `sk(${cls}, "${skill.line}", "${skill.lineLabel}", "${skill.name}", { ${ult}desc: "TODO original one-line summary", morphs: [${morphs}], ${patch} }),`,
   ].join("\n");
 }
 
-export function scaffoldSet(set: ArtifactSet): string {
+export function scaffoldSet(set: ArtifactSet, patchCode: string): string {
   const lines: string[] = [];
   lines.push(`{`);
   lines.push(`  id: "${set.id}",`);
@@ -141,13 +142,19 @@ export function scaffoldSet(set: ArtifactSet): string {
     }
   }
   lines.push(`  ],`);
-  lines.push(`  firstSeenPatch: "U48",`);
-  lines.push(`  lastChangedPatch: "U48",`);
+  // Provenance from the artifact's own patch — never hard-coded, so entries
+  // scaffolded from a later dataset don't carry false "first seen" history.
+  lines.push(`  firstSeenPatch: "${patchCode}", // TODO: set earlier if this entity predates the current artifact`);
+  lines.push(`  lastChangedPatch: "${patchCode}",`);
   lines.push(`},`);
   return lines.join("\n");
 }
 
-export function loadArtifact(root = process.cwd()): { sets: ArtifactSet[]; skills: ArtifactSkill[] } {
+export function loadArtifact(root = process.cwd()): {
+  sets: ArtifactSet[];
+  skills: ArtifactSkill[];
+  patch: { code: string };
+} {
   return JSON.parse(readFileSync(resolve(root, "public/dataset/current.json"), "utf8"));
 }
 
@@ -157,28 +164,35 @@ function main() {
     console.error("Usage: npx tsx scripts/scaffold-entities.ts <set-id|skill-id> [...]");
     process.exit(1);
   }
-  const { sets, skills } = loadArtifact();
+  const { sets, skills, patch } = loadArtifact();
   const setById = new Map(sets.map((s) => [s.id, s]));
   const skillById = new Map(skills.map((s) => [s.id, s]));
 
+  // Keep processing every id, but remember failures so the CLI exits nonzero —
+  // a refused passive or unknown id must be detectable by a calling script.
+  let failed = 0;
   for (const id of ids) {
     console.log(`\n/* ---- ${id} ---- */`);
     try {
       if (id.startsWith("set-")) {
         const s = setById.get(id);
         if (!s) throw new Error(`${id} not found in the artifact`);
-        console.log(scaffoldSet(s));
+        console.log(scaffoldSet(s, patch.code));
       } else if (id.startsWith("skill-")) {
         const s = skillById.get(id);
         if (!s) throw new Error(`${id} not found in the artifact`);
-        console.log(scaffoldSkill(s));
+        console.log(scaffoldSkill(s, patch.code));
       } else {
         throw new Error(`unknown id prefix (expected set-… or skill-…): ${id}`);
       }
     } catch (err) {
-      console.log(`// SKIPPED: ${(err as Error).message}`);
+      const message = (err as Error).message;
+      console.log(`// SKIPPED: ${message}`);
+      console.error(`scaffold: skipped ${id} — ${message}`);
+      failed += 1;
     }
   }
+  if (failed > 0) process.exit(1);
 }
 
 // Run only as a CLI, not when imported by the test.

@@ -71,21 +71,23 @@ describe("scaffoldSkill", () => {
 
   it("refuses a passive rather than scaffolding an un-slottable skill", () => {
     const passive: ArtifactSkill = { ...active, morphs: [], description: "Increases block mitigation." };
-    expect(() => scaffoldSkill(passive)).toThrow(/passive/i);
+    expect(() => scaffoldSkill(passive, "U50")).toThrow(/passive/i);
   });
 
-  it("emits a sk() call with the real line, morphs, and a description TODO", () => {
-    const out = scaffoldSkill(active);
+  it("emits a sk() call with the real line, morphs, provenance, and a description TODO", () => {
+    const out = scaffoldSkill(active, "U50");
     expect(out).toContain('sk("sorcerer", "dark-magic", "Dark Magic", "Crystal Shard"');
     expect(out).toContain('morphs: ["Crystal Fragments", "Crystal Weapon"]');
     expect(out).toContain("TODO original one-line summary");
+    // provenance comes from the passed artifact patch, never hard-coded
+    expect(out).toContain('patch: { first: "U50", last: "U50" }');
     // reference line paraphrases from the first sentence only, never the full tooltip
     expect(out).toContain("// ref");
     expect(out).not.toContain("Extra sentence");
   });
 
   it("flags the ultimate flag", () => {
-    expect(scaffoldSkill({ ...active, ultimate: true })).toContain("ult: true,");
+    expect(scaffoldSkill({ ...active, ultimate: true }, "U50")).toContain("ult: true,");
   });
 });
 
@@ -103,13 +105,17 @@ describe("scaffoldSet", () => {
     ],
   };
 
-  it("auto-fills flat bonuses with the right helper and sorts by piece count", () => {
-    const out = scaffoldSet(set);
+  it("auto-fills flat bonuses with the right helper, sorts by piece count, stamps provenance", () => {
+    const out = scaffoldSet(set, "U50");
     expect(out).toContain('b(2, "Adds 1096 Maximum Magicka", [mag(1096)]),');
     expect(out).toContain('b(3, "Adds 657 Critical Chance", [crit(657)]),');
     expect(out).toContain('b(5, "Adds 1528 Critical Chance", [crit(1528)]),');
     // sorted: the 3-piece line comes before the 5-piece line
     expect(out.indexOf('b(3,')).toBeLessThan(out.indexOf('b(5,'));
+    // provenance from the passed artifact patch, never hard-coded U48
+    expect(out).toContain('firstSeenPatch: "U50"');
+    expect(out).toContain('lastChangedPatch: "U50"');
+    expect(out).not.toContain('"U48"');
   });
 
   it("leaves procs as TODO with a paraphrase reference, no fabricated stat", () => {
@@ -118,7 +124,7 @@ describe("scaffoldSet", () => {
       id: "set-example",
       bonuses: [{ pieces: 5, effect: "When you deal damage, unleash a burst of Flame Damage." }],
     };
-    const out = scaffoldSet(procSet);
+    const out = scaffoldSet(procSet, "U50");
     expect(out).toContain('b(5, "TODO paraphrase"),');
     expect(out).toContain("// ref");
   });
