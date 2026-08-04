@@ -128,12 +128,12 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
   if (persistenceConfigured() && db.source === "supabase") {
     try {
       const refs = new Set(buildEntityRefs(build).map((r) => `${r.entityType}:${r.entityId}`));
-      const runs = await fetchIngestRunReports(5);
+      const runs = await fetchIngestRunReports(50);
       recentChanges = runs
         .flatMap((run) =>
           (run.report?.changes ?? [])
             .filter((c) => refs.has(`${c.entityType}:${c.entityId}`) && c.kind !== "added")
-            .map((c) => ({ ranAt: run.ranAt, entityName: c.entityName, summary: c.summary }))
+            .map((c) => ({ ranAt: run.ranAt, entityType: c.entityType, entityId: c.entityId, entityName: c.entityName, summary: c.summary }))
         )
         .slice(0, 24);
     } catch {

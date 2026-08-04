@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 export interface RecentReferencedChange {
   /** ISO timestamp of the pipeline run that observed the change. */
   ranAt: string;
+  entityType: string;
+  entityId: string;
   entityName: string;
   summary: string;
 }
@@ -26,9 +28,9 @@ function readLastSeen(slug: string): string | null {
   }
 }
 
-function writeLastSeen(slug: string) {
+function writeLastSeen(slug: string, ts: string) {
   try {
-    localStorage.setItem(`${KEY_PREFIX}${slug}`, new Date().toISOString());
+    localStorage.setItem(`${KEY_PREFIX}${slug}`, ts);
   } catch {
     // storage unavailable; the note simply won't appear next time
   }
@@ -46,9 +48,21 @@ export function SinceLastVisit({
   useEffect(() => {
     const lastSeen = readLastSeen(slug);
     if (lastSeen) {
-      setFresh(changes.filter((c) => c.ranAt > lastSeen));
+      const afterLastSeen = changes.filter((c) => c.ranAt > lastSeen);
+      // Deduplicate: keep only the most recent record per entity.
+      const seen = new Map<string, RecentReferencedChange>();
+      for (const c of afterLastSeen) {
+        const key = `${c.entityType}:${c.entityId}`;
+        if (!seen.has(key) || c.ranAt > seen.get(key)!.ranAt) seen.set(key, c);
+      }
+      setFresh([...seen.values()]);
     }
-    writeLastSeen(slug);
+    // Advance the checkpoint to the latest run we actually have, not wall time.
+    const latestRunAt = changes.reduce<string | null>(
+      (max, c) => (max === null || c.ranAt > max ? c.ranAt : max),
+      null
+    );
+    if (latestRunAt !== null) writeLastSeen(slug, latestRunAt);
   }, [slug, changes]);
 
   if (!fresh || fresh.length === 0) return null;

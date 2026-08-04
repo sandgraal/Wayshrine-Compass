@@ -135,7 +135,7 @@ export default async function PatchTrackerPage() {
 
       <div className="mt-10 mb-6 flex flex-col gap-2">
         <span className="font-mono text-xs text-primary">RUN FEED</span>
-        <h2 className="text-2xl font-bold">Every pipeline run, with its diff</h2>
+        <h2 className="text-2xl font-bold">Recent pipeline runs, with their diffs</h2>
       </div>
 
       {feedUnavailable ? (
