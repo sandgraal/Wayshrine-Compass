@@ -72,7 +72,7 @@ export function parseStoredProfile(raw: string | null): PlayerProfile | null {
       className: p.className as PlayerProfile["className"],
       level: num(p.level, 1, 50, 1),
       cp: num(p.cp, 0, 3600, 0),
-      esoPlus: Boolean(p.esoPlus),
+      esoPlus: typeof p.esoPlus === "boolean" ? p.esoPlus : false,
       dlcOwned: strs(p.dlcOwned),
       companionsOwned: strs(p.companionsOwned),
       goal: p.goal as PlayerGoal,
