@@ -9,6 +9,7 @@ import type { PatchDataset } from "@/lib/types";
 
 const SET_TYPES = new Set(["crafted", "overland", "dungeon", "trial", "arena", "pvp", "monster", "mythic"]);
 const CP_TREES = new Set(["warfare", "fitness", "craft"]);
+const SCRIPT_SLOTS = new Set(["focus", "signature", "affix"]);
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 const isStr = (v: unknown): v is string => typeof v === "string" && v.length > 0;
@@ -84,6 +85,51 @@ function isCpStarDef(v: unknown): boolean {
   );
 }
 
+const isStrArray = (v: unknown): v is string[] => Array.isArray(v) && v.every(isStr);
+
+function isGrimoireDef(v: unknown): boolean {
+  if (!v || typeof v !== "object") return false;
+  const g = v as Record<string, unknown>;
+  return (
+    isStr(g.id) &&
+    isStr(g.name) &&
+    isStr(g.line) &&
+    isStr(g.lineLabel) &&
+    typeof g.description === "string" &&
+    typeof g.acquisition === "string" &&
+    isOptionalNullStr(g.dlcRequired) &&
+    isStrArray(g.focusScripts) &&
+    isStrArray(g.signatureScripts) &&
+    isStrArray(g.affixScripts)
+  );
+}
+
+function isScriptDef(v: unknown): boolean {
+  if (!v || typeof v !== "object") return false;
+  const s = v as Record<string, unknown>;
+  return (
+    isStr(s.id) &&
+    isStr(s.name) &&
+    isStr(s.slot) &&
+    SCRIPT_SLOTS.has(s.slot as string) &&
+    typeof s.description === "string" &&
+    typeof s.acquisition === "string"
+  );
+}
+
+function isMasteryLineDef(v: unknown): boolean {
+  if (!v || typeof v !== "object") return false;
+  const m = v as Record<string, unknown>;
+  return (
+    isStr(m.id) &&
+    isStr(m.name) &&
+    isStr(m.className) &&
+    isStr(m.line) &&
+    isStr(m.lineLabel) &&
+    typeof m.graftable === "boolean"
+  );
+}
+
 export function parsePatchDataset(json: unknown): PatchDataset | null {
   if (!json || typeof json !== "object") return null;
   const o = json as Record<string, unknown>;
@@ -94,6 +140,26 @@ export function parsePatchDataset(json: unknown): PatchDataset | null {
   if (!isStr(patch.releasedAt) || !ISO_DATE.test(patch.releasedAt)) return null;
   if (!Array.isArray(o.sets) || !Array.isArray(o.skills) || !Array.isArray(o.cpStars)) return null;
   if (!o.sets.every(isSetDef) || !o.skills.every(isSkillDef) || !o.cpStars.every(isCpStarDef)) return null;
+  // Scribing + Class Mastery collections are required: the dataset artifact
+  // and this parser ship together, and a payload missing them is more likely
+  // a truncated/legacy export than a deliberate empty state.
+  if (
+    !Array.isArray(o.grimoires) ||
+    !Array.isArray(o.scripts) ||
+    !Array.isArray(o.classMasteryLines) ||
+    o.grimoires.length === 0 ||
+    o.scripts.length === 0 ||
+    o.classMasteryLines.length === 0
+  ) {
+    return null;
+  }
+  if (
+    !o.grimoires.every(isGrimoireDef) ||
+    !o.scripts.every(isScriptDef) ||
+    !o.classMasteryLines.every(isMasteryLineDef)
+  ) {
+    return null;
+  }
 
   return {
     patch: {
@@ -106,5 +172,8 @@ export function parsePatchDataset(json: unknown): PatchDataset | null {
     sets: normalizeGameId(o.sets as Array<{ gameId?: unknown }>) as PatchDataset["sets"],
     skills: normalizeGameId(o.skills as Array<{ gameId?: unknown }>) as PatchDataset["skills"],
     cpStars: normalizeGameId(o.cpStars as Array<{ gameId?: unknown }>) as PatchDataset["cpStars"],
+    grimoires: o.grimoires as PatchDataset["grimoires"],
+    scripts: o.scripts as PatchDataset["scripts"],
+    classMasteryLines: o.classMasteryLines as PatchDataset["classMasteryLines"],
   };
 }

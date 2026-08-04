@@ -147,6 +147,58 @@ export interface Zone {
   levelScaled: boolean;
 }
 
+export type ScriptSlot = "focus" | "signature" | "affix";
+
+export const SCRIPT_SLOTS: ScriptSlot[] = ["focus", "signature", "affix"];
+
+/** A Scribing script (Focus/Signature/Affix), written into a grimoire's slot. */
+export interface ScribingScript {
+  id: string;
+  name: string;
+  slot: ScriptSlot;
+  description: string;
+  /** Player-facing acquisition note ("where do I get this?"). */
+  acquisition: string;
+  firstSeenPatch: PatchCode;
+  lastChangedPatch: PatchCode;
+}
+
+/** A Scribing grimoire: the base skill players customize with three scripts. */
+export interface Grimoire {
+  id: string;
+  name: string;
+  /** Skill line the grimoire slots under, e.g. "bow", "soul-magic". */
+  line: string;
+  lineLabel: string;
+  description: string;
+  acquisition: string;
+  /** Scribing ships with the Gold Road chapter; null would mean base game. */
+  dlcRequired: string | null;
+  /** Compatible script ids per slot — entity refs, never free text. */
+  focusScripts: string[];
+  signatureScripts: string[];
+  affixScripts: string[];
+  firstSeenPatch: PatchCode;
+  lastChangedPatch: PatchCode;
+}
+
+/**
+ * A class skill line as a Class Mastery (subclassing) unit — what a build's
+ * subclassLines entry points at. Ids follow `mastery-<class>-<line>`.
+ */
+export interface ClassMasteryLine {
+  id: string;
+  /** Display name, class-qualified — line labels repeat across classes. */
+  name: string;
+  className: ClassName;
+  line: string;
+  lineLabel: string;
+  /** False for the class's own Class Mastery meta line — it can't be grafted. */
+  graftable: boolean;
+  firstSeenPatch: PatchCode;
+  lastChangedPatch: PatchCode;
+}
+
 export interface MundusStone {
   id: string;
   name: string;
@@ -223,7 +275,16 @@ export interface GuidanceBlock {
 
 export type BuildStatus = "verified" | "needs_review" | "stale";
 
-export type EntityType = "set" | "skill" | "cp_star" | "companion" | "mundus" | "food";
+export type EntityType =
+  | "set"
+  | "skill"
+  | "cp_star"
+  | "companion"
+  | "mundus"
+  | "food"
+  | "grimoire"
+  | "script"
+  | "mastery_line";
 
 export interface BuildEntityRef {
   entityType: EntityType;
@@ -257,6 +318,8 @@ export interface Build {
   cp: Record<CpTree, string[]>; // slotted star ids per tree
   mundusId: string;
   foodId: string;
+  /** Scribed skills slotted by this build: grimoire + chosen scripts, by id. */
+  scribedSkills?: { grimoireId: string; scriptIds: string[] }[];
   guidance: GuidanceBlock[];
   /** Populated by the ingestion pipeline when flagged. */
   needsReviewReasons: ChangeNote[];
@@ -272,6 +335,9 @@ export interface PatchDataset {
   sets: Omit<GearSet, "firstSeenPatch" | "lastChangedPatch">[];
   skills: Omit<Skill, "firstSeenPatch" | "lastChangedPatch">[];
   cpStars: Omit<CpStar, "lastChangedPatch">[];
+  grimoires: Omit<Grimoire, "firstSeenPatch" | "lastChangedPatch">[];
+  scripts: Omit<ScribingScript, "firstSeenPatch" | "lastChangedPatch">[];
+  classMasteryLines: Omit<ClassMasteryLine, "firstSeenPatch" | "lastChangedPatch">[];
 }
 
 export type ChangeKind = "added" | "changed" | "removed" | "renamed";

@@ -2,6 +2,9 @@ import { builds } from "@/data/builds";
 import { sets } from "@/data/sets";
 import { skills } from "@/data/skills";
 import { cpStars } from "@/data/cpStars";
+import { grimoires } from "@/data/grimoires";
+import { scribingScripts } from "@/data/scribingScripts";
+import { classMasteryLines } from "@/data/classMastery";
 import { companions } from "@/data/companions";
 import { mundusStones } from "@/data/mundus";
 import { foods } from "@/data/food";
@@ -26,6 +29,9 @@ const seedDb = buildDb({
   sets,
   skills,
   cpStars,
+  grimoires,
+  scripts: scribingScripts,
+  classMasteryLines,
   companions,
   mundusStones,
   foods,

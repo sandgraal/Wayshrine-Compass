@@ -284,6 +284,13 @@ export function diffDatasets(prev: PatchDataset, next: PatchDataset): DiffReport
       ...diffCollection("set", prev.sets as unknown as AnyEntity[], next.sets as unknown as AnyEntity[]),
       ...diffCollection("skill", prev.skills as unknown as AnyEntity[], next.skills as unknown as AnyEntity[]),
       ...diffCollection("cp_star", prev.cpStars as unknown as AnyEntity[], next.cpStars as unknown as AnyEntity[]),
+      ...diffCollection("grimoire", prev.grimoires as unknown as AnyEntity[], next.grimoires as unknown as AnyEntity[]),
+      ...diffCollection("script", prev.scripts as unknown as AnyEntity[], next.scripts as unknown as AnyEntity[]),
+      ...diffCollection(
+        "mastery_line",
+        prev.classMasteryLines as unknown as AnyEntity[],
+        next.classMasteryLines as unknown as AnyEntity[]
+      ),
     ],
   };
 }
