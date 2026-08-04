@@ -68,6 +68,7 @@ export const skills: Skill[] = [
   sk("sorcerer", "storm-calling", "Storm Calling", "Mages' Fury", { desc: "Strike an enemy with lightning; executes low-health targets.", morphs: ["Mages' Wrath", "Endless Fury"] }),
   sk("sorcerer", "storm-calling", "Storm Calling", "Lightning Form", { desc: "Wreath yourself in lightning, gaining resistances and dealing area damage.", morphs: ["Hurricane", "Boundless Storm"] }),
   sk("sorcerer", "storm-calling", "Storm Calling", "Surge", { desc: "Gain Major Brutality/Sorcery; critical hits heal you.", morphs: ["Power Surge", "Critical Surge"] }),
+  sk("sorcerer", "storm-calling", "Storm Calling", "Bolt Escape", { desc: "Flash a short distance in a burst of lightning, stunning enemies where you land.", morphs: ["Streak", "Ball of Lightning"] }),
 
   /* ---------------- Nightblade ---------------- */
   sk("nightblade", "assassination", "Assassination", "Death Stroke", { ult: true, desc: "Strike an enemy, increasing your damage against them.", morphs: ["Incapacitating Strike", "Soul Harvest"] }),
