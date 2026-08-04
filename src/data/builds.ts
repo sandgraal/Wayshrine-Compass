@@ -487,6 +487,26 @@ const SOLO_CP: Record<"warfare" | "fitness" | "craft", string[]> = {
   craft: ["cp-steeds-blessing", "cp-gifted-rider", "cp-plentiful-harvest", "cp-master-gatherer"],
 };
 
+/** Shared PvP guidance: a per-build "how it plays" plus fixed Battle Spirit and
+ *  addon notes. The addon tip is PC-gated with a console alternative. */
+function pvpGuidance(howItPlays: string): GuidanceBlock[] {
+  return [
+    { platform: "all", title: "How this build plays", body: howItPlays },
+    {
+      platform: "all",
+      title: "Everything happens under Battle Spirit",
+      body: "Cyrodiil and Battlegrounds apply Battle Spirit, which halves your healing and shields and softens incoming burst — so kills come from stacking pressure and landing a combo inside a crowd-control window, not from any single tooltip. Wear Impenetrable on your armor for Critical Resistance; without it a ganker's crit deletes you before a heal can land.",
+    },
+    {
+      platform: "pc",
+      title: "Reading the fight",
+      body: "On PC, an addon like Bandits UI or S'rendarr surfaces enemy buffs and your own proc/Major-buff timers so you know when your burst window is live.",
+      consoleAlternative:
+        "On console, read the killfeed and your own buff bar: if a proc set or your Major buffs just dropped, disengage and reset rather than trading into burst you can't answer.",
+    },
+  ];
+}
+
 const authoredBuilds: Build[] = [
   /* ---------------- Dragonknight ---------------- */
   finalize({
@@ -1246,6 +1266,344 @@ const authoredBuilds: Build[] = [
     foodId: "food-bewitched-sugar-skulls",
     cp: SOLO_CP,
     guidance: soloGuidance("arcanist", "Remedy Cascade's channel healing and Runespite Ward's damage shield"),
+  }),
+
+  /* ---------------- PvP (one per class) ---------------- */
+  finalize({
+    slug: "dragonknight-pvp",
+    name: "Dragonknight Cyrodiil Brawler",
+    className: "dragonknight",
+    subclassLines: ["dragonknight/ardent-flame", "dragonknight/draconic-power", "dragonknight/earthen-heart"],
+    role: "tank",
+    contentType: "pvp",
+    gear: gearTemplate({
+      bodySet: "set-fortified-brass",
+      jewelrySet: "set-deadly-strike",
+      monsterSet: "set-bloodspawn",
+      bodyTrait: "Impenetrable",
+      jewelryTrait: "Robust",
+      weaponTraitFront: "Sharpened",
+      weaponTraitBack: "Infused",
+      weight: "heavy",
+    }),
+    frontBar: bar(
+      [
+        classSkill("dragonknight", "ardent-flame", "Searing Strike").id,
+        classSkill("dragonknight", "draconic-power", "Chains of Flame").id,
+        classSkill("dragonknight", "earthen-heart", "Molten Weapons").id,
+        classSkill("dragonknight", "draconic-power", "Dragon Blood").id,
+        weaponSkill("two-handed", "Uppercut").id,
+      ],
+      classSkill("dragonknight", "earthen-heart", "Magma Armor").id
+    ),
+    backBar: bar(
+      [
+        classSkill("dragonknight", "earthen-heart", "Obsidian Shield").id,
+        classSkill("dragonknight", "earthen-heart", "Petrify").id,
+        classSkill("dragonknight", "draconic-power", "Dark Talons").id,
+        weaponSkill("undaunted", "Blood Altar").id,
+        weaponSkill("one-hand-and-shield", "Defensive Posture").id,
+      ],
+      weaponSkill("one-hand-and-shield", "Shield Wall").id
+    ),
+    cp: {
+      warfare: ["cp-master-at-arms", "cp-fighting-finesse", "cp-enduring-resolve", "cp-reinforced"],
+      fitness: ["cp-boundless-vitality", "cp-fortified", "cp-pains-refuge", "cp-rejuvenation"],
+      craft: ["cp-steeds-blessing", "cp-gifted-rider", "cp-plentiful-harvest", "cp-master-gatherer"],
+    },
+    mundusId: "mundus-lord",
+    foodId: "food-bewitched-sugar-skulls",
+    guidance: pvpGuidance(
+      "The Dragonknight is the classic Cyrodiil bruiser: hard to kill, hard to leave. Snare and pull stragglers with Choking Talons and Chains of Flame, keep Igneous Shield feeding your own shields, and let Green Dragon Blood scale its heal up as your Health drops. Molten Armaments buffs your heavy-attack and Uppercut burst. Magma Shell is your outnumbered panic button — pop it to survive a bomb, not to open."
+    ),
+  }),
+  finalize({
+    slug: "sorcerer-pvp",
+    name: "Sorcerer Burst Ganker",
+    className: "sorcerer",
+    subclassLines: ["sorcerer/dark-magic", "sorcerer/daedric-summoning", "sorcerer/storm-calling"],
+    role: "dps",
+    contentType: "pvp",
+    gear: gearTemplate({
+      bodySet: "set-mothers-sorrow",
+      jewelrySet: "set-orders-wrath",
+      monsterSet: "set-balorgh",
+      bodyTrait: "Impenetrable",
+      jewelryTrait: "Robust",
+      weaponTraitFront: "Nirnhoned",
+      weaponTraitBack: "Infused",
+      weight: "light",
+    }),
+    frontBar: bar(
+      [
+        classSkill("sorcerer", "dark-magic", "Crystal Shard").id,
+        classSkill("sorcerer", "daedric-summoning", "Daedric Curse").id,
+        classSkill("sorcerer", "storm-calling", "Mages' Fury").id,
+        classSkill("sorcerer", "storm-calling", "Surge").id,
+        weaponSkill("destruction-staff", "Force Shock").id,
+      ],
+      classSkill("sorcerer", "daedric-summoning", "Summon Storm Atronach").id
+    ),
+    backBar: bar(
+      [
+        classSkill("sorcerer", "storm-calling", "Lightning Form").id,
+        classSkill("sorcerer", "daedric-summoning", "Conjured Ward").id,
+        classSkill("sorcerer", "dark-magic", "Encase").id,
+        weaponSkill("destruction-staff", "Wall of Elements").id,
+        weaponSkill("mages-guild", "Magelight").id,
+      ],
+      classSkill("sorcerer", "storm-calling", "Overload").id
+    ),
+    cp: {
+      warfare: ["cp-master-at-arms", "cp-deadly-aim", "cp-fighting-finesse", "cp-backstabber"],
+      fitness: ["cp-boundless-vitality", "cp-celerity", "cp-rejuvenation", "cp-fortified"],
+      craft: ["cp-steeds-blessing", "cp-gifted-rider", "cp-plentiful-harvest", "cp-master-gatherer"],
+    },
+    mundusId: "mundus-shadow",
+    foodId: "food-bewitched-sugar-skulls",
+    guidance: pvpGuidance(
+      "This is a delete-one-target build. Pre-load Haunting Curse, weave a Crystal Fragments proc, and drop your atronach so its arrival lands with your burst — a curse tick, the fragment, and Mages' Wrath in the same global usually ends a squishy target. Boundless Storm gives you the speed to pick fights and leave bad ones; Hardened Ward is your only real defense, so if the burst does not kill, Streak out and reset rather than brawling."
+    ),
+  }),
+  finalize({
+    slug: "nightblade-pvp",
+    name: "Nightblade Shadow Ganker",
+    className: "nightblade",
+    subclassLines: ["nightblade/assassination", "nightblade/shadow", "nightblade/siphoning"],
+    role: "dps",
+    contentType: "pvp",
+    gear: gearTemplate({
+      bodySet: "set-new-moon-acolyte",
+      jewelrySet: "set-deadly-strike",
+      monsterSet: "set-balorgh",
+      bodyTrait: "Impenetrable",
+      jewelryTrait: "Robust",
+      weaponTraitFront: "Nirnhoned",
+      weaponTraitBack: "Infused",
+      weight: "medium",
+    }),
+    frontBar: bar(
+      [
+        classSkill("nightblade", "assassination", "Assassin's Blade").id,
+        classSkill("nightblade", "assassination", "Teleport Strike").id,
+        classSkill("nightblade", "assassination", "Grim Focus").id,
+        classSkill("nightblade", "siphoning", "Cripple").id,
+        weaponSkill("dual-wield", "Flurry").id,
+      ],
+      classSkill("nightblade", "assassination", "Death Stroke").id
+    ),
+    backBar: bar(
+      [
+        classSkill("nightblade", "shadow", "Shadow Cloak").id,
+        classSkill("nightblade", "siphoning", "Siphoning Strikes").id,
+        classSkill("nightblade", "shadow", "Path of Darkness").id,
+        weaponSkill("bow", "Volley").id,
+        weaponSkill("fighters-guild", "Silver Bolts").id,
+      ],
+      weaponSkill("bow", "Rapid Fire").id
+    ),
+    cp: {
+      warfare: ["cp-master-at-arms", "cp-deadly-aim", "cp-fighting-finesse", "cp-backstabber"],
+      fitness: ["cp-boundless-vitality", "cp-celerity", "cp-rejuvenation", "cp-bloody-renewal"],
+      craft: ["cp-steeds-blessing", "cp-gifted-rider", "cp-plentiful-harvest", "cp-master-gatherer"],
+    },
+    mundusId: "mundus-shadow",
+    foodId: "food-artaeum-takeaway-broth",
+    guidance: pvpGuidance(
+      "Open from Shadowy Disguise for a guaranteed-crit Surprise Attack, then chain Merciless Resolve's spectral bow, Killer's Blade, and Incapacitating Strike for the kill. Cloak is both your opener and your escape — if the burst fails, vanish, reposition, and re-open rather than fighting fair. Keep Cripple rolling so no one kites you, and hold Incap for when the target has already been forced to defend."
+    ),
+  }),
+  finalize({
+    slug: "templar-pvp",
+    name: "Templar Cyrodiil Support Healer",
+    className: "templar",
+    subclassLines: ["templar/restoring-light", "templar/aedric-spear", "templar/dawns-wrath"],
+    role: "healer",
+    contentType: "pvp",
+    gear: gearTemplate({
+      bodySet: "set-rallying-cry",
+      jewelrySet: "set-powerful-assault",
+      monsterSet: "set-nazaray",
+      bodyTrait: "Impenetrable",
+      jewelryTrait: "Infused",
+      weaponTraitFront: "Powered",
+      weaponTraitBack: "Infused",
+      weight: "light",
+    }),
+    frontBar: bar(
+      [
+        weaponSkill("restoration-staff", "Grand Healing").id,
+        weaponSkill("restoration-staff", "Regeneration").id,
+        classSkill("templar", "restoring-light", "Rushed Ceremony").id,
+        classSkill("templar", "restoring-light", "Cleansing Ritual").id,
+        classSkill("templar", "restoring-light", "Rune Focus").id,
+      ],
+      classSkill("templar", "restoring-light", "Rite of Passage").id
+    ),
+    backBar: bar(
+      [
+        classSkill("templar", "aedric-spear", "Spear Shards").id,
+        classSkill("templar", "dawns-wrath", "Sun Fire").id,
+        weaponSkill("restoration-staff", "Steadfast Ward").id,
+        weaponSkill("undaunted", "Blood Altar").id,
+        weaponSkill("restoration-staff", "Blessing of Protection").id,
+      ],
+      classSkill("templar", "dawns-wrath", "Nova").id
+    ),
+    cp: {
+      warfare: ["cp-enlivening-overflow", "cp-swift-renewal", "cp-fighting-finesse", "cp-reinforced"],
+      fitness: ["cp-boundless-vitality", "cp-rejuvenation", "cp-celerity", "cp-fortified"],
+      craft: ["cp-steeds-blessing", "cp-gifted-rider", "cp-plentiful-harvest", "cp-master-gatherer"],
+    },
+    mundusId: "mundus-atronach",
+    foodId: "food-ghastly-eye-bowl",
+    guidance: pvpGuidance(
+      "A group healer lives or dies on purge and burst-heal timing under Battle Spirit. Keep Extended Ritual down and hit its purge charges on cue to strip snares, Negates, and DoT bombs off your group. Breath of Life is your panic single-target save; Rite of Passage is only safe when a body blocks for you. Rallying Cry's shared Weapon Damage and Powerful Assault turn your team's assault ultimates into a real damage buff, so cast on the push."
+    ),
+  }),
+  finalize({
+    slug: "warden-pvp",
+    name: "Warden Frozen Brawler",
+    className: "warden",
+    subclassLines: ["warden/animal-companions", "warden/winters-embrace", "warden/green-balance"],
+    role: "tank",
+    contentType: "pvp",
+    gear: gearTemplate({
+      bodySet: "set-fortified-brass",
+      jewelrySet: "set-deadly-strike",
+      monsterSet: "set-bloodspawn",
+      bodyTrait: "Impenetrable",
+      jewelryTrait: "Robust",
+      weaponTraitFront: "Sharpened",
+      weaponTraitBack: "Infused",
+      weight: "heavy",
+    }),
+    frontBar: bar(
+      [
+        classSkill("warden", "animal-companions", "Dive").id,
+        classSkill("warden", "animal-companions", "Scorch").id,
+        classSkill("warden", "winters-embrace", "Frost Cloak").id,
+        classSkill("warden", "winters-embrace", "Arctic Wind").id,
+        weaponSkill("two-handed", "Uppercut").id,
+      ],
+      classSkill("warden", "winters-embrace", "Sleet Storm").id
+    ),
+    backBar: bar(
+      [
+        classSkill("warden", "winters-embrace", "Impaling Shards").id,
+        classSkill("warden", "animal-companions", "Betty Netch").id,
+        classSkill("warden", "green-balance", "Living Vines").id,
+        weaponSkill("undaunted", "Blood Altar").id,
+        weaponSkill("one-hand-and-shield", "Defensive Posture").id,
+      ],
+      weaponSkill("one-hand-and-shield", "Shield Wall").id
+    ),
+    cp: {
+      warfare: ["cp-master-at-arms", "cp-fighting-finesse", "cp-enduring-resolve", "cp-reinforced"],
+      fitness: ["cp-boundless-vitality", "cp-fortified", "cp-pains-refuge", "cp-rejuvenation"],
+      craft: ["cp-steeds-blessing", "cp-gifted-rider", "cp-plentiful-harvest", "cp-master-gatherer"],
+    },
+    mundusId: "mundus-lord",
+    foodId: "food-bewitched-sugar-skulls",
+    guidance: pvpGuidance(
+      "The Warden brawls in the frost. Gripping Shards roots everyone on top of you, Deep Fissure sets up a delayed burst, and Polar Wind scales its heal with your Max Health so stacking Health is offense and defense at once. Blue Betty keeps your resources honest through long fights. Permafrost is a zone-denial ultimate — drop it to lock down a doorway or peel a bomber off your group, and let Bloodspawn feed the Ultimate to do it again."
+    ),
+  }),
+  finalize({
+    slug: "necromancer-pvp",
+    name: "Necromancer Cyrodiil Pressure",
+    className: "necromancer",
+    subclassLines: ["necromancer/grave-lord", "necromancer/bone-tyrant", "necromancer/living-death"],
+    role: "dps",
+    contentType: "pvp",
+    gear: gearTemplate({
+      bodySet: "set-new-moon-acolyte",
+      jewelrySet: "set-deadly-strike",
+      monsterSet: "set-balorgh",
+      bodyTrait: "Impenetrable",
+      jewelryTrait: "Robust",
+      weaponTraitFront: "Nirnhoned",
+      weaponTraitBack: "Infused",
+      weight: "medium",
+    }),
+    frontBar: bar(
+      [
+        classSkill("necromancer", "grave-lord", "Flame Skull").id,
+        classSkill("necromancer", "grave-lord", "Boneyard").id,
+        classSkill("necromancer", "grave-lord", "Sacrificial Bones").id,
+        classSkill("necromancer", "living-death", "Render Flesh").id,
+        weaponSkill("destruction-staff", "Force Shock").id,
+      ],
+      classSkill("necromancer", "grave-lord", "Frozen Colossus").id
+    ),
+    backBar: bar(
+      [
+        classSkill("necromancer", "bone-tyrant", "Bone Armor").id,
+        classSkill("necromancer", "bone-tyrant", "Bone Totem").id,
+        classSkill("necromancer", "living-death", "Spirit Mender").id,
+        weaponSkill("destruction-staff", "Wall of Elements").id,
+        weaponSkill("mages-guild", "Magelight").id,
+      ],
+      classSkill("necromancer", "bone-tyrant", "Bone Goliath Transformation").id
+    ),
+    cp: {
+      warfare: ["cp-master-at-arms", "cp-deadly-aim", "cp-fighting-finesse", "cp-thaumaturge"],
+      fitness: ["cp-boundless-vitality", "cp-celerity", "cp-rejuvenation", "cp-fortified"],
+      craft: ["cp-steeds-blessing", "cp-gifted-rider", "cp-plentiful-harvest", "cp-master-gatherer"],
+    },
+    mundusId: "mundus-shadow",
+    foodId: "food-bewitched-sugar-skulls",
+    guidance: pvpGuidance(
+      "Necromancer is a siege of one. Unnerving Boneyard plus Pestilent Colossus stacks Major Vulnerability and Major Breach on a whole cluster, so your Venom Skull and everyone else's damage lands harder. Beckoning Armor drags a fleeing target back to you and keeps Major Resolve up; Spirit Guardian shaves 10% off incoming damage and passively heals. When it goes wrong, Ravenous Goliath is a second health bar and a self-heal — transform, reset, and re-engage."
+    ),
+  }),
+  finalize({
+    slug: "arcanist-pvp",
+    name: "Arcanist Cyrodiil Pressure",
+    className: "arcanist",
+    subclassLines: ["arcanist/herald-of-the-tome", "arcanist/soldier-of-apocrypha", "arcanist/curative-runeforms"],
+    role: "dps",
+    contentType: "pvp",
+    gear: gearTemplate({
+      bodySet: "set-deadly-strike",
+      jewelrySet: "set-new-moon-acolyte",
+      monsterSet: "set-balorgh",
+      bodyTrait: "Impenetrable",
+      jewelryTrait: "Robust",
+      weaponTraitFront: "Nirnhoned",
+      weaponTraitBack: "Infused",
+      weight: "light",
+    }),
+    frontBar: bar(
+      [
+        classSkill("arcanist", "herald-of-the-tome", "Fatecarver").id,
+        classSkill("arcanist", "herald-of-the-tome", "Runeblades").id,
+        classSkill("arcanist", "herald-of-the-tome", "Abyssal Impact").id,
+        classSkill("arcanist", "soldier-of-apocrypha", "Runic Jolt").id,
+        weaponSkill("destruction-staff", "Force Shock").id,
+      ],
+      classSkill("arcanist", "herald-of-the-tome", "The Unblinking Eye").id
+    ),
+    backBar: bar(
+      [
+        classSkill("arcanist", "soldier-of-apocrypha", "Runespite Ward").id,
+        classSkill("arcanist", "soldier-of-apocrypha", "Fatewoven Armor").id,
+        classSkill("arcanist", "curative-runeforms", "Remedy Cascade").id,
+        weaponSkill("destruction-staff", "Wall of Elements").id,
+        weaponSkill("mages-guild", "Magelight").id,
+      ],
+      weaponSkill("destruction-staff", "Elemental Storm").id
+    ),
+    cp: {
+      warfare: ["cp-master-at-arms", "cp-deadly-aim", "cp-fighting-finesse", "cp-thaumaturge"],
+      fitness: ["cp-boundless-vitality", "cp-celerity", "cp-rejuvenation", "cp-fortified"],
+      craft: ["cp-steeds-blessing", "cp-gifted-rider", "cp-plentiful-harvest", "cp-master-gatherer"],
+    },
+    mundusId: "mundus-lover",
+    foodId: "food-bewitched-sugar-skulls",
+    guidance: pvpGuidance(
+      "Deadly Strike makes the Arcanist's channels hurt: Pragmatic Fatecarver becomes a real pressure and burst tool the moment you have three Crux. Build Crux with Runeblades and Runic Sunder, then angle the beam through a snared or CC'd target — Tentacular Dread sets that up. Spiteward of the Lucid Mind and Cruxweaver Armor are your defense; Cascading Fortune tops you between beams. Do not hard-cast Fatecarver in the open — bait a defensive first, then channel."
+    ),
   }),
 ];
 
