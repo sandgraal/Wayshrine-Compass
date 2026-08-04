@@ -65,7 +65,7 @@ const TIER_SECTION: Record<ZoneTier, { eyebrow: string; heading: string; blurb: 
     eyebrow: "CHAPTERS",
     heading: "Annual chapter expansions",
     blurb:
-      "Standalone yearly releases, bought on their own. A Chapter isn't part of an ESO Plus membership, but it's yours to keep once purchased.",
+      "Previously released Chapters are included while ESO Plus is active, or can be bought separately to keep.",
   },
   DLC: {
     eyebrow: "DLC",
