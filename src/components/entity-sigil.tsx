@@ -19,8 +19,8 @@ export function EntitySigil({
   size?: number;
   className?: string;
 }) {
-  const [failed, setFailed] = useState(false);
-  if (!src || failed) return null;
+  const [failedSrc, setFailedSrc] = useState<string | undefined>();
+  if (!src || failedSrc === src) return null;
 
   return (
     // Plain <img>: a tiny decorative inline asset, no optimizer involvement,
@@ -35,9 +35,9 @@ export function EntitySigil({
       className={cn("inline-block shrink-0 object-contain", className)}
       style={{ width: size, height: size }}
       ref={(el) => {
-        if (el && el.complete && el.naturalWidth === 0) setFailed(true);
+        if (el && el.complete && el.naturalWidth === 0) setFailedSrc(src);
       }}
-      onError={() => setFailed(true)}
+      onError={() => setFailedSrc(src)}
     />
   );
 }
