@@ -13,6 +13,17 @@ const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 const isStr = (v: unknown): v is string => typeof v === "string" && v.length > 0;
 const isOptionalNullStr = (v: unknown) => v === null || v === undefined || typeof v === "string";
+// Optional stable upstream id: absent, or a non-empty string / number. UESP's
+// abilityId arrives as a number; normalizeGameId coerces it to a string.
+const isOptionalGameId = (v: unknown) =>
+  v === undefined || v === null || (typeof v === "string" && v.length > 0) || typeof v === "number";
+
+/** Coerces each entity's optional gameId to a string; leaves the rest intact. */
+function normalizeGameId<T extends { gameId?: unknown }>(rows: T[]): T[] {
+  return rows.map((r) =>
+    r.gameId === undefined || r.gameId === null ? r : { ...r, gameId: String(r.gameId) }
+  );
+}
 
 function isSetDef(v: unknown): boolean {
   if (!v || typeof v !== "object") return false;
@@ -24,6 +35,7 @@ function isSetDef(v: unknown): boolean {
     SET_TYPES.has(s.type as string) &&
     isStr(s.source) &&
     isOptionalNullStr(s.dlcRequired) &&
+    isOptionalGameId(s.gameId) &&
     Array.isArray(s.bonuses) &&
     s.bonuses.every(
       (b) =>
@@ -46,6 +58,7 @@ function isSkillDef(v: unknown): boolean {
     typeof s.ultimate === "boolean" &&
     typeof s.description === "string" &&
     (s.className === null || isStr(s.className)) &&
+    isOptionalGameId(s.gameId) &&
     Array.isArray(s.morphs) &&
     s.morphs.every(
       (m) =>
@@ -66,7 +79,8 @@ function isCpStarDef(v: unknown): boolean {
     isStr(s.tree) &&
     CP_TREES.has(s.tree as string) &&
     typeof s.effect === "string" &&
-    typeof s.slottable === "boolean"
+    typeof s.slottable === "boolean" &&
+    isOptionalGameId(s.gameId)
   );
 }
 
@@ -89,8 +103,8 @@ export function parsePatchDataset(json: unknown): PatchDataset | null {
       releasedAt: patch.releasedAt,
       season: typeof patch.season === "string" ? patch.season : null,
     },
-    sets: o.sets as PatchDataset["sets"],
-    skills: o.skills as PatchDataset["skills"],
-    cpStars: o.cpStars as PatchDataset["cpStars"],
+    sets: normalizeGameId(o.sets as Array<{ gameId?: unknown }>) as PatchDataset["sets"],
+    skills: normalizeGameId(o.skills as Array<{ gameId?: unknown }>) as PatchDataset["skills"],
+    cpStars: normalizeGameId(o.cpStars as Array<{ gameId?: unknown }>) as PatchDataset["cpStars"],
   };
 }

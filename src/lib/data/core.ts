@@ -2,6 +2,7 @@ import type {
   Build,
   Companion,
   CpStar,
+  EntitySupersession,
   Food,
   GearSet,
   MundusStone,
@@ -22,6 +23,8 @@ export interface DbData {
   foods: Food[];
   zones: Zone[];
   builds: Build[];
+  /** Recorded entity renames, so freshness can name a removed ref's successor. */
+  supersessions?: EntitySupersession[];
   /** Label shown in the footer so the active source is auditable. */
   source: "seed" | "supabase";
 }
@@ -45,8 +48,35 @@ export function buildDb(data: DbData) {
   const foodById = new Map(data.foods.map((f) => [f.id, f]));
   const buildBySlug = new Map(data.builds.map((b) => [b.slug, b]));
 
+  const supersededByDirect = new Map(
+    (data.supersessions ?? []).map((s) => [
+      `${s.entityType}:${s.oldId}`,
+      { oldName: s.oldName, newId: s.newId, newName: s.newName, patch: s.patch },
+    ])
+  );
+
+  // Resolve chains: A→B→C returns the terminal entry for A, with cycle
+  // protection so a malformed supersession loop never hangs the server.
+  function resolveSupersession(entityType: string, entityId: string) {
+    const visited = new Set<string>();
+    let key = `${entityType}:${entityId}`;
+    let entry = supersededByDirect.get(key);
+    if (!entry) return undefined;
+    while (entry) {
+      visited.add(key);
+      const nextKey = `${entityType}:${entry.newId}`;
+      if (visited.has(nextKey)) break;
+      const next = supersededByDirect.get(nextKey);
+      if (!next) break;
+      entry = next;
+      key = nextKey;
+    }
+    return entry;
+  }
+
   const provenance: ProvenanceIndex = {
     tracks: (entityType) => TRACKED_ENTITY_TYPES.has(entityType),
+    supersededBy: (entityType, entityId) => resolveSupersession(entityType, entityId),
     get(entityType, entityId) {
       switch (entityType) {
         case "set": {

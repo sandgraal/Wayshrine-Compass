@@ -1,6 +1,13 @@
 import type { Build, BuildStatus, ChangeNote, PatchCode } from "@/lib/types";
 import { buildEntityRefs } from "@/lib/entities";
 
+export interface SupersessionInfo {
+  oldName: string;
+  newId: string;
+  newName: string;
+  patch: PatchCode;
+}
+
 export interface ProvenanceIndex {
   /** entityType:entityId → { name, lastChangedPatch } */
   get(entityType: string, entityId: string): { name: string; lastChangedPatch: PatchCode } | undefined;
@@ -10,6 +17,12 @@ export interface ProvenanceIndex {
    * needs_review condition, not a silent pass.
    */
   tracks(entityType: string): boolean;
+  /**
+   * If a (now-missing) entity was renamed rather than cut, names the successor
+   * so the reason can say "X was renamed to Y" instead of a bare "removed".
+   * Optional — an index without rename data simply omits it.
+   */
+  supersededBy?(entityType: string, entityId: string): SupersessionInfo | undefined;
 }
 
 export interface Freshness {
@@ -23,6 +36,23 @@ export interface Freshness {
 function patchIndex(order: PatchCode[], code: PatchCode): number {
   const i = order.indexOf(code);
   return i === -1 ? 0 : i;
+}
+
+/**
+ * The reason shown for a build referencing an entity that was renamed away.
+ * Shared by read-time freshness and the ingest pipeline so both phrase it
+ * identically. When the successor kept its display name (an id/line move, e.g.
+ * Veiled Strike moving skill lines) "renamed to Veiled Strike" would read
+ * wrong, so it names the new id instead.
+ */
+export function renameReason(
+  oldName: string,
+  newName: string,
+  newId: string,
+  patch: PatchCode
+): string {
+  const successor = newName === oldName ? `now id ${newId}` : `now "${newName}"`;
+  return `${oldName} was renamed/reworked in ${patch} (${successor}) — this build references the old id and may be affected.`;
 }
 
 /**
@@ -48,13 +78,32 @@ export function computeFreshness(
     const entity = provenance.get(ref.entityType, ref.entityId);
     if (!entity) {
       if (provenance.tracks(ref.entityType)) {
-        reasons.push({
-          entityType: ref.entityType,
-          entityId: ref.entityId,
-          entityName: ref.entityId,
-          patch: currentPatch,
-          summary: `${ref.entityId} no longer exists in the ${currentPatch} game data — this build references a removed entity.`,
-        });
+        const superseded = provenance.supersededBy?.(ref.entityType, ref.entityId);
+        if (superseded) {
+          // Renamed, not cut: name the successor so an author knows what to
+          // re-point to. The build still goes amber — we never rewrite its
+          // reference; that's a human authoring decision.
+          reasons.push({
+            entityType: ref.entityType,
+            entityId: ref.entityId,
+            entityName: superseded.oldName,
+            patch: superseded.patch,
+            summary: renameReason(
+              superseded.oldName,
+              superseded.newName,
+              superseded.newId,
+              superseded.patch
+            ),
+          });
+        } else {
+          reasons.push({
+            entityType: ref.entityType,
+            entityId: ref.entityId,
+            entityName: ref.entityId,
+            patch: currentPatch,
+            summary: `${ref.entityId} no longer exists in the ${currentPatch} game data — this build references a removed entity.`,
+          });
+        }
       }
       continue;
     }
