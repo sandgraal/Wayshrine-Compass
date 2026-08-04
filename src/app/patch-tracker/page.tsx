@@ -69,16 +69,27 @@ export default async function PatchTrackerPage() {
   const genuinelyChanged = (e: { firstSeenPatch: string; lastChangedPatch: string }, code: string) =>
     e.lastChangedPatch === code && e.lastChangedPatch !== e.firstSeenPatch;
 
+  // All six tracked collections — omitting the newer types here would let a
+  // grimoire/script/mastery change render as "no observed changes".
+  const collections: [{ id: string; name: string; firstSeenPatch: string; lastChangedPatch: string }[], string][] = [
+    [db.sets, "set"],
+    [db.skills, "skill"],
+    [db.cpStars, "CP star"],
+    [db.grimoires, "grimoire"],
+    [db.scripts, "script"],
+    [db.classMasteryLines, "mastery line"],
+  ];
+
   const patchHistory = [...db.patches].reverse().map((patch) => {
-    const changed = [
-      ...db.sets.filter((s) => genuinelyChanged(s, patch.code)).map((s) => ({ id: s.id, name: s.name, kind: "set" })),
-      ...db.skills.filter((s) => genuinelyChanged(s, patch.code)).map((s) => ({ id: s.id, name: s.name, kind: "skill" })),
-      ...db.cpStars.filter((s) => genuinelyChanged(s, patch.code)).map((s) => ({ id: s.id, name: s.name, kind: "CP star" })),
-    ];
-    const enteredTracking =
-      db.sets.filter((s) => s.lastChangedPatch === patch.code && s.firstSeenPatch === s.lastChangedPatch).length +
-      db.skills.filter((s) => s.lastChangedPatch === patch.code && s.firstSeenPatch === s.lastChangedPatch).length +
-      db.cpStars.filter((s) => s.lastChangedPatch === patch.code && s.firstSeenPatch === s.lastChangedPatch).length;
+    const changed = collections.flatMap(([rows, kind]) =>
+      rows.filter((e) => genuinelyChanged(e, patch.code)).map((e) => ({ id: e.id, name: e.name, kind }))
+    );
+    const enteredTracking = collections.reduce(
+      (sum, [rows]) =>
+        sum +
+        rows.filter((e) => e.lastChangedPatch === patch.code && e.firstSeenPatch === e.lastChangedPatch).length,
+      0
+    );
     return { patch, changed, enteredTracking };
   });
 
