@@ -12,7 +12,7 @@ import { cpStars } from "@/data/cpStars";
 import { mundusStones } from "@/data/mundus";
 import { foods } from "@/data/food";
 import { computeStats, validateGear, validateSubclassLines } from "@/lib/planner/validate";
-import { dpsAssumptions, estimateDps } from "@/lib/planner/dps";
+import { DPS_MODEL, dpsAssumptions, estimateDps } from "@/lib/planner/dps";
 import { cn } from "@/lib/utils";
 import { ClassSigil } from "@/components/illustrations";
 import { CharacterPicker } from "./character-picker";
@@ -466,7 +466,8 @@ export function Planner({
               <span className="font-mono text-lg text-foreground">{dps.dps.toLocaleString()}</span>
             </div>
             <p className="mt-0.5 text-[11px] text-muted-foreground">
-              {dps.low.toLocaleString()}–{dps.high.toLocaleString()} · ±15% — model, not a parse
+              {dps.low.toLocaleString()}–{dps.high.toLocaleString()} · ±{Math.round(DPS_MODEL.errorBand * 100)}% —
+              model, not a parse
             </p>
             <details className="mt-2 text-[11px] text-muted-foreground">
               <summary className="cursor-pointer select-none">Model assumptions</summary>
