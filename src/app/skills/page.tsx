@@ -19,7 +19,7 @@ export default async function SkillsPage() {
         note, so you know before you slot them.
       </p>
       <div className="mt-6">
-        <SkillsExplorer skills={db.skills} currentPatch={db.currentPatch} />
+        <SkillsExplorer skills={db.skills} currentPatch={db.currentPatch} patchOrder={db.patchOrder} />
       </div>
       <ScribingSection grimoires={db.grimoires} scripts={db.scripts} currentPatch={db.currentPatch} />
     </div>

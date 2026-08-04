@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ALL_CLASSES, type ClassName, type Skill } from "@/lib/types";
+import { ALL_CLASSES, type ClassName, type PatchCode, type Skill } from "@/lib/types";
+import { entityChangeStatus } from "@/lib/freshness";
+import { EntityChangeBadge } from "@/components/entity-change-badge";
 import { ClassSigil } from "@/components/illustrations";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
@@ -19,18 +21,17 @@ function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-function SkillRow({ s, currentPatch }: { s: Skill; currentPatch: string }) {
-  const changed = s.lastChangedPatch === currentPatch;
+function SkillRow({ s, patchOrder }: { s: Skill; patchOrder: PatchCode[] }) {
+  // Neutral "tracked since" state renders no pill here: in a card list the
+  // absence of a badge is the calm default, and a pill only appears when
+  // there is an observed change (or a post-baseline addition) to report.
+  const status = entityChangeStatus(s, patchOrder);
   return (
     <div className="flex flex-col gap-1.5 border-b border-border py-3 first:pt-0 last:border-b-0 last:pb-0">
       <div className="flex flex-wrap items-center gap-2">
         <span className={cn("text-sm font-medium", s.ultimate && "text-primary")}>{s.name}</span>
         <Badge variant={s.ultimate ? "default" : "secondary"}>{s.ultimate ? "Ultimate" : "Active"}</Badge>
-        {changed && (
-          <Badge variant="outline" className="border-needs-review/40 bg-needs-review/15 text-needs-review">
-            Changed in {currentPatch}
-          </Badge>
-        )}
+        {status.kind !== "tracked" && <EntityChangeBadge entity={s} patchOrder={patchOrder} />}
       </div>
       <p className="text-sm text-muted-foreground">{s.description}</p>
       <p className="text-xs text-muted-foreground">{s.morphs.map((m) => m.name).join(" · ")}</p>
@@ -41,15 +42,20 @@ function SkillRow({ s, currentPatch }: { s: Skill; currentPatch: string }) {
 export function SkillsExplorer({
   skills,
   currentPatch,
+  patchOrder,
 }: {
   skills: Skill[];
   currentPatch: string;
+  patchOrder: PatchCode[];
 }) {
   const [cls, setCls] = useState<ClassName>(ALL_CLASSES[0]);
 
   const classSkills = skills.filter((s) => s.className === cls);
   const lines = [...new Set(classSkills.map((s) => s.line))];
-  const changedCount = classSkills.filter((s) => s.lastChangedPatch === currentPatch).length;
+  const changedCount = classSkills.filter((s) => {
+    const status = entityChangeStatus(s, patchOrder);
+    return status.kind === "changed" && status.patch === currentPatch;
+  }).length;
 
   const weaponGuildLines = [...new Set(skills.filter((s) => !s.className).map((s) => s.line))];
 
@@ -92,7 +98,7 @@ export function SkillsExplorer({
               </CardHeader>
               <CardContent>
                 {lineSkills.map((s) => (
-                  <SkillRow key={s.id} s={s} currentPatch={currentPatch} />
+                  <SkillRow key={s.id} s={s} patchOrder={patchOrder} />
                 ))}
               </CardContent>
             </Card>
@@ -113,7 +119,7 @@ export function SkillsExplorer({
                 </CardHeader>
                 <CardContent>
                   {lineSkills.map((s) => (
-                    <SkillRow key={s.id} s={s} currentPatch={currentPatch} />
+                    <SkillRow key={s.id} s={s} patchOrder={patchOrder} />
                   ))}
                 </CardContent>
               </Card>

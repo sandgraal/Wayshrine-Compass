@@ -109,27 +109,27 @@ export function buildDb(data: DbData) {
       switch (entityType) {
         case "set": {
           const e = setById.get(entityId);
-          return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
+          return e && { name: e.name, firstSeenPatch: e.firstSeenPatch, lastChangedPatch: e.lastChangedPatch };
         }
         case "skill": {
           const e = skillById.get(entityId);
-          return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
+          return e && { name: e.name, firstSeenPatch: e.firstSeenPatch, lastChangedPatch: e.lastChangedPatch };
         }
         case "cp_star": {
           const e = cpStarById.get(entityId);
-          return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
+          return e && { name: e.name, firstSeenPatch: e.firstSeenPatch, lastChangedPatch: e.lastChangedPatch };
         }
         case "grimoire": {
           const e = grimoireById.get(entityId);
-          return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
+          return e && { name: e.name, firstSeenPatch: e.firstSeenPatch, lastChangedPatch: e.lastChangedPatch };
         }
         case "script": {
           const e = scriptById.get(entityId);
-          return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
+          return e && { name: e.name, firstSeenPatch: e.firstSeenPatch, lastChangedPatch: e.lastChangedPatch };
         }
         case "mastery_line": {
           const e = masteryLineById.get(entityId);
-          return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
+          return e && { name: e.name, firstSeenPatch: e.firstSeenPatch, lastChangedPatch: e.lastChangedPatch };
         }
         default:
           return undefined;

@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { GitFork } from "lucide-react";
 import { getDb } from "@/lib/data";
+import { buildEntityRefs } from "@/lib/entities";
+import { fetchRecentIngestRuns, persistenceConfigured } from "@/lib/ingest/persist";
 import { builds as seedBuilds } from "@/data/builds";
 import { BuildGuidance } from "@/components/build-guidance";
 import { FreshnessBadge } from "@/components/freshness-badge";
@@ -17,7 +19,6 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardAction,
 } from "@/components/ui/card";
 import {
   Table,
@@ -99,6 +100,23 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
   if (!build) notFound();
 
   const freshness = db.freshness(build);
+
+  // Evidence for the green banner: when the most recent pipeline run happened,
+  // read server-side via the service role. Omitted on seed fallback or read
+  // failure; the banner's checked-entity count stands on its own.
+  let verifiedEvidenceDate: string | null = null;
+  if (freshness.status === "verified" && persistenceConfigured()) {
+    try {
+      const [run] = await fetchRecentIngestRuns(1);
+      if (run) {
+        verifiedEvidenceDate = new Intl.DateTimeFormat("en-US", { dateStyle: "medium" }).format(
+          new Date(run.ranAt)
+        );
+      }
+    } catch {
+      // optional evidence; never fail the page over it
+    }
+  }
   const portrait = portraitForBuild(build);
   const mundus = db.mundusById.get(build.mundusId);
   const food = db.foodById.get(build.foodId);
@@ -168,7 +186,22 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
         </Button>
       </div>
 
-      {freshness.status !== "verified" && (
+      {freshness.status === "verified" ? (
+        <div className="mb-6 flex items-start gap-2 rounded-md border border-verified/40 bg-verified/10 px-3 py-2 text-xs">
+          <span>
+            Verified for <span className="font-mono">{db.currentPatch}</span>: all{" "}
+            {buildEntityRefs(build).length} entities this build references were checked against the{" "}
+            {db.currentPatch} game data, and none have changed since the review
+            {verifiedEvidenceDate ? (
+              <>
+                . Last data check <span className="font-mono">{verifiedEvidenceDate}</span>.
+              </>
+            ) : (
+              "."
+            )}
+          </span>
+        </div>
+      ) : (
         <div className="mb-6 flex items-start gap-2 rounded-md border border-needs-review/40 bg-needs-review/10 px-3 py-2 text-xs">
           {freshness.status === "stale" ? (
             <span>
@@ -202,9 +235,6 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
             <CardHeader>
               <CardTitle>Gear</CardTitle>
               <CardDescription>Gear layout, last reviewed for {build.patchVerified}.</CardDescription>
-              <CardAction>
-                <Badge variant="secondary">As of {build.patchVerified}</Badge>
-              </CardAction>
             </CardHeader>
             <CardContent>
               <Table>
