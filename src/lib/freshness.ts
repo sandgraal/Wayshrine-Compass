@@ -9,8 +9,11 @@ export interface SupersessionInfo {
 }
 
 export interface ProvenanceIndex {
-  /** entityType:entityId → { name, lastChangedPatch } */
-  get(entityType: string, entityId: string): { name: string; lastChangedPatch: PatchCode } | undefined;
+  /** entityType:entityId → { name, firstSeenPatch, lastChangedPatch } */
+  get(
+    entityType: string,
+    entityId: string
+  ): { name: string; firstSeenPatch?: PatchCode; lastChangedPatch: PatchCode } | undefined;
   /**
    * Whether this index is authoritative for the entity type. For a tracked
    * type, a missing entity means it was removed from the game data — a
@@ -36,6 +39,43 @@ export interface Freshness {
 function patchIndex(order: PatchCode[], code: PatchCode): number {
   const i = order.indexOf(code);
   return i === -1 ? 0 : i;
+}
+
+/**
+ * The patch of the first full-catalog ingest (the U50 UESP import). That run
+ * stamped every datamined entity's provenance at once, so
+ * firstSeen === lastChanged === U50 means "entered tracking at the baseline",
+ * not "changed in U50". Distinguishing the two is the difference between a
+ * badge that reports evidence and freshness theater: an amber pill on all 641
+ * sets says nothing. This is a code constant, not a stored flag — freshness
+ * stays computed from provenance alone.
+ */
+export const TRACKING_BASELINE_PATCH: PatchCode = "U50";
+
+export type EntityChangeStatus =
+  /** In the catalog since the baseline import (or seed era) with no observed change. */
+  | { kind: "tracked"; patch: PatchCode }
+  /** Added to the game data after the baseline import. */
+  | { kind: "added"; patch: PatchCode }
+  /** An observed diff: the entity's content actually changed in `patch`. */
+  | { kind: "changed"; patch: PatchCode };
+
+/**
+ * Classifies an entity's provenance for display. `lastChanged > firstSeen`
+ * is the only provable change; an entity whose two stamps are equal has
+ * simply been in the catalog since it was first seen.
+ */
+export function entityChangeStatus(
+  entity: { firstSeenPatch: PatchCode; lastChangedPatch: PatchCode },
+  patchOrder: PatchCode[]
+): EntityChangeStatus {
+  if (entity.lastChangedPatch !== entity.firstSeenPatch) {
+    return { kind: "changed", patch: entity.lastChangedPatch };
+  }
+  const first = patchIndex(patchOrder, entity.firstSeenPatch);
+  const baseline = patchIndex(patchOrder, TRACKING_BASELINE_PATCH);
+  if (first > baseline) return { kind: "added", patch: entity.firstSeenPatch };
+  return { kind: "tracked", patch: entity.firstSeenPatch };
 }
 
 /**
@@ -109,12 +149,24 @@ export function computeFreshness(
     }
     const changedAt = patchIndex(patchOrder, entity.lastChangedPatch);
     if (changedAt > patchIndex(patchOrder, build.patchVerified)) {
+      // An entity whose stamps are equal didn't change — it entered tracking
+      // (baseline import or a later addition). The build still needs review
+      // (its reference postdates its verification), but claiming a change
+      // that never happened is exactly the freshness theater players
+      // distrust, so the reason says what actually occurred.
+      const enteredTracking =
+        entity.firstSeenPatch !== undefined && entity.firstSeenPatch === entity.lastChangedPatch;
+      const summary = !enteredTracking
+        ? `${entity.name} changed in ${entity.lastChangedPatch} — this build references it and may be affected.`
+        : entity.lastChangedPatch === TRACKING_BASELINE_PATCH
+          ? `${entity.name} entered tracking with the ${entity.lastChangedPatch} catalog import and has not been re-verified for this build since.`
+          : `${entity.name} was added in ${entity.lastChangedPatch} and has not been reviewed for this build yet.`;
       reasons.push({
         entityType: ref.entityType,
         entityId: ref.entityId,
         entityName: entity.name,
         patch: entity.lastChangedPatch,
-        summary: `${entity.name} changed in ${entity.lastChangedPatch} — this build references it and may be affected.`,
+        summary,
       });
     }
   }

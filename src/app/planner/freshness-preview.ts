@@ -35,7 +35,7 @@ export function computeFreshnessPreview(
 ): FreshnessPreview {
   const reasons: ChangeNote[] = [];
 
-  const check = <E extends { name: string; lastChangedPatch: PatchCode }>(
+  const check = <E extends { name: string; firstSeenPatch: PatchCode; lastChangedPatch: PatchCode }>(
     entityType: "set" | "skill" | "cp_star",
     ids: string[],
     byId: Map<string, E>
@@ -50,7 +50,13 @@ export function computeFreshnessPreview(
           patch: currentPatch,
           summary: `${entityId} no longer exists in the ${currentPatch} game data — this draft references a removed entity.`,
         });
-      } else if (entity.lastChangedPatch === currentPatch) {
+      } else if (
+        entity.lastChangedPatch === currentPatch &&
+        // Equal stamps mean the entity entered tracking this patch (the
+        // baseline catalog import), not that it changed — flagging those
+        // would amber every draft that uses live data.
+        entity.lastChangedPatch !== entity.firstSeenPatch
+      ) {
         reasons.push({
           entityType,
           entityId,
