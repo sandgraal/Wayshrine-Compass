@@ -115,10 +115,15 @@ function makeStore<T>(key: string, parse: (raw: string | null) => T): Store<T> {
   return {
     subscribe(listener) {
       listeners.add(listener);
-      window.addEventListener("storage", listener);
+      const onStorage = (event: StorageEvent) => {
+        if (event.storageArea !== localStorage || (event.key !== key && event.key !== null)) return;
+        memoryRaw = event.newValue;
+        listener();
+      };
+      window.addEventListener("storage", onStorage);
       return () => {
         listeners.delete(listener);
-        window.removeEventListener("storage", listener);
+        window.removeEventListener("storage", onStorage);
       };
     },
     read() {
