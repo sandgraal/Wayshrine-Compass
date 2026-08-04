@@ -46,6 +46,12 @@ alter table build_entities drop constraint build_entities_entity_type_check;
 alter table build_entities add constraint build_entities_entity_type_check
   check (entity_type in ('set','skill','cp_star','companion','mundus','food','grimoire','script','mastery_line'));
 
+insert into build_entities (build_id, entity_type, entity_id)
+select b.id, 'mastery_line', 'mastery-' || replace(sl.value, '/', '-')
+from builds b
+cross join lateral jsonb_array_elements_text(b.subclass_lines) as sl(value)
+on conflict do nothing;
+
 alter table grimoires enable row level security;
 alter table scribing_scripts enable row level security;
 alter table class_mastery_lines enable row level security;
