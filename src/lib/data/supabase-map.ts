@@ -60,6 +60,8 @@ export function rowToSkill(r: Row): Skill {
     lineLabel: String(r.line_label),
     name: String(r.name),
     ultimate: Boolean(r.ultimate),
+    // Optional in the entity model (seed omits it); only an explicit true matters.
+    passive: r.passive === true ? true : undefined,
     description: String(r.description ?? ""),
     morphs: (r.morphs as Skill["morphs"]) ?? [],
     gameId: (r.game_id as string | null) ?? undefined,

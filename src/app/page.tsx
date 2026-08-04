@@ -29,7 +29,7 @@ const FEATURED_SLUGS = [
   "sorcerer-dps",
   "dragonknight-tank",
   "templar-healer",
-  "warden-solo", // new: accessible solo / one-bar-friendly
+  "nightblade-pvp", // new: Cyrodiil / Battlegrounds ganker
   "necromancer-tank",
 ];
 

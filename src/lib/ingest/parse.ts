@@ -57,6 +57,7 @@ function isSkillDef(v: unknown): boolean {
     isStr(s.line) &&
     isStr(s.lineLabel) &&
     typeof s.ultimate === "boolean" &&
+    (s.passive === undefined || typeof s.passive === "boolean") &&
     typeof s.description === "string" &&
     (s.className === null || isStr(s.className)) &&
     isOptionalGameId(s.gameId) &&
