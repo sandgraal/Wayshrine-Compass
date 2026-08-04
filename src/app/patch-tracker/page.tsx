@@ -196,19 +196,20 @@ const href = changeHref(item.entityType, item.renamedTo?.entityId ?? item.entity
                           {item.kind === "renamed" && item.renamedTo && (
                             <span className="text-muted-foreground"> now {item.renamedTo.entityName}</span>
                           )}
-                          {item.kind === "changed" &&
-                            (item.fieldDiffs && item.fieldDiffs.length > 0 ? (
-                              <span className="mt-0.5 block text-xs text-muted-foreground">
-                                {item.fieldDiffs.map((d) => (
-                                  <span key={d.field} className="mr-3 inline-block">
-                                    <span className="font-mono">{d.field}</span>: {d.before}{" "}
-                                    <span aria-hidden>&rarr;</span> {d.after}
-                                  </span>
-                                ))}
-                              </span>
-                            ) : (
-                              <span className="text-muted-foreground"> ({item.changedFields.join(", ")})</span>
-                            ))}
+{(item.kind === "changed" || item.kind === "renamed") &&
+  item.changedFields.length > 0 &&
+  (item.fieldDiffs && item.fieldDiffs.length > 0 ? (
+    <span className="mt-0.5 block text-xs text-muted-foreground">
+      {item.fieldDiffs.map((d) => (
+        <span key={d.field} className="mr-3 inline-block">
+          <span className="font-mono">{d.field}</span>: {d.before}{" "}
+          <span aria-hidden>&rarr;</span> {d.after}
+        </span>
+      ))}
+    </span>
+  ) : (
+    <span className="text-muted-foreground"> ({item.changedFields.join(", ")})</span>
+  ))}
                         </li>
                       );
                     })}
