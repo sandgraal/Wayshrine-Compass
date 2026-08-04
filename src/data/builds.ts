@@ -507,6 +507,32 @@ function pvpGuidance(howItPlays: string): GuidanceBlock[] {
   ];
 }
 
+/** Champion Points shared by the stamina-DPS depth builds. */
+const STAM_DPS_CP: Record<"warfare" | "fitness" | "craft", string[]> = {
+  warfare: ["cp-master-at-arms", "cp-deadly-aim", "cp-fighting-finesse", "cp-thaumaturge"],
+  fitness: ["cp-boundless-vitality", "cp-rejuvenation", "cp-celerity", "cp-fortified"],
+  craft: ["cp-steeds-blessing", "cp-gifted-rider", "cp-plentiful-harvest", "cp-master-gatherer"],
+};
+
+/** Shared stamina-DPS guidance: a per-build opener plus fixed weaving/parse notes. */
+function stamDpsGuidance(howItPlays: string): GuidanceBlock[] {
+  return [
+    { platform: "all", title: "How this build plays", body: howItPlays },
+    {
+      platform: "all",
+      title: "Feed Relequen with light attacks",
+      body: "Arms of Relequen only pays out if you weave a light attack between every ability — its harmful-winds stacks, and a chunk of your damage, fall off the moment you stop. Keep Endless Hail and your bleeds rolling on the bow bar, then swap to the front bar and spend globals on your class hitter. Since hybridization, class abilities scale off whichever is higher of your Weapon or Spell Damage, so a full stamina setup loses nothing by slotting them.",
+    },
+    {
+      platform: "pc",
+      title: "Measuring your damage",
+      body: "Parse on the 21-million trial dummy with Combat Metrics and watch your Relequen and bleed uptimes — under 90% and you are leaving a lot on the floor.",
+      consoleAlternative:
+        "On console, time a kill on the 6-million skeleton in your house: comfortably under 90 seconds without dropping your rotation means your uptimes are where they need to be.",
+    },
+  ];
+}
+
 const authoredBuilds: Build[] = [
   /* ---------------- Dragonknight ---------------- */
   finalize({
@@ -1603,6 +1629,184 @@ const authoredBuilds: Build[] = [
     foodId: "food-bewitched-sugar-skulls",
     guidance: pvpGuidance(
       "Deadly Strike makes the Arcanist's channels hurt: Pragmatic Fatecarver becomes a real pressure and burst tool the moment you have three Crux. Build Crux with Runeblades and Runic Sunder, then angle the beam through a snared or CC'd target — Tentacular Dread sets that up. Spiteward of the Lucid Mind and Cruxweaver Armor are your defense; Cascading Fortune tops you between beams. Do not hard-cast Fatecarver in the open — bait a defensive first, then channel."
+    ),
+  }),
+
+  /* ---------------- Stamina DPS depth (dual-wield / bow) ---------------- */
+  finalize({
+    slug: "nightblade-stam-dps",
+    name: "Stamina Nightblade Trial DPS",
+    className: "nightblade",
+    subclassLines: ["nightblade/assassination", "nightblade/siphoning", "nightblade/shadow"],
+    role: "dps",
+    contentType: "trial",
+    gear: gearTemplate({
+      bodySet: "set-arms-of-relequen",
+      jewelrySet: "set-deadly-strike",
+      monsterSet: "set-slimecraw",
+      bodyTrait: "Divines",
+      jewelryTrait: "Bloodthirsty",
+      weaponTraitFront: "Nirnhoned",
+      weaponTraitBack: "Infused",
+      weight: "medium",
+    }),
+    frontBar: bar(
+      [
+        weaponSkill("dual-wield", "Flurry").id,
+        weaponSkill("dual-wield", "Twin Slashes").id,
+        classSkill("nightblade", "assassination", "Grim Focus").id,
+        classSkill("nightblade", "siphoning", "Cripple").id,
+        classSkill("nightblade", "assassination", "Assassin's Blade").id,
+      ],
+      classSkill("nightblade", "assassination", "Death Stroke").id
+    ),
+    backBar: bar(
+      [
+        weaponSkill("bow", "Volley").id,
+        classSkill("nightblade", "siphoning", "Siphoning Strikes").id,
+        classSkill("nightblade", "shadow", "Path of Darkness").id,
+        classSkill("nightblade", "shadow", "Shadow Cloak").id,
+        weaponSkill("fighters-guild", "Silver Bolts").id,
+      ],
+      weaponSkill("bow", "Rapid Fire").id
+    ),
+    cp: STAM_DPS_CP,
+    mundusId: "mundus-shadow",
+    foodId: "food-artaeum-takeaway-broth",
+    guidance: stamDpsGuidance(
+      "The stamina Nightblade is all pressure and weaving. Rapid Strikes is your spammable, Rending Slashes and Debilitate keep two bleeds ticking, and Relentless Focus builds a spectral bow you fire on cooldown for burst. Incapacitating Strike both executes and buffs your damage — hold it for the target's low-health window. Endless Hail on the bow bar is your only set-and-forget; everything else rewards active weaving."
+    ),
+  }),
+  finalize({
+    slug: "sorcerer-stam-dps",
+    name: "Stamina Sorcerer Trial DPS",
+    className: "sorcerer",
+    subclassLines: ["sorcerer/dark-magic", "sorcerer/storm-calling", "sorcerer/daedric-summoning"],
+    role: "dps",
+    contentType: "trial",
+    gear: gearTemplate({
+      bodySet: "set-arms-of-relequen",
+      jewelrySet: "set-briarheart",
+      monsterSet: "set-slimecraw",
+      bodyTrait: "Divines",
+      jewelryTrait: "Bloodthirsty",
+      weaponTraitFront: "Nirnhoned",
+      weaponTraitBack: "Infused",
+      weight: "medium",
+    }),
+    frontBar: bar(
+      [
+        classSkill("sorcerer", "dark-magic", "Crystal Shard").id,
+        weaponSkill("dual-wield", "Flurry").id,
+        weaponSkill("dual-wield", "Twin Slashes").id,
+        classSkill("sorcerer", "storm-calling", "Surge").id,
+        classSkill("sorcerer", "storm-calling", "Lightning Form").id,
+      ],
+      classSkill("sorcerer", "daedric-summoning", "Summon Storm Atronach").id
+    ),
+    backBar: bar(
+      [
+        weaponSkill("bow", "Volley").id,
+        classSkill("sorcerer", "daedric-summoning", "Daedric Curse").id,
+        classSkill("sorcerer", "daedric-summoning", "Conjured Ward").id,
+        classSkill("sorcerer", "dark-magic", "Encase").id,
+        weaponSkill("fighters-guild", "Silver Bolts").id,
+      ],
+      classSkill("sorcerer", "storm-calling", "Overload").id
+    ),
+    cp: STAM_DPS_CP,
+    mundusId: "mundus-shadow",
+    foodId: "food-artaeum-takeaway-broth",
+    guidance: stamDpsGuidance(
+      "Stamina Sorcerer trades the pet playstyle for raw weaving. Crystal Weapon is a hard-hitting stamina spammable that also shreds a little Resistance, Hurricane wraps you in a scaling area DoT, and Critical Surge turns your crits into self-healing so you can stay aggressive. Haunting Curse ticks in the background for free burst; keep Hardened Ward up when a mechanic is inbound and otherwise just weave."
+    ),
+  }),
+  finalize({
+    slug: "warden-stam-dps",
+    name: "Stamina Warden Trial DPS",
+    className: "warden",
+    subclassLines: ["warden/animal-companions", "warden/winters-embrace", "warden/green-balance"],
+    role: "dps",
+    contentType: "trial",
+    gear: gearTemplate({
+      bodySet: "set-arms-of-relequen",
+      jewelrySet: "set-whorl-of-the-depths",
+      monsterSet: "set-slimecraw",
+      bodyTrait: "Divines",
+      jewelryTrait: "Bloodthirsty",
+      weaponTraitFront: "Nirnhoned",
+      weaponTraitBack: "Infused",
+      weight: "medium",
+    }),
+    frontBar: bar(
+      [
+        classSkill("warden", "animal-companions", "Dive").id,
+        classSkill("warden", "animal-companions", "Scorch").id,
+        classSkill("warden", "animal-companions", "Betty Netch").id,
+        weaponSkill("dual-wield", "Flurry").id,
+        weaponSkill("dual-wield", "Twin Slashes").id,
+      ],
+      classSkill("warden", "animal-companions", "Feral Guardian").id
+    ),
+    backBar: bar(
+      [
+        weaponSkill("bow", "Volley").id,
+        classSkill("warden", "winters-embrace", "Impaling Shards").id,
+        classSkill("warden", "winters-embrace", "Arctic Wind").id,
+        classSkill("warden", "green-balance", "Living Vines").id,
+        weaponSkill("fighters-guild", "Silver Bolts").id,
+      ],
+      weaponSkill("bow", "Rapid Fire").id
+    ),
+    cp: STAM_DPS_CP,
+    mundusId: "mundus-shadow",
+    foodId: "food-artaeum-takeaway-broth",
+    guidance: stamDpsGuidance(
+      "Stamina Warden leans on its animals and the frost line. Cutting Dive is your spammable and applies a bleed, and Subterranean Assault is a delayed three-hit burst you pre-cast before the boss lands in range. Blue Betty keeps your resources honest, and the grizzly from Wild Guardian adds off-bar pressure while you weave the front bar."
+    ),
+  }),
+  finalize({
+    slug: "necromancer-stam-dps",
+    name: "Stamina Necromancer Trial DPS",
+    className: "necromancer",
+    subclassLines: ["necromancer/grave-lord", "necromancer/bone-tyrant", "necromancer/living-death"],
+    role: "dps",
+    contentType: "trial",
+    gear: gearTemplate({
+      bodySet: "set-arms-of-relequen",
+      jewelrySet: "set-deadly-strike",
+      monsterSet: "set-slimecraw",
+      bodyTrait: "Divines",
+      jewelryTrait: "Bloodthirsty",
+      weaponTraitFront: "Nirnhoned",
+      weaponTraitBack: "Infused",
+      weight: "medium",
+    }),
+    frontBar: bar(
+      [
+        classSkill("necromancer", "grave-lord", "Flame Skull").id,
+        classSkill("necromancer", "grave-lord", "Sacrificial Bones").id,
+        classSkill("necromancer", "grave-lord", "Boneyard").id,
+        weaponSkill("dual-wield", "Flurry").id,
+        weaponSkill("dual-wield", "Twin Slashes").id,
+      ],
+      classSkill("necromancer", "grave-lord", "Frozen Colossus").id
+    ),
+    backBar: bar(
+      [
+        weaponSkill("bow", "Volley").id,
+        classSkill("necromancer", "bone-tyrant", "Bone Armor").id,
+        classSkill("necromancer", "bone-tyrant", "Death Scythe").id,
+        classSkill("necromancer", "living-death", "Spirit Mender").id,
+        weaponSkill("fighters-guild", "Silver Bolts").id,
+      ],
+      weaponSkill("bow", "Rapid Fire").id
+    ),
+    cp: STAM_DPS_CP,
+    mundusId: "mundus-shadow",
+    foodId: "food-artaeum-takeaway-broth",
+    guidance: stamDpsGuidance(
+      "Stamina Necromancer is a burst-and-DoT weaver. Blighted Blastbones detonates for a big hit, Avid Boneyard lays down an area DoT plus a synergy for the group, and Venom Skull rounds out the rotation as your spammable. Beckoning Armor keeps Major Resolve up and drags runners back; Ruinous Scythe heals you as it cleaves. Pestilent Colossus is your burst-and-debuff ultimate — line it up with the group's."
     ),
   }),
 ];
