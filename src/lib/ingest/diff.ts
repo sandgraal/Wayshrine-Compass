@@ -16,7 +16,7 @@ import { buildEntityRefs } from "@/lib/entities";
 type AnyEntity = { id: string; name: string } & Record<string, unknown>;
 
 /** Fields that are metadata, not game-mechanical definition. */
-const IGNORED_FIELDS = new Set(["firstSeenPatch", "lastChangedPatch"]);
+const IGNORED_FIELDS = new Set(["firstSeenPatch", "lastChangedPatch", "gameId"]);
 
 function stable(value: unknown): string {
   if (value === null || typeof value !== "object") return JSON.stringify(value);
@@ -166,14 +166,18 @@ function detectRenames(
   const best = (score: (j: number) => number, n: number) => {
     let bi = -1;
     let bs = 0;
+    let tied = false;
     for (let j = 0; j < n; j++) {
       const s = score(j);
       if (s > bs) {
         bs = s;
         bi = j;
+        tied = false;
+      } else if (s === bs && bs > 0) {
+        tied = true;
       }
     }
-    return { i: bi, s: bs };
+    return { i: tied ? -1 : bi, s: bs };
   };
 
   const bestAddFor = remP.map((rp) => best((j) => renameScore(rp, addP[j]), addP.length));

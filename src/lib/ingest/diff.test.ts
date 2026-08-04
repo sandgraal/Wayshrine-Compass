@@ -338,6 +338,9 @@ describe("rename detection (synthetic)", () => {
   it("mutual-best-match: two removals cannot both claim one addition", () => {
     const prev = dataset("U49", [
       skillWith("skill-necromancer-grave-lord-strong", "Strong Match", {
+        // Morphs are a strict superset of successor's — Jaccard/overlap
+        // scores are identical for both candidates, so neither qualifies
+        // (tie → abstain).  A second test below covers the unambiguous case.
         morphs: ["Shared Morph", "Unique Extra"],
       }),
       skillWith("skill-necromancer-grave-lord-weak", "Weak Match", {
@@ -347,6 +350,30 @@ describe("rename detection (synthetic)", () => {
     const next = dataset("U50", [
       skillWith("skill-necromancer-grave-lord-successor", "Successor", {
         morphs: ["Shared Morph", "Unique Extra"],
+      }),
+    ]);
+    const report = diffDatasets(prev, next);
+    const byId = new Map(report.changes.map((c) => [c.entityId, c]));
+    // Tied scores → both candidates abstain (no arbitrary first-wins rename).
+    expect(byId.get("skill-necromancer-grave-lord-strong")?.kind).toBe("removed");
+    expect(byId.get("skill-necromancer-grave-lord-weak")?.kind).toBe("removed");
+    // The successor is emitted as a plain addition.
+    expect(byId.get("skill-necromancer-grave-lord-successor")?.kind).toBe("added");
+  });
+
+  it("mutual-best-match: unambiguous winner is paired, weaker candidate stays removed", () => {
+    const prev = dataset("U49", [
+      skillWith("skill-necromancer-grave-lord-strong", "Strong Match", {
+        // Shares a morph NOT present in weak → strictly higher morph overlap.
+        morphs: ["Shared Morph", "Exclusive Extra"],
+      }),
+      skillWith("skill-necromancer-grave-lord-weak", "Weak Match", {
+        morphs: ["Shared Morph", "Unrelated Morph"],
+      }),
+    ]);
+    const next = dataset("U50", [
+      skillWith("skill-necromancer-grave-lord-successor", "Successor", {
+        morphs: ["Shared Morph", "Exclusive Extra"],
       }),
     ]);
     const report = diffDatasets(prev, next);
