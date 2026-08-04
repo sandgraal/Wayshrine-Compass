@@ -201,9 +201,9 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
           <Card>
             <CardHeader>
               <CardTitle>Gear</CardTitle>
-              <CardDescription>Verified against {build.patchVerified}.</CardDescription>
+              <CardDescription>Gear layout, last reviewed for {build.patchVerified}.</CardDescription>
               <CardAction>
-                <Badge>Verified {build.patchVerified}</Badge>
+                <Badge variant="secondary">As of {build.patchVerified}</Badge>
               </CardAction>
             </CardHeader>
             <CardContent>

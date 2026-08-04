@@ -16,6 +16,23 @@ everything needed to move entity and content storage to Supabase Postgres for pr
    ```
 4. Copy `.env.example` → `.env.local` and fill in the URL and keys.
 
+## Pushing build changes (without touching entity tables)
+
+`scripts/seed-supabase.ts` is a **full** seed — it also overwrites the entity tables
+(`sets`, `skills`, `cp_stars`, …) from the smaller committed seed slice, so on a live project
+that has already ingested the U50 dataset it would clobber that data. To sync **only** the builds
+after editing `src/data/builds.ts`, use the builds-only script — it upserts `builds` and rebuilds
+the `build_entities` join (deleting + reinserting the join rows of exactly the builds it writes,
+so a renamed reference never leaves an orphan) and never touches the ingest-owned entity tables:
+
+```bash
+SUPABASE_URL=https://<ref>.supabase.co SUPABASE_SERVICE_ROLE_KEY=<key> \
+  npx tsx scripts/seed-builds.ts
+```
+
+Get the values from the Supabase dashboard (Settings → API keys); the service-role key is never
+committed or fetched by tooling.
+
 ## Read path
 
 `getDb()` in `src/lib/data/index.ts` serves the live database whenever

@@ -70,25 +70,23 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 - Pushes to a merged PR's branch trigger no checks; open a fresh PR for post-merge commits.
 - `main` is protected (PRs only). The repo is private; Actions works (CI workflow is on main).
 - Seed data `lastChangedPatch` values are hand-set to demo badge states (e.g. Crystal Shard
-  changed in U50 → sorcerer-dps shows amber). Keep tests in sync if changing them.
+  changed in U50 → sorcerer-dps shows amber; each class's core spammable is marked U50 to
+  reflect the "Class Mastery" overhaul). Keep tests in sync if changing them.
+- No build ships green: `finalize` in `src/data/builds.ts` stamps `patchVerified` below
+  `currentPatch` for every build (`PRIOR_PATCH` → amber when it references a U50-changed entity,
+  else `STALE_PATCH` → stale). Green ("verified") is reserved for the human /admin review, which
+  re-stamps to the current patch. `src/data/builds.test.ts` fails CI if any build computes to
+  verified or if a build references an id absent from `public/dataset/current.json`. Do not
+  "fix" amber/stale builds by stamping them to the current patch.
 
 ## Open work items (in rough priority order)
 
-(Done: real dataset source + `DATASET_URL`, service-role persistence, admin review workflow.)
+(Done: real dataset source + `DATASET_URL`, service-role persistence, admin review workflow,
+renamed-skill references, build-catalog expansion to 42 builds against the real catalog.)
 
-1. Renamed-skill build references: 4 seed skills no longer exist in the U50 dataset —
-   `fiery-breath`, `spiked-armor`, `stonefist` (dragonknight), `veiled-strike` (nightblade) —
-   so every build slotting them is amber with a "removed entity" reason. Blastbones was fixed
-   (seed renamed to Sacrificial Bones, morph-verified against the dataset), but these four
-   have no morph-verified successor in the dataset (candidates by line: dragonfire-breath,
-   burnished-scales, landslide, dark-veil — unconfirmed). Fixing means renaming/moving them in
-   `src/data/skills.ts` (build ids derive from skill names) and reseeding the live `builds`
-   rows (`scripts/seed-supabase.ts` or a targeted update).
-2. What Next card art from the user's generator (see memory: freshness icons landed, card art
+1. What Next card art from the user's generator (see memory: freshness icons landed, card art
    pending).
-3. DLC gating data for new sets — UESP's export has no DLC field, so `dlcRequired` is null
+2. DLC gating data for new sets — UESP's export has no DLC field, so `dlcRequired` is null
    for datamined sets; the What Next DLC-gate rules need another source.
-4. Builds expansion against the real catalog (the 28 seed builds only reference a slice of
-   the datamined sets/skills).
-5. Scribing (Grimoires/Scripts) and Class Mastery entities are not yet modeled in the schema.
+3. Scribing (Grimoires/Scripts) and Class Mastery entities are not yet modeled in the schema.
 6. Planner DPS estimation (explicitly deferred in the v1 spec).
