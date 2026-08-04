@@ -183,7 +183,7 @@ export default async function PatchTrackerPage() {
                   </p>
                   <ul className="mt-1.5 space-y-1.5 text-sm">
                     {group.items.map((item) => {
-                      const href = changeHref(item.entityType, item.entityId);
+const href = changeHref(item.entityType, item.renamedTo?.entityId ?? item.entityId);
                       return (
                         <li key={`${item.entityType}:${item.entityId}`}>
                           {href ? (
