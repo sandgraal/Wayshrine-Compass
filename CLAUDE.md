@@ -31,9 +31,11 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 
 ## Commands
 
-- `npm test` — vitest (167 tests; acceptance tests live next to their modules)
+- `npm test` — vitest (177 tests; acceptance tests live next to their modules)
 - `npm run lint` / `npm run build`
 - Seed a Supabase project: `scripts/seed-supabase.ts` (see supabase/README.md)
+- Scaffold new seed sets/skills from the artifact (correct-by-construction ids, tiers,
+  stats, morphs; passives refused): `npx tsx scripts/scaffold-entities.ts <set-id|skill-id> …`
 
 ## Environment / secrets state
 
@@ -84,6 +86,9 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
   each seed set exists in the artifact, its bonus **tier structure** matches, and every declared
   stat delta is named in its own effect text. Seed set numbers/wording are otherwise approximate
   by design (ingest reconciles), so do not add a seed-matches-artifact bonus-for-bonus test.
+  To add new sets/skills without tripping these guards, scaffold from the artifact with
+  `scripts/scaffold-entities.ts` (fills ids/tiers/stats/morphs, refuses passives, leaves prose
+  as TODOs) rather than hand-writing them.
 
 ## Open work items (in rough priority order)
 
