@@ -31,7 +31,7 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 
 ## Commands
 
-- `npm test` — vitest (132 tests; acceptance tests live next to their modules)
+- `npm test` — vitest (162 tests; acceptance tests live next to their modules)
 - `npm run lint` / `npm run build`
 - Seed a Supabase project: `scripts/seed-supabase.ts` (see supabase/README.md)
 
@@ -60,6 +60,12 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 
 ## Gotchas (learned the hard way)
 
+- Migration numbering: two files were both authored as `0004` on separate branches; the
+  scribing one is renamed `0005`, and `0006_ingest_apply_v4.sql` is the canonical
+  `ingest_apply` (scribing + game_id/supersessions + cp-star first_seen_patch). Any future
+  change to `ingest_apply` must start from 0006's body, and new migrations must check the
+  highest existing number ON MAIN, not the local branch.
+
 - This zsh applies history modifiers to `$VAR:r...` — `git push origin "$SHA:refs/..."`
   silently mangles; write the sha literally or use `${VAR}:refs/...`.
 - Turbopack drops the space between `</span>` and following text on the same JSX line — use
@@ -86,12 +92,14 @@ renamed-skill references, build-catalog expansion to 42 builds against the real 
 planner DPS estimation — `src/lib/planner/dps.ts` + `bonus-extract.ts`, surfaced in the
 Computed Stats rail as an explicit model with assumptions and a "not modeled" list,
 Scribing + Class Mastery entities — grimoires/scribing_scripts/class_mastery_lines tables,
-tracked freshness types, /skills Scribing section; migration 0004. Builds derive mastery_line
+tracked freshness types, /skills Scribing section; migration 0005. Builds derive mastery_line
 refs from subclassLines; grimoire/script refs come from the optional `scribedSkills` build
 field, which no build uses yet. Per-grimoire script combination text
 (`craftedScriptDescriptions`) is deliberately unmodeled.)
 
-1. What Next card art from the user's generator (see memory: freshness icons landed, card art
-   pending).
-2. DLC gating data for new sets — UESP's export has no DLC field, so `dlcRequired` is null
+1. DLC gating data for new sets — UESP's export has no DLC field, so `dlcRequired` is null
    for datamined sets; the What Next DLC-gate rules need another source.
+
+(What Next card art shipped — all 20 WebPs live in public/whatnext/. The broader improvement
+program of 2026-08 is tracked in the session plan + memory: freshness signal integrity, patch
+tracker rebuild, What Next check-off, entity art system, planner overhaul, de-AI pass.)

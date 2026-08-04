@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useSyncExternalStore } from "react";
 import type { Platform } from "@/lib/types";
-import { PLATFORM_COOKIE } from "@/lib/platform";
+import { PLATFORM_STORAGE_KEY } from "@/lib/platform";
 
 /**
  * Client-side platform mode (Phase 4), backed by localStorage via
@@ -21,7 +21,7 @@ let memoryValue: Platform | null = null;
 
 function readPlatform(): Platform {
   try {
-    const stored = localStorage.getItem(PLATFORM_COOKIE);
+    const stored = localStorage.getItem(PLATFORM_STORAGE_KEY);
     if (stored === "console" || stored === "pc") return stored;
   } catch {
     // fall through to the in-memory value
@@ -32,7 +32,7 @@ function readPlatform(): Platform {
 function writePlatform(p: Platform) {
   memoryValue = p;
   try {
-    localStorage.setItem(PLATFORM_COOKIE, p);
+    localStorage.setItem(PLATFORM_STORAGE_KEY, p);
   } catch {
     // storage unavailable; memoryValue carries the session
   }

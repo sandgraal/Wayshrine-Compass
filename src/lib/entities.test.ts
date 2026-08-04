@@ -54,7 +54,7 @@ describe("changedReferencedEntities", () => {
     const referenced = new Set(
       builds.flatMap((b) => buildEntityRefs(b).map((r) => `${r.entityType}:${r.entityId}`))
     );
-    const sourceByKey = new Map(
+    const sourceByKey = new Map<string, { lastChangedPatch: string }>(
       [
         ...sets.map((e) => ["set:" + e.id, e] as const),
         ...skills.map((e) => ["skill:" + e.id, e] as const),

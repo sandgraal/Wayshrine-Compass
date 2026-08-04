@@ -77,6 +77,7 @@ export function rowToCpStar(r: Row): CpStar {
     effect: effect.text ?? "",
     slottable: Boolean(r.slottable),
     gameId: (r.game_id as string | null) ?? undefined,
+    firstSeenPatch: String(r.first_seen_patch),
     lastChangedPatch: String(r.last_changed_patch),
   };
 }

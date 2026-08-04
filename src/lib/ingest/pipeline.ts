@@ -90,6 +90,7 @@ export function runIngest(
     const change = changed.get(`cp_star:${s.id}`);
     return {
       ...s,
+      firstSeenPatch: prev?.firstSeenPatch ?? stampPatch,
       lastChangedPatch: change ? stampPatch : prev?.lastChangedPatch ?? stampPatch,
     };
   });

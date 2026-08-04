@@ -48,7 +48,7 @@ async function allOptional(table: string): Promise<Record<string, unknown>[]> {
   }
 }
 
-/** Fetches the full entity database from Supabase. Dataset is small (~250 rows). */
+/** Fetches the full entity database from Supabase (~1,300 rows across all tables; the per-table .limit(2000) still clears the largest, sets at 641). */
 export async function fetchDbFromSupabase(): Promise<DbData> {
   const [patches, sets, skills, cpStars, grimoires, scripts, masteryLines, companions, zones, mundus, foods, builds, supersessions] =
     await Promise.all([

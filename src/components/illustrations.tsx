@@ -5,14 +5,6 @@ import type { ClassName } from "@/lib/types";
  * static mockup's illustrations.jsx — purely presentational, no game data.
  */
 
-const STARS = Array.from({ length: 34 }, (_, i) => ({
-  x: (i * 67 + 13) % 1200,
-  y: (i * 41 + 9) % 300,
-  r: (i % 3) + 0.6,
-  delay: ((i * 0.37) % 4).toFixed(2),
-}));
-const STONES = [0, 60, 120, 180, 240, 300];
-
 export function CompassMark({ className }: { className?: string }) {
   return (
     <svg
@@ -39,81 +31,6 @@ export function RuneDivider() {
         <circle cx="12" cy="12" r="2" fill="currentColor" stroke="none" />
       </svg>
     </div>
-  );
-}
-
-export function HeroScene({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 1200 640"
-      preserveAspectRatio="xMidYMax slice"
-      className={className}
-      role="img"
-      aria-label="Illustrated mountain landscape with a glowing wayshrine beneath twin moons"
-    >
-      <defs>
-        <linearGradient id="wcSky" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="oklch(0.11 0.02 260)" />
-          <stop offset="100%" stopColor="oklch(0.185 0.02 260)" />
-        </linearGradient>
-        <radialGradient id="wcGlow" cx="50%" cy="100%" r="65%">
-          <stop offset="0%" stopColor="oklch(0.82 0.13 85)" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="oklch(0.82 0.13 85)" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id="wcBeam" x1="0" y1="1" x2="0" y2="0">
-          <stop offset="0%" stopColor="oklch(0.82 0.13 85)" stopOpacity="0.6" />
-          <stop offset="100%" stopColor="oklch(0.82 0.13 85)" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <rect width="1200" height="640" fill="url(#wcSky)" />
-      {STARS.map((s, i) => (
-        <circle
-          key={i}
-          className="hero-star"
-          cx={s.x}
-          cy={s.y}
-          r={s.r}
-          fill="oklch(0.93 0.01 90)"
-          style={{ animationDelay: s.delay + "s" }}
-        />
-      ))}
-      <circle cx="985" cy="118" r="70" fill="oklch(0.9 0.02 90)" opacity="0.07" />
-      <circle cx="985" cy="118" r="42" fill="oklch(0.9 0.02 90)" opacity="0.92" />
-      <circle cx="885" cy="86" r="18" fill="oklch(0.82 0.13 85)" opacity="0.85" />
-      <polygon
-        points="0,420 150,300 320,382 460,258 600,358 760,268 900,372 1050,300 1200,398 1200,640 0,640"
-        fill="oklch(0.225 0.02 260)"
-      />
-      <polygon
-        points="0,482 200,362 380,442 540,330 720,432 880,342 1050,420 1200,360 1200,640 0,640"
-        fill="oklch(0.18 0.02 260)"
-      />
-      <rect x="555" y="0" width="90" height="640" fill="url(#wcGlow)" opacity="0.55" />
-      <polygon
-        points="0,560 250,470 470,540 660,452 900,540 1120,462 1200,522 1200,640 0,640"
-        fill="oklch(0.145 0.018 260)"
-      />
-      <g transform="translate(600,558)">
-        <rect x="-3.5" y="-190" width="7" height="190" fill="url(#wcBeam)" />
-        <ellipse cx="0" cy="4" rx="68" ry="13" fill="oklch(0.08 0.02 260)" opacity="0.55" />
-        {STONES.map((a, i) => (
-          <rect
-            key={i}
-            x="-4"
-            y="-46"
-            width="8"
-            height="46"
-            rx="2"
-            fill="oklch(0.26 0.02 260)"
-            stroke="oklch(0.32 0.02 260)"
-            strokeWidth="1"
-            transform={`rotate(${a}) translate(0,-30)`}
-          />
-        ))}
-        <circle cx="0" cy="-4" r="18" fill="oklch(0.82 0.13 85)" opacity="0.22" />
-        <circle cx="0" cy="-4" r="9" fill="oklch(0.82 0.13 85)" />
-      </g>
-    </svg>
   );
 }
 

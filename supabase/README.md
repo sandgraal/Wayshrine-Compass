@@ -8,9 +8,11 @@ everything needed to move entity and content storage to Supabase Postgres for pr
 1. Create a Supabase project (any name; `wayshrine-compass` suggested).
 2. Apply the schema: run every file in `migrations/` in order in the SQL editor (or
    `supabase db push` with the CLI). 0001 creates the entity tables, `builds`, the load-bearing
-   `build_entities` join table, `ingest_runs`, and public-read RLS policies; 0002/0004 install
-   the transactional `ingest_apply` function; 0003 the ingest-run summary view; 0004 also adds
-   the Scribing (`grimoires`, `scribing_scripts`) and `class_mastery_lines` tables.
+   `build_entities` join table, `ingest_runs`, and public-read RLS policies; 0003 the
+   ingest-run summary view; 0004 adds rename support (`game_id`, `entity_supersessions`);
+   0005 the Scribing (`grimoires`, `scribing_scripts`) and `class_mastery_lines` tables;
+   0006 is the canonical `ingest_apply` definition (it supersedes the bodies installed by
+   0002/0004/0005 and completes cp-star provenance).
 3. Seed from the committed dataset (idempotent upserts):
    ```bash
    SUPABASE_URL=https://<ref>.supabase.co SUPABASE_SERVICE_ROLE_KEY=<key> \
