@@ -91,8 +91,12 @@ export function WhatNextForm() {
 
   const set = <K extends keyof PlayerProfile>(key: K, value: PlayerProfile[K]) => {
     const next = { ...profile, [key]: value };
-    if (submitted) saveProfile(next);
-    setDraft(next);
+    if (submitted) {
+      saveProfile(next);
+      setDraft(null);
+    } else {
+      setDraft(next);
+    }
   };
 
   return (
@@ -243,7 +247,14 @@ export function WhatNextForm() {
                     </div>
                     <div className="flex shrink-0 flex-col gap-1.5">
                       <button
-                        onClick={() => markDone(action.id)}
+                        onClick={() => {
+                          markDone(action.id);
+                          const companionMatch = action.id.match(/^unlock-companion-(.+)$/);
+                          if (companionMatch) {
+                            const companionId = companionMatch[1];
+                            set("companionsOwned", [...new Set([...profile.companionsOwned, companionId])]);
+                          }
+                        }}
                         title="Mark as done"
                         className="inline-flex items-center gap-1 rounded-md border border-verified/40 px-2 py-1 text-xs text-verified hover:bg-verified/10"
                       >
