@@ -12,6 +12,7 @@ import { cpStars } from "@/data/cpStars";
 import { mundusStones } from "@/data/mundus";
 import { foods } from "@/data/food";
 import { computeStats, validateGear, validateSubclassLines } from "@/lib/planner/validate";
+import { DPS_MODEL, dpsAssumptions, estimateDps } from "@/lib/planner/dps";
 import { cn } from "@/lib/utils";
 import { ClassSigil } from "@/components/illustrations";
 import { CharacterPicker } from "./character-picker";
@@ -78,6 +79,20 @@ export function Planner({
     const food = foods.find((f) => f.id === state.foodId)?.stats ?? [];
     return computeStats(state.gear, setById, [mundus, food]);
   }, [state.gear, state.mundusId, state.foodId]);
+
+  const dps = useMemo(() => {
+    const slottedCp = [...state.cp.warfare, ...state.cp.fitness, ...state.cp.craft]
+      .map((id) => cpStars.find((s) => s.id === id))
+      .filter((s) => s !== undefined);
+    return estimateDps(stats.totals, [
+      ...stats.activeBonuses.map((b) => ({
+        source: `${b.setName} (${b.pieces}pc)`,
+        effect: b.effect,
+        structured: (b.stats?.length ?? 0) > 0,
+      })),
+      ...slottedCp.map((s) => ({ source: `${s.name} (CP)`, effect: s.effect })),
+    ]);
+  }, [stats, state.cp]);
 
   const availableSkills = useMemo(() => {
     const lineSet = new Set(state.lines);
@@ -444,6 +459,39 @@ export function Planner({
           <p className="mt-2 text-[11px] text-muted-foreground">
             Naked CP160 baseline + flat set/mundus/food bonuses. Percent and proc bonuses listed below.
           </p>
+
+          <div className="mt-3 border-t border-border pt-3">
+            <div className="flex items-baseline justify-between">
+              <span className="text-sm text-muted-foreground">Est. sustained DPS</span>
+              <span className="font-mono text-lg text-foreground">{dps.dps.toLocaleString()}</span>
+            </div>
+            <p className="mt-0.5 text-[11px] text-muted-foreground">
+              {dps.low.toLocaleString()}–{dps.high.toLocaleString()} · ±{Math.round(DPS_MODEL.errorBand * 100)}% —
+              model, not a parse
+            </p>
+            <details className="mt-2 text-[11px] text-muted-foreground">
+              <summary className="cursor-pointer select-none">Model assumptions</summary>
+              <ul className="mt-1 list-disc space-y-0.5 pl-4">
+                {dpsAssumptions().map((line, i) => (
+                  <li key={i}>{line}</li>
+                ))}
+              </ul>
+            </details>
+            {dps.notModeled.length > 0 && (
+              <details className="mt-1 text-[11px] text-muted-foreground">
+                <summary className="cursor-pointer select-none">
+                  Not modeled — contributes 0 ({dps.notModeled.length})
+                </summary>
+                <ul className="mt-1 list-disc space-y-0.5 pl-4">
+                  {dps.notModeled.map((b, i) => (
+                    <li key={i}>
+                      <span className="text-foreground">{b.source}</span> — {b.effect}
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            )}
+          </div>
         </section>
 
         <section className="rounded-lg border border-border bg-card p-4">

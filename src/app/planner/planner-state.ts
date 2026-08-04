@@ -113,6 +113,9 @@ export function sanitizeState(parsed: unknown): PlannerState | null {
     typeof v === "string" && skills.some((sk) => sk.id === v && sk.ultimate);
   const cpIn = (tree: CpTree) => (s: string) =>
     cpStars.some((c) => c.id === s && c.tree === tree && c.slottable);
+  // CP slots are a set — a crafted URL repeating one star id must not stack it
+  // (the DPS estimator would apply it up to four times). Dedupe before capping.
+  const cpTree = (v: unknown, tree: CpTree) => [...new Set(strings(v, cpIn(tree), 16))].slice(0, 4);
 
   const gear: GearAssignment[] = [];
   if (Array.isArray(o.gear)) {
@@ -146,9 +149,9 @@ export function sanitizeState(parsed: unknown): PlannerState | null {
       backUlt: isUlt(bar.backUlt) ? bar.backUlt : "",
     },
     cp: {
-      warfare: strings(cp.warfare, cpIn("warfare"), 4),
-      fitness: strings(cp.fitness, cpIn("fitness"), 4),
-      craft: strings(cp.craft, cpIn("craft"), 4),
+      warfare: cpTree(cp.warfare, "warfare"),
+      fitness: cpTree(cp.fitness, "fitness"),
+      craft: cpTree(cp.craft, "craft"),
     },
     mundusId:
       typeof o.mundusId === "string" && mundusStones.some((m) => m.id === o.mundusId)

@@ -31,7 +31,7 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 
 ## Commands
 
-- `npm test` — vitest (108 tests; acceptance tests live next to their modules)
+- `npm test` — vitest (132 tests; acceptance tests live next to their modules)
 - `npm run lint` / `npm run build`
 - Seed a Supabase project: `scripts/seed-supabase.ts` (see supabase/README.md)
 
@@ -75,6 +75,8 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 ## Open work items (in rough priority order)
 
 (Done: real dataset source + `DATASET_URL`, service-role persistence, admin review workflow,
+planner DPS estimation — `src/lib/planner/dps.ts` + `bonus-extract.ts`, surfaced in the
+Computed Stats rail as an explicit model with assumptions and a "not modeled" list,
 Scribing + Class Mastery entities — grimoires/scribing_scripts/class_mastery_lines tables,
 tracked freshness types, /skills Scribing section; migration 0004. Builds derive mastery_line
 refs from subclassLines; grimoire/script refs come from the optional `scribedSkills` build
@@ -95,4 +97,3 @@ field, which no build uses yet. Per-grimoire script combination text
    for datamined sets; the What Next DLC-gate rules need another source.
 4. Builds expansion against the real catalog (the 28 seed builds only reference a slice of
    the datamined sets/skills).
-5. Planner DPS estimation (explicitly deferred in the v1 spec).

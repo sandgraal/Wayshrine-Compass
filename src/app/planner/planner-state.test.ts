@@ -44,6 +44,18 @@ describe("planner state round-trip", () => {
     expect(sanitizeState(null)).toBeNull();
     expect(sanitizeState({ className: "bard" })).toBeNull();
   });
+
+  it("dedupes CP star ids so a crafted URL cannot stack one star", () => {
+    const s = {
+      ...defaultState(),
+      cp: {
+        warfare: ["cp-deadly-aim", "cp-deadly-aim", "cp-deadly-aim", "cp-master-at-arms"],
+        fitness: [],
+        craft: [],
+      },
+    };
+    expect(sanitizeState(s)?.cp.warfare).toEqual(["cp-deadly-aim", "cp-master-at-arms"]);
+  });
 });
 
 describe("remapPortrait", () => {
