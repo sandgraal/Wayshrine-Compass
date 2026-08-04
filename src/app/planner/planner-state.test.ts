@@ -11,6 +11,7 @@ import {
   remapPortrait,
   sanitizeState,
   stateFromBuild,
+  updateGearSlot,
 } from "./planner-state";
 
 /** Tables built from the seed catalog — the shapes the server passes down. */
@@ -137,5 +138,81 @@ describe("stateFromBuild", () => {
     expect(s?.portraitId).toBeDefined();
     // Must survive its own permalink round-trip (class always matches).
     expect(decodeState(encodeState(s!), seedTables)?.portraitId).toBe(s?.portraitId);
+  });
+});
+
+describe("gear slot editing", () => {
+  const forked = [
+    { slot: "head" as const, setId: "set-slimecraw", trait: "Divines", weight: "light" as const, enchant: "Maximum Magicka" },
+  ];
+
+  it("preserves weight and enchant across a trait change", () => {
+    const next = updateGearSlot(forked, "head", "set-slimecraw", "Infused");
+    expect(next).toEqual([
+      { slot: "head", setId: "set-slimecraw", trait: "Infused", weight: "light", enchant: "Maximum Magicka" },
+    ]);
+  });
+
+  it("preserves weight and enchant across a set change, and clears on empty", () => {
+    const swapped = updateGearSlot(forked, "head", "set-oakensoul-ring");
+    expect(swapped[0].weight).toBe("light");
+    expect(swapped[0].enchant).toBe("Maximum Magicka");
+    expect(updateGearSlot(forked, "head", "")).toEqual([]);
+  });
+
+  it("edited gear still round-trips the permalink", () => {
+    const s = { ...defaultState(), gear: updateGearSlot(forked, "head", "set-slimecraw", "Infused") };
+    expect(decodeState(encodeState(s), seedTables)?.gear).toEqual(s.gear);
+  });
+});
+
+describe("permalink codec safety", () => {
+  it("round-trips non-Latin-1 enchant text", () => {
+    const s = {
+      ...defaultState(),
+      gear: [{ slot: "head" as const, setId: "set-slimecraw", trait: "Divines", enchant: "Präzise ⚔ 魔力" }],
+    };
+    // The old btoa(JSON.stringify(...)) encoder threw here.
+    const decoded = decodeState(encodeState(s), seedTables);
+    expect(decoded?.gear[0].enchant).toBe("Präzise ⚔ 魔力");
+  });
+});
+
+describe("passive skills", () => {
+  const passiveTables = makeEntityTables({
+    sets,
+    skills: [
+      ...skills,
+      {
+        id: "skill-dragonknight-ardent-flame-combustion",
+        name: "Combustion",
+        className: "dragonknight",
+        line: "ardent-flame",
+        lineLabel: "Ardent Flame",
+        ultimate: false,
+        passive: true,
+        description: "",
+        morphs: [],
+        firstSeenPatch: "U50",
+        lastChangedPatch: "U50",
+      },
+    ],
+    cpStars,
+  });
+
+  it("rejects passives from bar slots in the sanitizer", () => {
+    const s = {
+      ...defaultState(),
+      className: "dragonknight" as const,
+      lines: ["dragonknight/ardent-flame"],
+      bar: {
+        front: ["skill-dragonknight-ardent-flame-combustion"],
+        frontUlt: "",
+        back: [],
+        backUlt: "",
+      },
+      cp: { warfare: [], fitness: [], craft: [] },
+    };
+    expect(sanitizeState(s, passiveTables)?.bar.front).toEqual([]);
   });
 });

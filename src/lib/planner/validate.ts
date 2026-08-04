@@ -1,9 +1,10 @@
 import type { GearAssignment, GearSet, StatDelta } from "@/lib/types";
+import { GEAR_SLOTS } from "@/lib/types";
+import { extractEffect } from "./bonus-extract";
 
 /** The slice of a set the validators and stat math read — callers may pass
  * full GearSets or the planner's slim shapes. */
 export type GearSetLike = Pick<GearSet, "id" | "name" | "type" | "bonuses" | "mythicSlot">;
-import { GEAR_SLOTS } from "@/lib/types";
 
 /**
  * Planner legality validation + stat computation (Phase 5).
@@ -198,8 +199,18 @@ export function computeStats(
     if (!set) continue;
     for (const bonus of set.bonuses) {
       if (bonus.pieces <= count) {
-        activeBonuses.push({ setName: set.name, pieces: bonus.pieces, effect: bonus.effect, stats: bonus.stats });
-        for (const delta of bonus.stats ?? []) {
+        // Datamined bonuses carry only tooltip text — recover unconditional
+        // flat deltas from it so the stats rail works on the live catalog,
+        // not just hand-structured seed bonuses. The parsed deltas ride along
+        // on the active-bonus entry, which also tells the DPS estimator the
+        // bonus is already folded into totals (no double count).
+        let stats = bonus.stats;
+        if (!stats || stats.length === 0) {
+          const extracted = extractEffect(bonus.effect);
+          if (extracted?.kind === "flat") stats = extracted.deltas;
+        }
+        activeBonuses.push({ setName: set.name, pieces: bonus.pieces, effect: bonus.effect, stats });
+        for (const delta of stats ?? []) {
           totals[delta.stat] += delta.amount;
         }
       }

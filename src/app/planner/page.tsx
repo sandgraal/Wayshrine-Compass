@@ -30,6 +30,7 @@ export default async function PlannerPage() {
     line: s.line,
     lineLabel: s.lineLabel,
     ultimate: s.ultimate,
+    passive: s.passive,
     firstSeenPatch: s.firstSeenPatch,
     lastChangedPatch: s.lastChangedPatch,
   }));

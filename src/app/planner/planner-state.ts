@@ -33,7 +33,7 @@ export type PlannerSet = Pick<
 >;
 export type PlannerSkill = Pick<
   Skill,
-  "id" | "name" | "className" | "line" | "lineLabel" | "ultimate" | "firstSeenPatch" | "lastChangedPatch"
+  "id" | "name" | "className" | "line" | "lineLabel" | "ultimate" | "passive" | "firstSeenPatch" | "lastChangedPatch"
 >;
 export type PlannerCpStar = Pick<
   CpStar,
@@ -138,16 +138,46 @@ export function remapPortrait(portraitId: string | undefined, className: ClassNa
   return portraitsMatching({ race: current.race, gender: current.gender, className })[0]?.id;
 }
 
+/**
+ * Permalink codec, UTF-8 safe: btoa/atob only handle Latin-1, and gear
+ * enchant text may carry any character, so the JSON goes through a byte
+ * round-trip. ASCII payloads produce byte-identical output to the old
+ * encoder, so pre-existing permalinks keep decoding.
+ */
 export function encodeState(s: PlannerState): string {
-  return encodeURIComponent(btoa(JSON.stringify(s)));
+  const bytes = new TextEncoder().encode(JSON.stringify(s));
+  let bin = "";
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return encodeURIComponent(btoa(bin));
 }
 
 export function decodeState(raw: string, tables: EntityTables): PlannerState | null {
   try {
-    return sanitizeState(JSON.parse(atob(decodeURIComponent(raw))), tables);
+    const bin = atob(decodeURIComponent(raw));
+    const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
+    return sanitizeState(JSON.parse(new TextDecoder().decode(bytes)), tables);
   } catch {
     return null;
   }
+}
+
+/**
+ * Replaces one gear slot's assignment, preserving fields the picker doesn't
+ * edit (weight, enchant) so a forked build's data survives a trait or set
+ * change. Clearing the set clears the slot entirely.
+ */
+export function updateGearSlot(
+  gear: GearAssignment[],
+  slot: GearSlot,
+  setId: string,
+  trait?: string
+): GearAssignment[] {
+  const existing = gear.find((g) => g.slot === slot);
+  const next = gear.filter((g) => g.slot !== slot);
+  if (setId) {
+    next.push({ ...existing, slot, setId, trait: trait ?? existing?.trait ?? "Divines" });
+  }
+  return next;
 }
 
 /**
@@ -169,7 +199,7 @@ export function sanitizeState(parsed: unknown, tables: EntityTables): PlannerSta
   const isLine = (s: string) => tables.lines.some((l) => l.id === s);
   const isActive = (s: string) => {
     const sk = tables.skillById.get(s);
-    return sk !== undefined && !sk.ultimate;
+    return sk !== undefined && !sk.ultimate && sk.passive !== true;
   };
   const isUlt = (v: unknown): v is string =>
     typeof v === "string" && tables.skillById.get(v)?.ultimate === true;

@@ -104,3 +104,47 @@ describe("planner validation", () => {
     }
   });
 });
+
+describe("computeStats with live-catalog bonuses (tooltip text only)", () => {
+  it("recovers flat deltas from bonus text when no structured stats exist", () => {
+    // Datamined shape: { pieces, effect } with no stats field, level-scaled range.
+    const liveSet = {
+      id: "set-live",
+      name: "Whorl of the Depths",
+      type: "trial" as const,
+      bonuses: [
+        { pieces: 2, effect: "Adds 25-1096 Maximum Magicka" },
+        { pieces: 3, effect: "Adds 15-657 Critical Chance" },
+      ],
+    };
+    const gear = [
+      { slot: "head" as const, setId: "set-live", trait: "Divines" },
+      { slot: "chest" as const, setId: "set-live", trait: "Divines" },
+      { slot: "legs" as const, setId: "set-live", trait: "Divines" },
+    ];
+    const { totals, activeBonuses } = computeStats(gear, new Map([["set-live", liveSet]]));
+    expect(totals.maxMagicka).toBe(12000 + 1096);
+    expect(totals.criticalChance).toBe(2190 + 657);
+    // Parsed deltas ride on the entry so the DPS estimator sees it as
+    // structured and never double-counts.
+    for (const b of activeBonuses) {
+      expect(b.stats && b.stats.length > 0).toBe(true);
+    }
+  });
+
+  it("leaves conditional live bonuses unparsed rather than guessing", () => {
+    const liveSet = {
+      id: "set-cond",
+      name: "Conditional",
+      type: "trial" as const,
+      bonuses: [{ pieces: 2, effect: "Adds 6-300 Weapon and Spell Damage while your Health is above 50%." }],
+    };
+    const gear = [
+      { slot: "head" as const, setId: "set-cond", trait: "Divines" },
+      { slot: "chest" as const, setId: "set-cond", trait: "Divines" },
+    ];
+    const { totals, activeBonuses } = computeStats(gear, new Map([["set-cond", liveSet]]));
+    expect(totals.weaponSpellDamage).toBe(1000);
+    expect(activeBonuses[0].stats ?? []).toEqual([]);
+  });
+});

@@ -26,6 +26,7 @@ import {
   remapPortrait,
   sanitizeState,
   stateFromBuild,
+  updateGearSlot,
 } from "./planner-state";
 
 const SLOT_LABEL: Record<GearSlot, string> = {
@@ -102,7 +103,12 @@ export function Planner({
 
   const availableSkills = useMemo(() => {
     const lineSet = new Set(state.lines);
-    return tables.skills.filter((s) => s.className === null || lineSet.has(`${s.className}/${s.line}`));
+    return tables.skills
+      .filter(
+        (s) =>
+          s.passive !== true && (s.className === null || lineSet.has(`${s.className}/${s.line}`))
+      )
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [state.lines, tables]);
 
   // Gear dropdown groups, one <optgroup> per set type. Sets arrive sorted by
@@ -115,6 +121,9 @@ export function Planner({
       group.push(s);
       byType.set(s.type, group);
     }
+    // The facade returns source order (the Supabase query has no ORDER BY) —
+    // sort every group so the native picker stays scannable.
+    for (const group of byType.values()) group.sort((a, b) => a.name.localeCompare(b.name));
     const rank = (t: string) => {
       const i = order.indexOf(t);
       return i === -1 ? order.length : i;
@@ -148,11 +157,7 @@ export function Planner({
   };
 
   const setGearSlot = (slot: GearSlot, setId: string, trait?: string) => {
-    setState((s) => {
-      const gear = s.gear.filter((g) => g.slot !== slot);
-      if (setId) gear.push({ slot, setId, trait: trait ?? s.gear.find((g) => g.slot === slot)?.trait ?? "Divines" });
-      return { ...s, gear };
-    });
+    setState((s) => ({ ...s, gear: updateGearSlot(s.gear, slot, setId, trait) }));
     setCopied(false);
   };
 
@@ -334,6 +339,7 @@ export function Planner({
                 <div className="flex flex-wrap gap-1">
                   {tables.cpStars
                     .filter((s) => s.tree === tree && s.slottable)
+                    .sort((a, b) => a.name.localeCompare(b.name))
                     .map((s) => {
                       const active = state.cp[tree].includes(s.id);
                       return (
