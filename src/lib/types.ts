@@ -103,6 +103,12 @@ export interface Skill {
   lineLabel: string; // e.g. "Storm Calling"
   name: string;
   ultimate: boolean;
+  /**
+   * True for passive abilities, which can never be slotted on a bar — the
+   * planner's pickers and permalink sanitizer filter on this. Optional: the
+   * hand-authored seed contains no passives and omits it.
+   */
+  passive?: boolean;
   description: string;
   morphs: SkillMorph[];
   /**

@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { db } from "@/lib/data";
 import { buildEntityRefs } from "@/lib/entities";
 import { builds } from "./builds";
+import { skillById as seedSkillById } from "./skills";
 
 /**
  * The live game data the daily ingest diffs against. Build references must be a
@@ -13,15 +14,18 @@ import { builds } from "./builds";
  * build. Mundus stones and food are not part of the dataset (or the freshness
  * `tracks` set), so this guards the tracked types only: set, skill, cp_star.
  */
+type DatasetSkill = { id: string; ultimate?: boolean; morphs?: unknown[] };
 const dataset = JSON.parse(
   readFileSync(resolve(process.cwd(), "public/dataset/current.json"), "utf8")
-) as { sets: { id: string }[]; skills: { id: string }[]; cpStars: { id: string }[] };
+) as { sets: { id: string }[]; skills: DatasetSkill[]; cpStars: { id: string }[] };
 
 const datasetIds: Record<"set" | "skill" | "cp_star", Set<string>> = {
   set: new Set(dataset.sets.map((s) => s.id)),
   skill: new Set(dataset.skills.map((s) => s.id)),
   cp_star: new Set(dataset.cpStars.map((s) => s.id)),
 };
+
+const datasetSkillById = new Map(dataset.skills.map((s) => [s.id, s]));
 
 describe("build references vs the live dataset", () => {
   it("every tracked (set/skill/cp_star) reference exists in public/dataset/current.json", () => {
@@ -60,5 +64,43 @@ describe("no seed build ships pre-verified", () => {
     for (const build of builds) {
       expect(build.patchVerified).not.toBe(db.currentPatch);
     }
+  });
+});
+
+describe("no build slots a passive", () => {
+  // The datamined skill list mixes actives, ultimates, and passives. A passive
+  // has no morphs and is not an ultimate — it cannot be placed on an ability
+  // bar. The seed treats every non-ultimate skill as slottable, so an authoring
+  // mistake (modeling a passive as an active) would silently put an un-slottable
+  // skill on a bar. Guard against it by checking the dataset's own shape.
+  const isSlottable = (s?: DatasetSkill) =>
+    !!s && (s.ultimate === true || (Array.isArray(s.morphs) && s.morphs.length > 0));
+
+  it("every bar slot holds an active or ultimate (never a morph-less passive)", () => {
+    const offenders: string[] = [];
+    for (const build of builds) {
+      for (const [label, slot] of [["front", build.frontBar], ["back", build.backBar]] as const) {
+        for (const id of slot.skills) {
+          if (!isSlottable(datasetSkillById.get(id))) offenders.push(`${build.slug} ${label} → ${id}`);
+        }
+        if (!isSlottable(datasetSkillById.get(slot.ultimate))) {
+          offenders.push(`${build.slug} ${label} ultimate → ${slot.ultimate}`);
+        }
+      }
+    }
+    expect(offenders, `these bar slots hold a passive (no morphs) skill:\n${offenders.join("\n")}`).toEqual([]);
+  });
+
+  it("every ultimate slot holds a skill the seed models as an ultimate", () => {
+    // Checked against the seed's own model: the datamined artifact does not
+    // flag weapon-line ultimates (e.g. Elemental Storm) with ultimate=true, so
+    // this guards the build's internal consistency, not the artifact's flag.
+    const offenders: string[] = [];
+    for (const build of builds) {
+      for (const slot of [build.frontBar, build.backBar]) {
+        if (!seedSkillById.get(slot.ultimate)?.ultimate) offenders.push(`${build.slug} → ${slot.ultimate}`);
+      }
+    }
+    expect(offenders, `these ultimate slots are not modeled as ultimates:\n${offenders.join("\n")}`).toEqual([]);
   });
 });

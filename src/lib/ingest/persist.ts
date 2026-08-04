@@ -68,6 +68,7 @@ export async function persistIngest(
       line_label: s.lineLabel,
       name: s.name,
       ultimate: s.ultimate,
+      passive: s.passive ?? false,
       description: s.description,
       morphs: s.morphs,
       game_id: s.gameId ?? null,

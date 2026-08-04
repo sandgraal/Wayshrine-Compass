@@ -1,8 +1,5 @@
-import type { ClassName, CpTree, GearAssignment, GearSlot } from "@/lib/types";
+import type { ClassName, CpStar, CpTree, GearAssignment, GearSet, GearSlot, Skill } from "@/lib/types";
 import { ALL_CLASSES, GEAR_SLOTS } from "@/lib/types";
-import { sets } from "@/data/sets";
-import { skills } from "@/data/skills";
-import { cpStars } from "@/data/cpStars";
 import { mundusStones } from "@/data/mundus";
 import { foods } from "@/data/food";
 import { buildBySlug } from "@/data/builds";
@@ -13,9 +10,74 @@ import { portraitById, portraitForBuild, portraitsMatching } from "@/lib/portrai
  * exclusively in the `?b=` query param, so every field added here must also be
  * rebuilt in `sanitizeState` — anything the sanitizer doesn't copy silently
  * vanishes on permalink round-trip.
+ *
+ * Entity data is NOT imported statically: the planner works against whatever
+ * the active data facade served (Supabase's full catalog when configured,
+ * seed otherwise), passed down from the server as slim `PlannerEntities`.
+ * Mundus stones and foods stay static — 13 + 5 rows, identical across
+ * sources.
  */
 
 export const TRAITS = ["Divines", "Sturdy", "Training", "Infused", "Bloodthirsty", "Arcane", "Robust", "Precise", "Defending", "Powered", "Nirnhoned", "Charged", "Sharpened"];
+
+/**
+ * The slices of each entity the planner actually consumes. Skills drop
+ * `description` and `morphs` (the bulk of the serialized payload — the
+ * planner never renders either); CP stars keep `effect` because the DPS
+ * estimator parses it. Provenance stamps ride along for the freshness
+ * preview.
+ */
+export type PlannerSet = Pick<
+  GearSet,
+  "id" | "name" | "type" | "source" | "dlcRequired" | "bonuses" | "mythicSlot" | "firstSeenPatch" | "lastChangedPatch"
+>;
+export type PlannerSkill = Pick<
+  Skill,
+  "id" | "name" | "className" | "line" | "lineLabel" | "ultimate" | "passive" | "firstSeenPatch" | "lastChangedPatch"
+>;
+export type PlannerCpStar = Pick<
+  CpStar,
+  "id" | "name" | "tree" | "slottable" | "effect" | "firstSeenPatch" | "lastChangedPatch"
+>;
+
+export interface PlannerEntities {
+  sets: PlannerSet[];
+  skills: PlannerSkill[];
+  cpStars: PlannerCpStar[];
+}
+
+/** Lookup tables the client builds once from the passed entities. */
+export interface EntityTables {
+  sets: PlannerSet[];
+  skills: PlannerSkill[];
+  cpStars: PlannerCpStar[];
+  setById: Map<string, PlannerSet>;
+  skillById: Map<string, PlannerSkill>;
+  cpStarById: Map<string, PlannerCpStar>;
+  /** Every "class/line" pair present in the skill data, with a display label. */
+  lines: { id: string; label: string }[];
+}
+
+export function makeEntityTables(entities: PlannerEntities): EntityTables {
+  const seen = new Map<string, string>();
+  for (const s of entities.skills) {
+    if (s.className) {
+      seen.set(
+        `${s.className}/${s.line}`,
+        `${s.className[0].toUpperCase()}${s.className.slice(1)} — ${s.lineLabel}`
+      );
+    }
+  }
+  return {
+    sets: entities.sets,
+    skills: entities.skills,
+    cpStars: entities.cpStars,
+    setById: new Map(entities.sets.map((s) => [s.id, s])),
+    skillById: new Map(entities.skills.map((s) => [s.id, s])),
+    cpStarById: new Map(entities.cpStars.map((s) => [s.id, s])),
+    lines: [...seen.entries()].map(([id, label]) => ({ id, label })),
+  };
+}
 
 export interface PlannerState {
   className: ClassName;
@@ -29,16 +91,6 @@ export interface PlannerState {
   portraitId?: string;
 }
 
-export const setById = new Map(sets.map((s) => [s.id, s]));
-
-export const allLines = (() => {
-  const seen = new Map<string, string>();
-  for (const s of skills) {
-    if (s.className) seen.set(`${s.className}/${s.line}`, `${s.className[0].toUpperCase()}${s.className.slice(1)} — ${s.lineLabel}`);
-  }
-  return [...seen.entries()].map(([id, label]) => ({ id, label }));
-})();
-
 export function defaultState(): PlannerState {
   return {
     className: "sorcerer",
@@ -51,6 +103,13 @@ export function defaultState(): PlannerState {
   };
 }
 
+/**
+ * Fork a published (seed) build into a draft. Entity ids derive from names,
+ * so seed references resolve identically in the live catalog; callers pass
+ * the result through `sanitizeState` with the active tables so anything the
+ * current catalog no longer contains (e.g. a renamed skill) drops instead of
+ * lingering as a dead reference.
+ */
 export function stateFromBuild(slug: string): PlannerState | null {
   const b = buildBySlug.get(slug);
   if (!b) return null;
@@ -79,24 +138,54 @@ export function remapPortrait(portraitId: string | undefined, className: ClassNa
   return portraitsMatching({ race: current.race, gender: current.gender, className })[0]?.id;
 }
 
+/**
+ * Permalink codec, UTF-8 safe: btoa/atob only handle Latin-1, and gear
+ * enchant text may carry any character, so the JSON goes through a byte
+ * round-trip. ASCII payloads produce byte-identical output to the old
+ * encoder, so pre-existing permalinks keep decoding.
+ */
 export function encodeState(s: PlannerState): string {
-  return encodeURIComponent(btoa(JSON.stringify(s)));
+  const bytes = new TextEncoder().encode(JSON.stringify(s));
+  let bin = "";
+  for (const b of bytes) bin += String.fromCharCode(b);
+  return encodeURIComponent(btoa(bin));
 }
 
-export function decodeState(raw: string): PlannerState | null {
+export function decodeState(raw: string, tables: EntityTables): PlannerState | null {
   try {
-    return sanitizeState(JSON.parse(atob(decodeURIComponent(raw))));
+    const bin = atob(decodeURIComponent(raw));
+    const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
+    return sanitizeState(JSON.parse(new TextDecoder().decode(bytes)), tables);
   } catch {
     return null;
   }
 }
 
 /**
- * The `b` query param is user-controlled input. Rebuild a well-formed state
- * from it, keeping only ids that exist in the entity database — a crafted
- * URL must degrade to a partial build, never crash the page.
+ * Replaces one gear slot's assignment, preserving fields the picker doesn't
+ * edit (weight, enchant) so a forked build's data survives a trait or set
+ * change. Clearing the set clears the slot entirely.
  */
-export function sanitizeState(parsed: unknown): PlannerState | null {
+export function updateGearSlot(
+  gear: GearAssignment[],
+  slot: GearSlot,
+  setId: string,
+  trait?: string
+): GearAssignment[] {
+  const existing = gear.find((g) => g.slot === slot);
+  const next = gear.filter((g) => g.slot !== slot);
+  if (setId) {
+    next.push({ ...existing, slot, setId, trait: trait ?? existing?.trait ?? "Divines" });
+  }
+  return next;
+}
+
+/**
+ * The `b` query param is user-controlled input. Rebuild a well-formed state
+ * from it, keeping only ids that exist in the active entity tables — a
+ * crafted URL must degrade to a partial build, never crash the page.
+ */
+export function sanitizeState(parsed: unknown, tables: EntityTables): PlannerState | null {
   if (!parsed || typeof parsed !== "object") return null;
   const o = parsed as Record<string, unknown>;
   const className = o.className as ClassName;
@@ -107,12 +196,17 @@ export function sanitizeState(parsed: unknown): PlannerState | null {
       ? v.filter((x): x is string => typeof x === "string" && keep(x)).slice(0, max)
       : [];
 
-  const isLine = (s: string) => allLines.some((l) => l.id === s);
-  const isActive = (s: string) => skills.some((sk) => sk.id === s && !sk.ultimate);
+  const isLine = (s: string) => tables.lines.some((l) => l.id === s);
+  const isActive = (s: string) => {
+    const sk = tables.skillById.get(s);
+    return sk !== undefined && !sk.ultimate && sk.passive !== true;
+  };
   const isUlt = (v: unknown): v is string =>
-    typeof v === "string" && skills.some((sk) => sk.id === v && sk.ultimate);
-  const cpIn = (tree: CpTree) => (s: string) =>
-    cpStars.some((c) => c.id === s && c.tree === tree && c.slottable);
+    typeof v === "string" && tables.skillById.get(v)?.ultimate === true;
+  const cpIn = (tree: CpTree) => (s: string) => {
+    const c = tables.cpStarById.get(s);
+    return c !== undefined && c.tree === tree && c.slottable;
+  };
   // CP slots are a set — a crafted URL repeating one star id must not stack it
   // (the DPS estimator would apply it up to four times). Dedupe before capping.
   const cpTree = (v: unknown, tree: CpTree) => [...new Set(strings(v, cpIn(tree), 16))].slice(0, 4);
@@ -124,10 +218,24 @@ export function sanitizeState(parsed: unknown): PlannerState | null {
       const g = raw as Record<string, unknown>;
       const slot = g.slot as GearSlot;
       if (!GEAR_SLOTS.includes(slot)) continue;
-      if (typeof g.setId !== "string" || !setById.has(g.setId)) continue;
+      if (typeof g.setId !== "string" || !tables.setById.has(g.setId)) continue;
       if (gear.some((existing) => existing.slot === slot)) continue;
       const trait = typeof g.trait === "string" && TRAITS.includes(g.trait) ? g.trait : "Divines";
-      gear.push({ slot, setId: g.setId, trait });
+      // Optional fields a forked build carries: dropping them here would
+      // silently strip armor weights from shared permalinks.
+      const weight =
+        g.weight === "light" || g.weight === "medium" || g.weight === "heavy" ? g.weight : undefined;
+      const enchant =
+        typeof g.enchant === "string" && g.enchant.length > 0 && g.enchant.length <= 80
+          ? g.enchant
+          : undefined;
+      gear.push({
+        slot,
+        setId: g.setId,
+        trait,
+        ...(weight ? { weight } : {}),
+        ...(enchant ? { enchant } : {}),
+      });
     }
   }
 

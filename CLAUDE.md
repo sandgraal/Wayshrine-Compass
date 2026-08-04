@@ -31,9 +31,11 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 
 ## Commands
 
-- `npm test` — vitest (162 tests; acceptance tests live next to their modules)
+- `npm test` — vitest (185 tests; acceptance tests live next to their modules)
 - `npm run lint` / `npm run build`
 - Seed a Supabase project: `scripts/seed-supabase.ts` (see supabase/README.md)
+- Scaffold new seed sets/skills from the artifact (correct-by-construction ids, tiers,
+  stats, morphs; passives refused): `npx tsx scripts/scaffold-entities.ts <set-id|skill-id> …`
 
 ## Environment / secrets state
 
@@ -84,6 +86,15 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
   re-stamps to the current patch. `src/data/builds.test.ts` fails CI if any build computes to
   verified or if a build references an id absent from `public/dataset/current.json`. Do not
   "fix" amber/stale builds by stamping them to the current patch.
+- Authoring guards (added after a review caught real mistakes): `builds.test.ts` also fails if a
+  build slots a **passive** (a dataset skill with no morphs that is not an ultimate — the
+  datamined skill list mixes passives in, so a name match is not enough). `sets.test.ts` checks
+  each seed set exists in the artifact, its bonus **tier structure** matches, and every declared
+  stat delta is named in its own effect text. Seed set numbers/wording are otherwise approximate
+  by design (ingest reconciles), so do not add a seed-matches-artifact bonus-for-bonus test.
+  To add new sets/skills without tripping these guards, scaffold from the artifact with
+  `scripts/scaffold-entities.ts` (fills ids/tiers/stats/morphs, refuses passives, leaves prose
+  as TODOs) rather than hand-writing them.
 
 ## Open work items (in rough priority order)
 

@@ -3,12 +3,9 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { AlertCircle, Check, Link2 } from "lucide-react";
-import type { CpStar, GearSet, GearSlot, Skill } from "@/lib/types";
+import type { GearSlot } from "@/lib/types";
 import { ALL_CLASSES, GEAR_SLOTS } from "@/lib/types";
 import { computeFreshnessPreview } from "./freshness-preview";
-import { sets } from "@/data/sets";
-import { skills } from "@/data/skills";
-import { cpStars } from "@/data/cpStars";
 import { mundusStones } from "@/data/mundus";
 import { foods } from "@/data/food";
 import { computeStats, validateGear, validateSubclassLines } from "@/lib/planner/validate";
@@ -17,15 +14,19 @@ import { cn } from "@/lib/utils";
 import { ClassSigil } from "@/components/illustrations";
 import { CharacterPicker } from "./character-picker";
 import {
+  type PlannerCpStar,
+  type PlannerSet,
+  type PlannerSkill,
   type PlannerState,
   TRAITS,
-  allLines,
   decodeState,
   defaultState,
   encodeState,
+  makeEntityTables,
   remapPortrait,
-  setById,
+  sanitizeState,
   stateFromBuild,
+  updateGearSlot,
 } from "./planner-state";
 
 const SLOT_LABEL: Record<GearSlot, string> = {
@@ -41,24 +42,30 @@ export function Planner({
   liveCpStars,
 }: {
   currentPatch: string;
-  /** The active data facade's sets/skills/CP stars (Supabase when configured, seed otherwise) —
-   * used for the freshness preview so its "changed this patch" check reads from the same source
-   * as `currentPatch`, instead of always the statically-imported seed data used for the rest of
-   * the planner's dropdowns and legality checks. */
-  liveSets: GearSet[];
-  liveSkills: Skill[];
-  liveCpStars: CpStar[];
+  /** The active data facade's catalog (Supabase when configured, seed otherwise),
+   * slimmed server-side to the fields the planner reads. Every picker, legality
+   * check, permalink sanitizer, and the freshness preview run against this one
+   * source — the planner shows the same catalog /sets does. */
+  liveSets: PlannerSet[];
+  liveSkills: PlannerSkill[];
+  liveCpStars: PlannerCpStar[];
 }) {
   const searchParams = useSearchParams();
+  const tables = useMemo(
+    () => makeEntityTables({ sets: liveSets, skills: liveSkills, cpStars: liveCpStars }),
+    [liveSets, liveSkills, liveCpStars]
+  );
   const [state, setState] = useState<PlannerState>(() => {
     const encoded = searchParams.get("b");
     if (encoded) {
-      const decoded = decodeState(encoded);
+      const decoded = decodeState(encoded, tables);
       if (decoded) return decoded;
     }
     const from = searchParams.get("from");
     if (from) {
-      const forked = stateFromBuild(from);
+      // Seed-build fork, re-validated against the active catalog so ids the
+      // catalog no longer contains drop instead of lingering as dead refs.
+      const forked = sanitizeState(stateFromBuild(from), tables);
       if (forked) return forked;
     }
     return defaultState();
@@ -68,21 +75,21 @@ export function Planner({
   const issues = useMemo(
     () => [
       ...validateSubclassLines(state.className, state.lines),
-      ...validateGear(state.gear, setById),
-      ...validateBarLines(state),
+      ...validateGear(state.gear, tables.setById),
+      ...validateBarLines(state, tables.skillById),
     ],
-    [state]
+    [state, tables]
   );
 
   const stats = useMemo(() => {
     const mundus = mundusStones.find((m) => m.id === state.mundusId)?.stats ?? [];
     const food = foods.find((f) => f.id === state.foodId)?.stats ?? [];
-    return computeStats(state.gear, setById, [mundus, food]);
-  }, [state.gear, state.mundusId, state.foodId]);
+    return computeStats(state.gear, tables.setById, [mundus, food]);
+  }, [state.gear, state.mundusId, state.foodId, tables]);
 
   const dps = useMemo(() => {
     const slottedCp = [...state.cp.warfare, ...state.cp.fitness, ...state.cp.craft]
-      .map((id) => cpStars.find((s) => s.id === id))
+      .map((id) => tables.cpStarById.get(id))
       .filter((s) => s !== undefined);
     return estimateDps(stats.totals, [
       ...stats.activeBonuses.map((b) => ({
@@ -92,12 +99,37 @@ export function Planner({
       })),
       ...slottedCp.map((s) => ({ source: `${s.name} (CP)`, effect: s.effect })),
     ]);
-  }, [stats, state.cp]);
+  }, [stats, state.cp, tables]);
 
   const availableSkills = useMemo(() => {
     const lineSet = new Set(state.lines);
-    return skills.filter((s) => s.className === null || lineSet.has(`${s.className}/${s.line}`));
-  }, [state.lines]);
+    return tables.skills
+      .filter(
+        (s) =>
+          s.passive !== true && (s.className === null || lineSet.has(`${s.className}/${s.line}`))
+      )
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [state.lines, tables]);
+
+  // Gear dropdown groups, one <optgroup> per set type. Sets arrive sorted by
+  // name from the facade; group order is fixed for scanability.
+  const setTypes = useMemo(() => {
+    const order = ["crafted", "overland", "dungeon", "trial", "arena", "pvp", "monster", "mythic"];
+    const byType = new Map<string, PlannerSet[]>();
+    for (const s of tables.sets) {
+      const group = byType.get(s.type) ?? [];
+      group.push(s);
+      byType.set(s.type, group);
+    }
+    // The facade returns source order (the Supabase query has no ORDER BY) —
+    // sort every group so the native picker stays scannable.
+    for (const group of byType.values()) group.sort((a, b) => a.name.localeCompare(b.name));
+    const rank = (t: string) => {
+      const i = order.indexOf(t);
+      return i === -1 ? order.length : i;
+    };
+    return [...byType.entries()].sort(([a], [b]) => rank(a) - rank(b));
+  }, [tables]);
 
   /**
    * Live freshness preview: any currently-slotted set, skill, or CP star that
@@ -105,10 +137,6 @@ export function Planner({
    * flags this draft, same conditions the real db.freshness() engine applies
    * to a saved Build, just evaluated against in-progress planner state.
    */
-  const liveSetById = useMemo(() => new Map(liveSets.map((s) => [s.id, s])), [liveSets]);
-  const liveSkillById = useMemo(() => new Map(liveSkills.map((s) => [s.id, s])), [liveSkills]);
-  const liveCpStarById = useMemo(() => new Map(liveCpStars.map((s) => [s.id, s])), [liveCpStars]);
-
   const preview = useMemo(
     () =>
       computeFreshnessPreview(
@@ -117,10 +145,10 @@ export function Planner({
           skillIds: [...state.bar.front, state.bar.frontUlt, ...state.bar.back, state.bar.backUlt].filter(Boolean),
           cpStarIds: [...state.cp.warfare, ...state.cp.fitness, ...state.cp.craft],
         },
-        { setById: liveSetById, skillById: liveSkillById, cpStarById: liveCpStarById },
+        { setById: tables.setById, skillById: tables.skillById, cpStarById: tables.cpStarById },
         currentPatch
       ),
-    [state.gear, state.bar, state.cp, currentPatch, liveSetById, liveSkillById, liveCpStarById]
+    [state.gear, state.bar, state.cp, currentPatch, tables]
   );
 
   const update = (patch: Partial<PlannerState>) => {
@@ -129,11 +157,7 @@ export function Planner({
   };
 
   const setGearSlot = (slot: GearSlot, setId: string, trait?: string) => {
-    setState((s) => {
-      const gear = s.gear.filter((g) => g.slot !== slot);
-      if (setId) gear.push({ slot, setId, trait: trait ?? s.gear.find((g) => g.slot === slot)?.trait ?? "Divines" });
-      return { ...s, gear };
-    });
+    setState((s) => ({ ...s, gear: updateGearSlot(s.gear, slot, setId, trait) }));
     setCopied(false);
   };
 
@@ -172,7 +196,7 @@ export function Planner({
                 onClick={() =>
                   update({
                     className: c,
-                    lines: allLines.filter((l) => l.id.startsWith(`${c}/`)).map((l) => l.id).slice(0, 3),
+                    lines: tables.lines.filter((l) => l.id.startsWith(`${c}/`)).map((l) => l.id).slice(0, 3),
                     bar: { front: [], frontUlt: "", back: [], backUlt: "" },
                     portraitId: remapPortrait(state.portraitId, c),
                   })
@@ -200,7 +224,7 @@ export function Planner({
                 }}
                 className="rounded-md border border-input bg-secondary px-2 py-1.5 text-sm"
               >
-                {allLines.map((l) => (
+                {tables.lines.map((l) => (
                   <option key={l.id} value={l.id}>
                     {l.label}
                   </option>
@@ -228,11 +252,14 @@ export function Planner({
                     className="min-w-0 rounded-md border border-input bg-secondary px-2 py-1 text-xs"
                   >
                     <option value="">— empty —</option>
-                    {sets.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.name}
-                        {s.type === "mythic" ? " (Mythic)" : s.type === "monster" ? " (Monster)" : ""}
-                      </option>
+                    {setTypes.map(([type, group]) => (
+                      <optgroup key={type} label={type[0].toUpperCase() + type.slice(1)}>
+                        {group.map((s) => (
+                          <option key={s.id} value={s.id}>
+                            {s.name}
+                          </option>
+                        ))}
+                      </optgroup>
                     ))}
                   </select>
                   <select
@@ -310,8 +337,9 @@ export function Planner({
               <div key={tree}>
                 <p className="mb-1 text-xs capitalize text-muted-foreground">{tree}</p>
                 <div className="flex flex-wrap gap-1">
-                  {cpStars
+                  {tables.cpStars
                     .filter((s) => s.tree === tree && s.slottable)
+                    .sort((a, b) => a.name.localeCompare(b.name))
                     .map((s) => {
                       const active = state.cp[tree].includes(s.id);
                       return (
@@ -531,7 +559,7 @@ function PreviewPill({ tone, label }: { tone: "needs-review" | "neutral"; label:
   );
 }
 
-function validateBarLines(state: PlannerState) {
+function validateBarLines(state: PlannerState, skillById: ReadonlyMap<string, { name: string; lineLabel: string; className: string | null; line: string }>) {
   const lineSet = new Set(state.lines);
   const issues: { severity: "error" | "warning"; code: string; message: string }[] = [];
   const allSlotted = [
@@ -541,7 +569,7 @@ function validateBarLines(state: PlannerState) {
     state.bar.backUlt,
   ].filter(Boolean);
   for (const id of allSlotted) {
-    const skill = skills.find((s) => s.id === id);
+    const skill = skillById.get(id);
     if (!skill) continue;
     if (skill.className && !lineSet.has(`${skill.className}/${skill.line}`)) {
       issues.push({
@@ -553,7 +581,7 @@ function validateBarLines(state: PlannerState) {
   }
   const dupes = allSlotted.filter((id, i) => allSlotted.indexOf(id) !== i);
   if (dupes.length > 0) {
-    const name = skills.find((s) => s.id === dupes[0])?.name ?? dupes[0];
+    const name = skillById.get(dupes[0])?.name ?? dupes[0];
     issues.push({ severity: "error", code: "duplicate-skill", message: `${name} is slotted more than once.` });
   }
   return issues;
