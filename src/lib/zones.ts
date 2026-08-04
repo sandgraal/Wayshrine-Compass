@@ -69,7 +69,7 @@ export function zoneAccess(zone: Zone): ZoneAccess {
       return {
         tier: "Chapter",
         packName: meta.name,
-        note: `Part of the ${meta.name} Chapter — bought on its own. Chapters aren't included in an ESO Plus membership, but you keep one once it's yours.`,
+        note: `Part of the ${meta.name} Chapter — included while ESO Plus is active, or bought on its own to keep.`,
       };
     case "Season":
       return {
