@@ -80,6 +80,12 @@ export interface GearSet {
   bonuses: SetBonus[];
   /** Mythics occupy exactly one slot. */
   mythicSlot?: GearSlot;
+  /**
+   * Stable upstream identifier (e.g. UESP's numeric id), when the source
+   * carries one. Optional — the seed omits it. The diff engine uses it as a
+   * definitive rename signal when both sides of a diff carry it.
+   */
+  gameId?: string;
   firstSeenPatch: PatchCode;
   lastChangedPatch: PatchCode;
 }
@@ -99,6 +105,13 @@ export interface Skill {
   ultimate: boolean;
   description: string;
   morphs: SkillMorph[];
+  /**
+   * Stable upstream identifier (e.g. UESP's abilityId). Skill ids derive from
+   * name + line, so an in-game rename mints a new id; a preserved gameId lets
+   * the diff engine recognize the successor definitively. Optional — the seed
+   * omits it. See src/lib/ingest/diff.ts.
+   */
+  gameId?: string;
   firstSeenPatch: PatchCode;
   lastChangedPatch: PatchCode;
 }
@@ -111,6 +124,8 @@ export interface CpStar {
   name: string;
   effect: string;
   slottable: boolean;
+  /** Stable upstream identifier, when the source carries one. See GearSet.gameId. */
+  gameId?: string;
   lastChangedPatch: PatchCode;
 }
 
@@ -325,21 +340,41 @@ export interface PatchDataset {
   classMasteryLines: Omit<ClassMasteryLine, "firstSeenPatch" | "lastChangedPatch">[];
 }
 
-export type ChangeKind = "added" | "changed" | "removed";
+export type ChangeKind = "added" | "changed" | "removed" | "renamed";
 
 export interface EntityChange {
   entityType: EntityType;
+  /** For a `renamed` change this is the OLD id — the one builds still reference. */
   entityId: string;
+  /** For a `renamed` change this is the OLD name. */
   entityName: string;
   kind: ChangeKind;
   changedFields: string[];
   summary: string;
+  /** Present only when kind === "renamed": the successor the old id maps to. */
+  renamedTo?: { entityId: string; entityName: string };
 }
 
 export interface DiffReport {
   fromPatch: PatchCode;
   toPatch: PatchCode;
   changes: EntityChange[];
+}
+
+/**
+ * A recorded entity rename: the old id X was dropped and superseded by the new
+ * id Y in `patch`. Persisted (supabase/migrations/0004) and folded into the
+ * provenance index so freshness can name the successor of a removed reference
+ * — builds are never silently rewritten to the new id (that stays an authoring
+ * decision; builds reference entities only by id).
+ */
+export interface EntitySupersession {
+  entityType: EntityType;
+  oldId: string;
+  oldName: string;
+  newId: string;
+  newName: string;
+  patch: PatchCode;
 }
 
 export interface AffectedBuild {

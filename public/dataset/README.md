@@ -58,7 +58,10 @@ wait a bit and rerun.
   ranks 1–4 are the base skill, 5–8 the first morph, 9–12 the second morph.
   Each skill's description comes from the max base rank (rank 4); each morph's
   from its max rank row. Ultimates are rows with `type == "Ultimate"` (verified
-  against Dragon Leap, Negate Magic). Passives have no morphs.
+  against Dragon Leap, Negate Magic). Passives have no morphs. Each skill also
+  carries `gameId` (the base ability's UESP `abilityId`) — a stable id the
+  ingest diff engine uses to recognize a renamed skill definitively, since the
+  display id derives from name + line and changes when a skill is renamed.
 - **CP stars**: `disciplineIndex` 1 = craft, 2 = warfare, 3 = fitness (verified
   against Steed's Blessing, Deadly Aim/Master-at-Arms, Boundless Vitality).
   `slottable` is `skillType != 0` (0 = always-on passive; 1 and 2 are stars

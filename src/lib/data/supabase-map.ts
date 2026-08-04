@@ -3,6 +3,7 @@ import type {
   ClassMasteryLine,
   Companion,
   CpStar,
+  EntitySupersession,
   Food,
   GearSet,
   Grimoire,
@@ -45,6 +46,7 @@ export function rowToSet(r: Row): GearSet {
     dlcRequired: (r.dlc_required as string | null) ?? null,
     bonuses: (r.bonuses as GearSet["bonuses"]) ?? [],
     mythicSlot: (r.mythic_slot as GearSet["mythicSlot"]) ?? undefined,
+    gameId: (r.game_id as string | null) ?? undefined,
     firstSeenPatch: String(r.first_seen_patch),
     lastChangedPatch: String(r.last_changed_patch),
   };
@@ -60,6 +62,7 @@ export function rowToSkill(r: Row): Skill {
     ultimate: Boolean(r.ultimate),
     description: String(r.description ?? ""),
     morphs: (r.morphs as Skill["morphs"]) ?? [],
+    gameId: (r.game_id as string | null) ?? undefined,
     firstSeenPatch: String(r.first_seen_patch),
     lastChangedPatch: String(r.last_changed_patch),
   };
@@ -73,6 +76,7 @@ export function rowToCpStar(r: Row): CpStar {
     name: String(r.name),
     effect: effect.text ?? "",
     slottable: Boolean(r.slottable),
+    gameId: (r.game_id as string | null) ?? undefined,
     lastChangedPatch: String(r.last_changed_patch),
   };
 }
@@ -185,5 +189,16 @@ export function rowToBuild(r: Row): Build {
         : undefined,
     guidance: (r.guidance as Build["guidance"]) ?? [],
     needsReviewReasons: (r.review_reasons as Build["needsReviewReasons"]) ?? [],
+  };
+}
+
+export function rowToSupersession(r: Row): EntitySupersession {
+  return {
+    entityType: r.entity_type as EntitySupersession["entityType"],
+    oldId: String(r.old_id),
+    oldName: String(r.old_name),
+    newId: String(r.new_id),
+    newName: String(r.new_name),
+    patch: String(r.patch),
   };
 }

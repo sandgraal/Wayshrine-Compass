@@ -55,6 +55,7 @@ export async function persistIngest(
       dlc_required: s.dlcRequired,
       bonuses: s.bonuses,
       mythic_slot: s.mythicSlot ?? null,
+      game_id: s.gameId ?? null,
       first_seen_patch: s.firstSeenPatch,
       last_changed_patch: s.lastChangedPatch,
     })),
@@ -67,6 +68,7 @@ export async function persistIngest(
       ultimate: s.ultimate,
       description: s.description,
       morphs: s.morphs,
+      game_id: s.gameId ?? null,
       first_seen_patch: s.firstSeenPatch,
       last_changed_patch: s.lastChangedPatch,
     })),
@@ -76,6 +78,7 @@ export async function persistIngest(
       name: s.name,
       effect: { text: s.effect },
       slottable: s.slottable,
+      game_id: s.gameId ?? null,
       last_changed_patch: s.lastChangedPatch,
     })),
     grimoires: result.store.grimoires.map((g) => ({
@@ -112,6 +115,14 @@ export async function persistIngest(
       last_changed_patch: m.lastChangedPatch,
     })),
     flagged: result.flagged.map((b) => ({ id: b.id, reasons: b.needsReviewReasons })),
+    supersessions: result.supersessions.map((s) => ({
+      entity_type: s.entityType,
+      old_id: s.oldId,
+      old_name: s.oldName,
+      new_id: s.newId,
+      new_name: s.newName,
+      patch: s.patch,
+    })),
     report: result.report,
   };
 

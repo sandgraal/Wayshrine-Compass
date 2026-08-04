@@ -12,6 +12,7 @@ import {
   rowToScript,
   rowToSet,
   rowToSkill,
+  rowToSupersession,
   rowToZone,
 } from "./supabase-map";
 
@@ -32,9 +33,24 @@ async function all(table: string): Promise<Record<string, unknown>[]> {
   return data ?? [];
 }
 
+/**
+ * Like all(), but never throws — used for tables added by a later migration so
+ * a deploy that ships ahead of its migration degrades to "no rows" instead of
+ * blanking the whole site. Rename reasons simply fall back to generic
+ * "removed" until the migration lands.
+ */
+async function allOptional(table: string): Promise<Record<string, unknown>[]> {
+  try {
+    return await all(table);
+  } catch (err) {
+    console.warn(`supabase ${table} unavailable (treating as empty):`, err);
+    return [];
+  }
+}
+
 /** Fetches the full entity database from Supabase. Dataset is small (~250 rows). */
 export async function fetchDbFromSupabase(): Promise<DbData> {
-  const [patches, sets, skills, cpStars, grimoires, scripts, masteryLines, companions, zones, mundus, foods, builds] =
+  const [patches, sets, skills, cpStars, grimoires, scripts, masteryLines, companions, zones, mundus, foods, builds, supersessions] =
     await Promise.all([
       all("patches"),
       all("sets"),
@@ -48,6 +64,7 @@ export async function fetchDbFromSupabase(): Promise<DbData> {
       all("mundus_stones"),
       all("foods"),
       all("builds"),
+      allOptional("entity_supersessions"),
     ]);
 
   return {
@@ -64,5 +81,6 @@ export async function fetchDbFromSupabase(): Promise<DbData> {
     mundusStones: mundus.map(rowToMundus),
     foods: foods.map(rowToFood),
     builds: builds.map(rowToBuild),
+    supersessions: supersessions.map(rowToSupersession),
   };
 }
