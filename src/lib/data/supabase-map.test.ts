@@ -8,13 +8,19 @@ import { foods } from "@/data/food";
 import { companions } from "@/data/companions";
 import { zones } from "@/data/zones";
 import { patches } from "@/data/patches";
+import { grimoires } from "@/data/grimoires";
+import { scribingScripts } from "@/data/scribingScripts";
+import { classMasteryLines } from "@/data/classMastery";
 import {
   rowToBuild,
   rowToCompanion,
   rowToCpStar,
   rowToFood,
+  rowToGrimoire,
+  rowToMasteryLine,
   rowToMundus,
   rowToPatch,
+  rowToScript,
   rowToSet,
   rowToSkill,
   rowToZone,
@@ -80,6 +86,32 @@ describe("supabase row mappers", () => {
     }
   });
 
+  it("grimoires, scripts, mastery lines round-trip", () => {
+    for (const g of grimoires) {
+      const row = {
+        id: g.id, name: g.name, line: g.line, line_label: g.lineLabel,
+        description: g.description, acquisition: g.acquisition, dlc_required: g.dlcRequired,
+        focus_scripts: g.focusScripts, signature_scripts: g.signatureScripts, affix_scripts: g.affixScripts,
+        first_seen_patch: g.firstSeenPatch, last_changed_patch: g.lastChangedPatch,
+      };
+      expect(rowToGrimoire(row)).toEqual(g);
+    }
+    for (const s of scribingScripts) {
+      const row = {
+        id: s.id, name: s.name, slot: s.slot, description: s.description, acquisition: s.acquisition,
+        first_seen_patch: s.firstSeenPatch, last_changed_patch: s.lastChangedPatch,
+      };
+      expect(rowToScript(row)).toEqual(s);
+    }
+    for (const m of classMasteryLines) {
+      const row = {
+        id: m.id, name: m.name, class: m.className, line: m.line, line_label: m.lineLabel,
+        graftable: m.graftable, first_seen_patch: m.firstSeenPatch, last_changed_patch: m.lastChangedPatch,
+      };
+      expect(rowToMasteryLine(row)).toEqual(m);
+    }
+  });
+
   it("builds round-trip", () => {
     for (const b of builds) {
       const row = {
@@ -91,5 +123,20 @@ describe("supabase row mappers", () => {
       };
       expect(rowToBuild(row)).toEqual(b);
     }
+  });
+
+  it("normalizes the scribed_skills column default ([]) to absent", () => {
+    const base = builds[0];
+    const row = {
+      id: base.id, slug: base.slug, name: base.name, class: base.className,
+      subclass_lines: base.subclassLines, role: base.role, content_type: base.contentType,
+      author: base.author, status: base.status, patch_verified: base.patchVerified,
+      gear: base.gear, front_bar: base.frontBar, back_bar: base.backBar, cp: base.cp,
+      mundus_id: base.mundusId, food_id: base.foodId, guidance: base.guidance,
+      review_reasons: base.needsReviewReasons,
+    };
+    expect(rowToBuild({ ...row, scribed_skills: [] }).scribedSkills).toBeUndefined();
+    const scribed = [{ grimoireId: "grimoire-vault", scriptIds: ["script-bleed-damage"] }];
+    expect(rowToBuild({ ...row, scribed_skills: scribed }).scribedSkills).toEqual(scribed);
   });
 });

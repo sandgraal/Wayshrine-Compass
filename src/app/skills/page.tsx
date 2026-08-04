@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getDb } from "@/lib/data";
 import { SkillsExplorer } from "./skills-explorer";
+import { ScribingSection } from "./scribing-section";
 
 export const metadata: Metadata = { title: "Skills" };
 
@@ -20,6 +21,7 @@ export default async function SkillsPage() {
       <div className="mt-6">
         <SkillsExplorer skills={db.skills} currentPatch={db.currentPatch} />
       </div>
+      <ScribingSection grimoires={db.grimoires} scripts={db.scripts} currentPatch={db.currentPatch} />
     </div>
   );
 }

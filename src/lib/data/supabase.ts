@@ -5,8 +5,11 @@ import {
   rowToCompanion,
   rowToCpStar,
   rowToFood,
+  rowToGrimoire,
+  rowToMasteryLine,
   rowToMundus,
   rowToPatch,
+  rowToScript,
   rowToSet,
   rowToSkill,
   rowToZone,
@@ -31,12 +34,15 @@ async function all(table: string): Promise<Record<string, unknown>[]> {
 
 /** Fetches the full entity database from Supabase. Dataset is small (~250 rows). */
 export async function fetchDbFromSupabase(): Promise<DbData> {
-  const [patches, sets, skills, cpStars, companions, zones, mundus, foods, builds] =
+  const [patches, sets, skills, cpStars, grimoires, scripts, masteryLines, companions, zones, mundus, foods, builds] =
     await Promise.all([
       all("patches"),
       all("sets"),
       all("skills"),
       all("cp_stars"),
+      all("grimoires"),
+      all("scribing_scripts"),
+      all("class_mastery_lines"),
       all("companions"),
       all("zones"),
       all("mundus_stones"),
@@ -50,6 +56,9 @@ export async function fetchDbFromSupabase(): Promise<DbData> {
     sets: sets.map(rowToSet),
     skills: skills.map(rowToSkill),
     cpStars: cpStars.map(rowToCpStar),
+    grimoires: grimoires.map(rowToGrimoire),
+    scripts: scripts.map(rowToScript),
+    classMasteryLines: masteryLines.map(rowToMasteryLine),
     companions: companions.map(rowToCompanion),
     zones: zones.map(rowToZone),
     mundusStones: mundus.map(rowToMundus),

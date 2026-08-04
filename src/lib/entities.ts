@@ -1,5 +1,10 @@
 import type { Build, BuildEntityRef, CpStar, GearSet, PatchCode, Skill } from "@/lib/types";
 
+/** "class/line" (a build's subclassLines entry) → Class Mastery entity id. */
+export function masteryLineId(subclassLine: string): string {
+  return `mastery-${subclassLine.replace("/", "-")}`;
+}
+
 /**
  * Derives the build_entities join rows for a build. Builds never reference
  * game entities as free text — this is the list the diff engine joins against.
@@ -20,6 +25,13 @@ export function buildEntityRefs(build: Build): BuildEntityRef[] {
   }
   add("mundus", build.mundusId);
   add("food", build.foodId);
+  for (const sc of build.scribedSkills ?? []) {
+    add("grimoire", sc.grimoireId);
+    for (const id of sc.scriptIds) add("script", id);
+  }
+  // Subclass lines are Class Mastery entities: a grafted (or native) class
+  // line that gets reworked or removed must amber the builds standing on it.
+  for (const line of build.subclassLines) add("mastery_line", masteryLineId(line));
 
   return [...refs.values()];
 }
@@ -54,7 +66,10 @@ export function changedReferencedEntities(
     for (const ref of buildEntityRefs(build)) referenced.set(`${ref.entityType}:${ref.entityId}`, ref);
   }
 
-  const byType: Record<ChangedReferencedEntity["entityType"], Map<string, { name: string; lastChangedPatch: PatchCode }>> = {
+  // Scoped to the original three types on purpose: refs of the newer tracked
+  // types (grimoire/script/mastery_line) are skipped here, not counted as
+  // removed — the homepage consumes this against exactly these collections.
+  const byType: Partial<Record<ChangedReferencedEntity["entityType"], Map<string, { name: string; lastChangedPatch: PatchCode }>>> = {
     set: new Map(entities.sets.map((e) => [e.id, e])),
     skill: new Map(entities.skills.map((e) => [e.id, e])),
     cp_star: new Map(entities.cpStars.map((e) => [e.id, e])),
@@ -63,9 +78,10 @@ export function changedReferencedEntities(
   const changed: ChangedReferencedEntity[] = [];
   const removed: ChangedReferencedEntity[] = [];
   for (const ref of referenced.values()) {
-    if (!(ref.entityType in byType)) continue;
     const entityType = ref.entityType as ChangedReferencedEntity["entityType"];
-    const entity = byType[entityType].get(ref.entityId);
+    const index = byType[entityType];
+    if (!index) continue;
+    const entity = index.get(ref.entityId);
     if (!entity) {
       removed.push({ entityType, entityId: ref.entityId, name: ref.entityId, removed: true });
     } else if (entity.lastChangedPatch === patch) {

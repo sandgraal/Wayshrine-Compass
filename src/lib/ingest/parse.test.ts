@@ -32,11 +32,44 @@ const validStar = {
   slottable: true,
 };
 
+const validGrimoire = {
+  id: "grimoire-a",
+  name: "Wield Soul",
+  line: "soul-magic",
+  lineLabel: "Soul Magic",
+  description: "Launch a concentrated blast of soul magic.",
+  acquisition: "Obtained from the Scholarium.",
+  dlcRequired: "gold-road",
+  focusScripts: ["script-a"],
+  signatureScripts: [],
+  affixScripts: [],
+};
+
+const validScript = {
+  id: "script-a",
+  name: "Physical Damage",
+  slot: "focus",
+  description: "Adds physical damage to a scribed skill.",
+  acquisition: "Acquired from daily quests.",
+};
+
+const validMasteryLine = {
+  id: "mastery-sorcerer-dark-magic",
+  name: "Dark Magic (Sorcerer)",
+  className: "sorcerer",
+  line: "dark-magic",
+  lineLabel: "Dark Magic",
+  graftable: true,
+};
+
 const valid = {
   patch: { code: "U51", releasedAt: "2026-09-07" },
   sets: [validSet],
   skills: [validSkill],
   cpStars: [validStar],
+  grimoires: [validGrimoire],
+  scripts: [validScript],
+  classMasteryLines: [validMasteryLine],
 };
 
 describe("parsePatchDataset", () => {
@@ -75,6 +108,21 @@ describe("parsePatchDataset", () => {
     expect(parsePatchDataset({ ...valid, skills: [{ ...validSkill, morphs: [{}] }] })).toBeNull();
     expect(parsePatchDataset({ ...valid, skills: [{ ...validSkill, ultimate: "yes" }] })).toBeNull();
     expect(parsePatchDataset({ ...valid, cpStars: [{ ...validStar, tree: "combat" }] })).toBeNull();
+  });
+
+  it("requires the Scribing and Class Mastery collections (a legacy payload must not pass)", () => {
+    for (const key of ["grimoires", "scripts", "classMasteryLines"]) {
+      const without: Record<string, unknown> = { ...valid };
+      delete without[key];
+      expect(parsePatchDataset(without), `missing ${key}`).toBeNull();
+    }
+  });
+
+  it("rejects invalid Scribing / Class Mastery entities", () => {
+    expect(parsePatchDataset({ ...valid, grimoires: [{ id: "x" }] })).toBeNull();
+    expect(parsePatchDataset({ ...valid, grimoires: [{ ...validGrimoire, focusScripts: [1] }] })).toBeNull();
+    expect(parsePatchDataset({ ...valid, scripts: [{ ...validScript, slot: "tertiary" }] })).toBeNull();
+    expect(parsePatchDataset({ ...valid, classMasteryLines: [{ ...validMasteryLine, graftable: "yes" }] })).toBeNull();
   });
 
   it("preserves explicit patch metadata", () => {

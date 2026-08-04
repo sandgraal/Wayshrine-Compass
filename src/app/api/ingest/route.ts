@@ -38,7 +38,14 @@ export async function POST(request: Request) {
 
   const db = await getDb();
   const result = runIngest(
-    { sets: db.sets, skills: db.skills, cpStars: db.cpStars },
+    {
+      sets: db.sets,
+      skills: db.skills,
+      cpStars: db.cpStars,
+      grimoires: db.grimoires,
+      scripts: db.scripts,
+      classMasteryLines: db.classMasteryLines,
+    },
     db.currentPatch,
     incoming,
     db.builds
@@ -70,7 +77,14 @@ export async function GET() {
   return NextResponse.json({
     currentPatch: db.currentPatch,
     source: db.source,
-    entities: { sets: db.sets.length, skills: db.skills.length, cpStars: db.cpStars.length },
+    entities: {
+      sets: db.sets.length,
+      skills: db.skills.length,
+      cpStars: db.cpStars.length,
+      grimoires: db.grimoires.length,
+      scripts: db.scripts.length,
+      classMasteryLines: db.classMasteryLines.length,
+    },
     builds: db.builds.length,
   });
 }

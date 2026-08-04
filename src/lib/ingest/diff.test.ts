@@ -54,6 +54,9 @@ const synthU50: PatchDataset = {
     skillDef("skill-curse", "Daedric Curse", "Explodes after 6 seconds"),
   ],
   cpStars: [starDef("cp-alpha-aim", "Alpha Aim", "10% single target damage")],
+  grimoires: [],
+  scripts: [],
+  classMasteryLines: [],
 };
 
 const synthU51: PatchDataset = {
@@ -73,9 +76,12 @@ const synthU51: PatchDataset = {
     skillDef("skill-curse", "Daedric Curse", "Explodes after 6 seconds"),
   ],
   cpStars: [starDef("cp-alpha-aim", "Alpha Aim", "10% single target damage")],
+  grimoires: [],
+  scripts: [],
+  classMasteryLines: [],
 };
 
-const buildUsing = (id: string, setIds: string[], skillIds: string[]): Build => ({
+const buildUsing =(id: string, setIds: string[], skillIds: string[]): Build => ({
   id,
   slug: id,
   name: id,
@@ -135,7 +141,12 @@ describe("diff engine (synthetic patch data)", () => {
 
   it("ingest pipeline stamps provenance and marks affected builds needs_review", () => {
     // Seed the store from U50 (everything first seen / last changed at U50)
-    const seeded = runIngest({ sets: [], skills: [], cpStars: [] }, "U49", synthU50, []);
+    const seeded = runIngest(
+      { sets: [], skills: [], cpStars: [], grimoires: [], scripts: [], classMasteryLines: [] },
+      "U49",
+      synthU50,
+      []
+    );
     expect(seeded.store.sets.every((s) => s.firstSeenPatch === "U50")).toBe(true);
 
     const b1 = buildUsing("b-alpha", ["set-alpha"], ["skill-curse"]);
@@ -157,6 +168,75 @@ describe("diff engine (synthetic patch data)", () => {
     expect(result.flagged[0].status).toBe("needs_review");
     expect(result.flagged[0].needsReviewReasons[0].entityName).toBe("Alpha's Embrace");
     expect(result.flagged[0].needsReviewReasons[0].summary).toContain("changed in U51");
+  });
+
+  it("diffs and flags across the Scribing and Class Mastery collections", () => {
+    const grimoire = {
+      id: "grimoire-wield-soul",
+      name: "Wield Soul",
+      line: "soul-magic",
+      lineLabel: "Soul Magic",
+      description: "Launch a blast of soul magic.",
+      acquisition: "Scholarium quest.",
+      dlcRequired: "gold-road",
+      focusScripts: ["script-flame"],
+      signatureScripts: [],
+      affixScripts: [],
+    };
+    const script = {
+      id: "script-flame",
+      name: "Flame Damage",
+      slot: "focus" as const,
+      description: "Adds flame damage.",
+      acquisition: "Daily quests.",
+    };
+    const mastery = {
+      id: "mastery-sorcerer-dark-magic",
+      name: "Dark Magic (Sorcerer)",
+      className: "sorcerer" as const,
+      line: "dark-magic",
+      lineLabel: "Dark Magic",
+      graftable: true,
+    };
+    const prev: PatchDataset = { ...synthU50, grimoires: [grimoire], scripts: [script], classMasteryLines: [mastery] };
+    const next: PatchDataset = {
+      ...synthU51,
+      grimoires: [{ ...grimoire, description: "Launch a stronger blast of soul magic." }],
+      scripts: [script],
+      classMasteryLines: [mastery],
+    };
+
+    const report = diffDatasets(prev, next);
+    const grimChange = report.changes.find((c) => c.entityType === "grimoire");
+    expect(grimChange?.kind).toBe("changed");
+    expect(grimChange?.changedFields).toEqual(["description"]);
+    expect(report.changes.some((c) => c.entityType === "script")).toBe(false);
+    expect(report.changes.some((c) => c.entityType === "mastery_line")).toBe(false);
+
+    // A build scribing the changed grimoire is flagged; its bar-twin without
+    // scribing is not. subclassLines refs ride along untouched (no change).
+    const scribed = {
+      ...buildUsing("b-scribed", ["set-beta"], ["skill-curse"]),
+      scribedSkills: [{ grimoireId: "grimoire-wield-soul", scriptIds: ["script-flame"] }],
+    };
+    const plain = buildUsing("b-plain", ["set-beta"], ["skill-curse"]);
+    const affected = affectedBuilds(report, [scribed, plain]);
+    expect(affected.map((a) => a.buildId)).toEqual(["b-scribed"]);
+
+    // Pipeline stamps the new collections like the old ones.
+    const store = runIngest(
+      { sets: [], skills: [], cpStars: [], grimoires: [], scripts: [], classMasteryLines: [] },
+      "U49",
+      prev,
+      []
+    ).store;
+    const result = runIngest(store, "U50", next, [scribed, plain]);
+    expect(result.store.grimoires[0].firstSeenPatch).toBe("U50");
+    expect(result.store.grimoires[0].lastChangedPatch).toBe("U51");
+    expect(result.store.scripts[0].lastChangedPatch).toBe("U50");
+    expect(result.store.classMasteryLines[0].lastChangedPatch).toBe("U50");
+    expect(result.flagged.map((b) => b.id)).toEqual(["b-scribed"]);
+    expect(result.flagged[0].needsReviewReasons[0].entityName).toBe("Wield Soul");
   });
 
   it("computeFreshness derives amber/red badges from provenance", () => {

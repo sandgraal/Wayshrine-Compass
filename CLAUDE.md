@@ -31,7 +31,7 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 
 ## Commands
 
-- `npm test` — vitest (65 tests; acceptance tests live next to their modules)
+- `npm test` — vitest (108 tests; acceptance tests live next to their modules)
 - `npm run lint` / `npm run build`
 - Seed a Supabase project: `scripts/seed-supabase.ts` (see supabase/README.md)
 
@@ -74,7 +74,12 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 
 ## Open work items (in rough priority order)
 
-(Done: real dataset source + `DATASET_URL`, service-role persistence, admin review workflow.)
+(Done: real dataset source + `DATASET_URL`, service-role persistence, admin review workflow,
+Scribing + Class Mastery entities — grimoires/scribing_scripts/class_mastery_lines tables,
+tracked freshness types, /skills Scribing section; migration 0004. Builds derive mastery_line
+refs from subclassLines; grimoire/script refs come from the optional `scribedSkills` build
+field, which no build uses yet. Per-grimoire script combination text
+(`craftedScriptDescriptions`) is deliberately unmodeled.)
 
 1. Renamed-skill build references: 4 seed skills no longer exist in the U50 dataset —
    `fiery-breath`, `spiked-armor`, `stonefist` (dragonknight), `veiled-strike` (nightblade) —
@@ -90,5 +95,4 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
    for datamined sets; the What Next DLC-gate rules need another source.
 4. Builds expansion against the real catalog (the 28 seed builds only reference a slice of
    the datamined sets/skills).
-5. Scribing (Grimoires/Scripts) and Class Mastery entities are not yet modeled in the schema.
-6. Planner DPS estimation (explicitly deferred in the v1 spec).
+5. Planner DPS estimation (explicitly deferred in the v1 spec).

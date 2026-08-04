@@ -15,7 +15,9 @@ const CLASSES = [
 ];
 
 import { skills as seedSkills } from "@/data/skills";
+import { builds as seedBuilds } from "@/data/builds";
 import { ALL_DLC_IDS } from "@/data/zones";
+import { masteryLineId } from "@/lib/entities";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore — plain .mjs module, no type declarations
 import { resolveSetDlc } from "./build-dataset.mjs";
@@ -53,6 +55,75 @@ describe("public/dataset/current.json", () => {
     expect(dataset!.sets.length).toBe(641);
     expect(dataset!.skills.length).toBe(433);
     expect(dataset!.cpStars.length).toBe(118);
+    expect(dataset!.grimoires.length).toBe(12);
+    expect(dataset!.scripts.length).toBe(67);
+    expect(dataset!.classMasteryLines.length).toBe(28);
+  });
+
+  it("gates every grimoire on the Gold Road chapter", () => {
+    for (const g of dataset!.grimoires) {
+      expect(g.dlcRequired, g.id).toBe("gold-road");
+      expect(ALL_DLC_IDS).toContain(g.dlcRequired);
+    }
+  });
+
+  it("resolves every grimoire script ref to a script of the matching slot", () => {
+    const scriptById = new Map(dataset!.scripts.map((s) => [s.id, s]));
+    for (const g of dataset!.grimoires) {
+      const slots = [
+        ["focus", g.focusScripts],
+        ["signature", g.signatureScripts],
+        ["affix", g.affixScripts],
+      ] as const;
+      for (const [slot, ids] of slots) {
+        expect(ids.length, `${g.id} ${slot}`).toBeGreaterThan(0);
+        for (const id of ids) {
+          expect(scriptById.get(id)?.slot, `${g.id} → ${id}`).toBe(slot);
+        }
+      }
+    }
+  });
+
+  it("derives Class Mastery lines exactly from the dataset's class skill lines", () => {
+    const fromSkills = new Set(
+      dataset!.skills.filter((s) => s.className).map((s) => `mastery-${s.className}-${s.line}`)
+    );
+    expect(new Set(dataset!.classMasteryLines.map((m) => m.id))).toEqual(fromSkills);
+    for (const m of dataset!.classMasteryLines) {
+      expect(m.id).toBe(`mastery-${m.className}-${m.line}`);
+      // Only each class's own Class Mastery meta line is non-graftable.
+      expect(m.graftable, m.id).toBe(m.line !== "class-mastery");
+    }
+  });
+
+  it("covers every seed build's subclassLines (else builds would amber as removed refs)", () => {
+    const ids = new Set(dataset!.classMasteryLines.map((m) => m.id));
+    for (const b of seedBuilds) {
+      for (const line of b.subclassLines) {
+        expect(ids, `${b.id} → ${line}`).toContain(masteryLineId(line));
+      }
+    }
+  });
+
+  it("matches the migration 0004 Class Mastery backfill row-for-row", () => {
+    // The backfill exists so the first ingest after deploy diffs clean; a
+    // drifted row would mark every referencing build needs_review. See
+    // supabase/migrations/0004_scribing_class_mastery.sql.
+    const sql = fs.readFileSync(
+      path.resolve(__dirname, "..", "supabase", "migrations", "0004_scribing_class_mastery.sql"),
+      "utf8"
+    );
+    const unq = (s: string) => s.replace(/''/g, "'");
+    const rowRe = /^\s+\('((?:[^']|'')*)', '((?:[^']|'')*)', '((?:[^']|'')*)', '((?:[^']|'')*)', '((?:[^']|'')*)', (true|false)\),?$/gm;
+    const rows = [...sql.matchAll(rowRe)].map((m) => ({
+      id: unq(m[1]),
+      name: unq(m[2]),
+      className: unq(m[3]),
+      line: unq(m[4]),
+      lineLabel: unq(m[5]),
+      graftable: m[6] === "true",
+    }));
+    expect(rows).toEqual(dataset!.classMasteryLines);
   });
 
   it("resolves DLC gates per set type (table-driven resolver contract)", () => {
@@ -133,6 +204,8 @@ describe("public/dataset/current.json", () => {
       ...dataset!.sets.flatMap((s) => s.bonuses.map((b) => b.effect)),
       ...dataset!.skills.flatMap((s) => [s.description, ...s.morphs.map((m) => m.description)]),
       ...dataset!.cpStars.map((s) => s.effect),
+      ...dataset!.grimoires.flatMap((g) => [g.description, g.acquisition]),
+      ...dataset!.scripts.flatMap((s) => [s.description, s.acquisition]),
     ];
     for (const text of texts) {
       expect(text).not.toContain("|c");

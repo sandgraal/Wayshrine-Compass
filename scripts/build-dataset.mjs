@@ -6,10 +6,13 @@
  * Usage:  node scripts/build-dataset.mjs
  *
  * Sources (fetched politely: identified User-Agent, 1s delay between requests):
- *   - exportJson.php?table=setSummary  -> gear sets
- *   - exportJson.php?table=skillTree   -> class skills (per-rank rows)
- *   - exportJson.php?table=cp2Skills   -> champion point stars
- *   - https://esoapi.uesp.net/         -> current game data version (v1010NN -> Update NN)
+ *   - exportJson.php?table=setSummary      -> gear sets
+ *   - exportJson.php?table=skillTree       -> class skills (per-rank rows; class
+ *                                             lines also derive Class Mastery lines)
+ *   - exportJson.php?table=cp2Skills       -> champion point stars
+ *   - exportJson.php?table=craftedSkills   -> Scribing grimoires
+ *   - exportJson.php?table=craftedScripts  -> Scribing scripts (focus/signature/affix)
+ *   - https://esoapi.uesp.net/             -> current game data version (v1010NN -> Update NN)
  *
  * The output conforms to the PatchDataset contract validated by
  * src/lib/ingest/parse.ts (parsePatchDataset).
@@ -222,6 +225,32 @@ export function resolveSetDlc(type, source, unmapped) {
   return null;
 }
 
+/**
+ * Grimoire skill line, keyed by the export's icon token — craftedSkills has
+ * no line-name column, but every grimoire's icon names its line (verified
+ * against all 12 U50 grimoires). Unknown icons throw so a future grimoire
+ * can't silently ship with a missing line.
+ */
+const GRIMOIRE_LINE_BY_ICON = {
+  grimoire_bow: ["bow", "Bow"],
+  grimoire_1handed: ["one-hand-and-shield", "One Hand and Shield"],
+  grimoire_2handed: ["two-handed", "Two Handed"],
+  grimoire_dualwield: ["dual-wield", "Dual Wield"],
+  grimoire_staffdestro: ["destruction-staff", "Destruction Staff"],
+  grimoire_staffresto: ["restoration-staff", "Restoration Staff"],
+  grimoire_soulmagic1: ["soul-magic", "Soul Magic"],
+  grimoire_soulmagic2: ["soul-magic", "Soul Magic"],
+  grimoire_magesguild: ["mages-guild", "Mages Guild"],
+  grimoire_fightersguild: ["fighters-guild", "Fighters Guild"],
+  grimoire_assault: ["assault", "Assault"],
+  grimoire_support: ["support", "Support"],
+};
+
+const SCRIPT_SLOT_BY_INDEX = { 1: "focus", 2: "signature", 3: "affix" };
+
+// Scribing ships with the Gold Road chapter; every grimoire is gated on it.
+const SCRIBING_DLC = "gold-road";
+
 // disciplineIndex -> tree, verified empirically against known stars:
 //   Steed's Blessing (craft) = 1, Deadly Aim / Master-at-Arms (warfare) = 2,
 //   Boundless Vitality (fitness) = 3.
@@ -429,6 +458,93 @@ function transformCpStars(raw) {
   return { cpStars };
 }
 
+/** Scribing: craftedScripts -> scripts, craftedSkills -> grimoires. */
+export function transformScribing(grimoireRaw, scriptRaw) {
+  const scriptRows = JSON.parse(scriptRaw).craftedScripts;
+  const scripts = [];
+  const idByNumeric = new Map();
+  const usedIds = new Set();
+  for (const row of scriptRows) {
+    const slot = SCRIPT_SLOT_BY_INDEX[Number(row.slot)];
+    if (!slot) throw new Error(`Unknown script slot '${row.slot}' for ${row.name}`);
+    let id = `script-${kebab(row.name)}`;
+    if (usedIds.has(id)) id = `${id}-${slot}`;
+    if (usedIds.has(id)) throw new Error(`Unresolvable duplicate script id: ${id}`);
+    usedIds.add(id);
+    idByNumeric.set(String(row.id), id);
+    scripts.push({
+      id,
+      name: row.name,
+      slot,
+      description: stripEsoCodes(row.description),
+      acquisition: stripEsoCodes(row.hint),
+    });
+  }
+  scripts.sort((a, b) => a.id.localeCompare(b.id));
+
+  const grimoireRows = JSON.parse(grimoireRaw).craftedSkills;
+  const grimoires = [];
+  for (const row of grimoireRows) {
+    const iconToken = String(row.icon).replace(/^.*\//, "").replace(/\.dds$/, "");
+    const line = GRIMOIRE_LINE_BY_ICON[iconToken];
+    if (!line) {
+      throw new Error(`Unknown grimoire icon '${iconToken}' (${row.name}) — extend GRIMOIRE_LINE_BY_ICON`);
+    }
+    // slotsN columns are comma-separated craftedScripts row ids: the scripts
+    // this grimoire accepts in its focus/signature/affix slot. A dangling id
+    // means the two exports are out of sync — fail, don't drop.
+    const mapSlot = (csv, label) =>
+      String(csv ?? "")
+        .split(",")
+        .map((n) => n.trim())
+        .filter(Boolean)
+        .map((n) => {
+          const id = idByNumeric.get(n);
+          if (!id) throw new Error(`Grimoire ${row.name} ${label} slot references unknown script id ${n}`);
+          return id;
+        })
+        .sort();
+    grimoires.push({
+      id: `grimoire-${kebab(row.name)}`,
+      name: row.name,
+      line: line[0],
+      lineLabel: line[1],
+      description: stripEsoCodes(row.description),
+      acquisition: stripEsoCodes(row.hint),
+      dlcRequired: SCRIBING_DLC,
+      focusScripts: mapSlot(row.slots1, "focus"),
+      signatureScripts: mapSlot(row.slots2, "signature"),
+      affixScripts: mapSlot(row.slots3, "affix"),
+    });
+  }
+  grimoires.sort((a, b) => a.id.localeCompare(b.id));
+  return { grimoires, scripts };
+}
+
+/**
+ * Class Mastery lines: one entity per class skill line (including each
+ * class's own `class-mastery` meta line, which cannot be grafted). Derived
+ * from the transformed skills so the two collections can't disagree.
+ */
+export function transformClassMastery(skills) {
+  const seen = new Map();
+  for (const s of skills) {
+    if (!s.className) continue;
+    const id = `mastery-${s.className}-${s.line}`;
+    if (seen.has(id)) continue;
+    const display = s.className.charAt(0).toUpperCase() + s.className.slice(1);
+    seen.set(id, {
+      id,
+      name: `${s.lineLabel} (${display})`,
+      className: s.className,
+      line: s.line,
+      lineLabel: s.lineLabel,
+      graftable: s.line !== "class-mastery",
+    });
+  }
+  return { classMasteryLines: [...seen.values()].sort((a, b) => a.id.localeCompare(b.id)) };
+}
+
 function parsePatchFromVersions(text) {
   // Page lists lines like "v101050 -- Created on 2026-06-10 16:26:34".
   const re = /v(10\d{4})\s*(?:--|&#8211;|—)?\s*Created on\s*(\d{4}-\d{2}-\d{2})/g;
@@ -476,6 +592,16 @@ async function main() {
     "cp2Skills"
   );
   await sleep(DELAY_MS);
+  const grimoireRaw = await fetchText(
+    "https://esolog.uesp.net/exportJson.php?table=craftedSkills",
+    "craftedSkills"
+  );
+  await sleep(DELAY_MS);
+  const scriptRaw = await fetchText(
+    "https://esolog.uesp.net/exportJson.php?table=craftedScripts",
+    "craftedScripts"
+  );
+  await sleep(DELAY_MS);
   let patch;
   if (process.env.PATCH_CODE) {
     // Cloudflare sometimes challenges esoapi; allow a manual override.
@@ -494,9 +620,11 @@ async function main() {
   const { sets, skipped, unmapped } = transformSets(setRaw);
   const { skills } = transformSkills(skillRaw);
   const { cpStars } = transformCpStars(cpRaw);
+  const { grimoires, scripts } = transformScribing(grimoireRaw, scriptRaw);
+  const { classMasteryLines } = transformClassMastery(skills);
 
   // Stable key order for reproducible diffs.
-  const dataset = { patch, sets, skills, cpStars };
+  const dataset = { patch, sets, skills, cpStars, grimoires, scripts, classMasteryLines };
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
   fs.writeFileSync(OUT_FILE, JSON.stringify(dataset, null, 2) + "\n");
@@ -516,6 +644,12 @@ async function main() {
   }
   console.log(`skills:    ${skills.length} (${ultimates} ultimates)`);
   console.log(`cpStars:   ${cpStars.length} (${slottables} slottable)`);
+  const slotCounts = ["focus", "signature", "affix"]
+    .map((slot) => `${scripts.filter((s) => s.slot === slot).length} ${slot}`)
+    .join(", ");
+  console.log(`scribing:  ${grimoires.length} grimoires, ${scripts.length} scripts (${slotCounts})`);
+  const graftable = classMasteryLines.filter((m) => m.graftable).length;
+  console.log(`mastery:   ${classMasteryLines.length} class lines (${graftable} graftable)`);
   console.log(`wrote ${path.relative(ROOT, OUT_FILE)}`);
 }
 
