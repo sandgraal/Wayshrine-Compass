@@ -21,7 +21,7 @@ export default async function SkillsPage() {
       <div className="mt-6">
         <SkillsExplorer skills={db.skills} currentPatch={db.currentPatch} patchOrder={db.patchOrder} />
       </div>
-      <ScribingSection grimoires={db.grimoires} scripts={db.scripts} currentPatch={db.currentPatch} />
+      <ScribingSection grimoires={db.grimoires} scripts={db.scripts} patchOrder={db.patchOrder} />
     </div>
   );
 }

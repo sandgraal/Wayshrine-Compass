@@ -190,8 +190,9 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
         <div className="mb-6 flex items-start gap-2 rounded-md border border-verified/40 bg-verified/10 px-3 py-2 text-xs">
           <span>
             Verified for <span className="font-mono">{db.currentPatch}</span>: all{" "}
-            {buildEntityRefs(build).length} entities this build references were checked against the{" "}
-            {db.currentPatch} game data, and none have changed since the review
+            {buildEntityRefs(build).filter((r) => db.trackedEntityTypes.has(r.entityType)).length}{" "}
+            patch-tracked entities this build references were checked against the {db.currentPatch}{" "}
+            game data, and none have changed since the review
             {verifiedEvidenceDate ? (
               <>
                 . Last data check <span className="font-mono">{verifiedEvidenceDate}</span>.

@@ -43,6 +43,24 @@ describe("entityChangeStatus", () => {
       patch: "U50",
     });
   });
+
+  it("never claims a change from out-of-order provenance stamps", () => {
+    // firstSeen AFTER lastChanged is corrupt data; a change cannot have been
+    // observed, so the conservative reading is tracked, not amber.
+    expect(entityChangeStatus({ firstSeenPatch: "U50", lastChangedPatch: "U49" }, PATCH_ORDER)).toEqual({
+      kind: "tracked",
+      patch: "U50",
+    });
+  });
+
+  it("still reads a stamp newer than the patch table as changed", () => {
+    // Unknown codes can't be ordered; raw inequality keeps a genuinely newer
+    // stamp visible instead of silently masking it.
+    expect(entityChangeStatus({ firstSeenPatch: "U48", lastChangedPatch: "U51" }, PATCH_ORDER)).toEqual({
+      kind: "changed",
+      patch: "U51",
+    });
+  });
 });
 
 function makeSkill(overrides: Partial<Skill>): Skill {

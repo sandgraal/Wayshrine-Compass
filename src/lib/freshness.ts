@@ -61,20 +61,29 @@ export type EntityChangeStatus =
   | { kind: "changed"; patch: PatchCode };
 
 /**
- * Classifies an entity's provenance for display. `lastChanged > firstSeen`
- * is the only provable change; an entity whose two stamps are equal has
- * simply been in the catalog since it was first seen.
+ * Classifies an entity's provenance for display. `lastChanged` AFTER
+ * `firstSeen` in patch order is the only provable change; equal stamps mean
+ * the entity has simply been in the catalog since it was first seen, and
+ * out-of-order stamps (corrupt provenance) are treated as tracked rather
+ * than claiming a change that cannot have been observed.
  */
 export function entityChangeStatus(
   entity: { firstSeenPatch: PatchCode; lastChangedPatch: PatchCode },
   patchOrder: PatchCode[]
 ): EntityChangeStatus {
-  if (entity.lastChangedPatch !== entity.firstSeenPatch) {
-    return { kind: "changed", patch: entity.lastChangedPatch };
-  }
-  const first = patchIndex(patchOrder, entity.firstSeenPatch);
+  const firstIdx = patchOrder.indexOf(entity.firstSeenPatch);
+  const changedIdx = patchOrder.indexOf(entity.lastChangedPatch);
+  // A code missing from the patch table can't be ordered — fall back to raw
+  // inequality so a stamp newer than the known table still reads as changed.
+  const isChanged =
+    firstIdx === -1 || changedIdx === -1
+      ? entity.lastChangedPatch !== entity.firstSeenPatch
+      : changedIdx > firstIdx;
+  if (isChanged) return { kind: "changed", patch: entity.lastChangedPatch };
   const baseline = patchIndex(patchOrder, TRACKING_BASELINE_PATCH);
-  if (first > baseline) return { kind: "added", patch: entity.firstSeenPatch };
+  if (patchIndex(patchOrder, entity.firstSeenPatch) > baseline) {
+    return { kind: "added", patch: entity.firstSeenPatch };
+  }
   return { kind: "tracked", patch: entity.firstSeenPatch };
 }
 

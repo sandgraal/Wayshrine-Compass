@@ -4,9 +4,15 @@ import { computeFreshnessPreview, type LiveEntities, type PlannerDraftRefs } fro
 
 const CURRENT = "U50";
 
-const gearSet = (id: string, name: string, lastChangedPatch: string) => ({ id, name, lastChangedPatch }) as GearSet;
-const skill = (id: string, name: string, lastChangedPatch: string) => ({ id, name, lastChangedPatch }) as Skill;
-const cpStar = (id: string, name: string, lastChangedPatch: string) => ({ id, name, lastChangedPatch }) as CpStar;
+// Fixtures carry real provenance: firstSeen defaults to an old patch so a
+// current lastChanged reads as an observed change, and can be overridden to
+// exercise the equal-stamp (baseline import) suppression.
+const gearSet = (id: string, name: string, lastChangedPatch: string, firstSeenPatch = "U40") =>
+  ({ id, name, firstSeenPatch, lastChangedPatch }) as GearSet;
+const skill = (id: string, name: string, lastChangedPatch: string, firstSeenPatch = "U40") =>
+  ({ id, name, firstSeenPatch, lastChangedPatch }) as Skill;
+const cpStar = (id: string, name: string, lastChangedPatch: string, firstSeenPatch = "U40") =>
+  ({ id, name, firstSeenPatch, lastChangedPatch }) as CpStar;
 
 const live: LiveEntities = {
   setById: new Map([
@@ -99,5 +105,26 @@ describe("planner freshness preview", () => {
   it("ignores entities last changed in an earlier patch", () => {
     const preview = computeFreshnessPreview(refs({ setIds: ["set-stable"] }), live, CURRENT);
     expect(preview.status).toBe("no_changes");
+  });
+});
+
+describe("baseline-import suppression", () => {
+  // firstSeen === lastChanged === current patch is the catalog-import stamp,
+  // not an observed change — the exact mass-amber regression the equal-stamp
+  // rule exists to prevent.
+  const baselineLive: LiveEntities = {
+    setById: new Map([["set-imported", gearSet("set-imported", "Adamant Lurker", CURRENT, CURRENT)]]),
+    skillById: new Map([["skill-imported", skill("skill-imported", "Force Shock", CURRENT, CURRENT)]]),
+    cpStarById: new Map([["cp-imported", cpStar("cp-imported", "Boundless Vitality", CURRENT, CURRENT)]]),
+  };
+
+  it("reports no_changes for a draft slotting only baseline-imported entities", () => {
+    const preview = computeFreshnessPreview(
+      refs({ setIds: ["set-imported"], skillIds: ["skill-imported"], cpStarIds: ["cp-imported"] }),
+      baselineLive,
+      CURRENT
+    );
+    expect(preview.status).toBe("no_changes");
+    expect(preview.reasons).toEqual([]);
   });
 });

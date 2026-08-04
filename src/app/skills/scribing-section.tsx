@@ -1,33 +1,32 @@
-import type { Grimoire, ScribingScript } from "@/lib/types";
+import type { Grimoire, PatchCode, ScribingScript } from "@/lib/types";
 import { SCRIPT_SLOTS } from "@/lib/types";
-import { Badge } from "@/components/ui/badge";
+import { entityChangeStatus } from "@/lib/freshness";
+import { EntityChangeBadge } from "@/components/entity-change-badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
 const SLOT_LABELS = { focus: "Focus", signature: "Signature", affix: "Affix" } as const;
 
-function ChangedBadge({ patch }: { patch: string }) {
-  return (
-    <Badge variant="outline" className="border-needs-review/40 bg-needs-review/15 text-needs-review">
-      Changed in {patch}
-    </Badge>
-  );
-}
-
 /**
  * Scribing catalog: grimoires with their per-slot script compatibility, and
- * the full script list grouped by slot. Server-rendered; entities changed in
- * the current patch carry the same amber badge as skills above.
+ * the full script list grouped by slot. Server-rendered; entities carry the
+ * same provenance classification as skills above — a badge appears only for
+ * an observed change or a post-baseline addition, never for a baseline stamp.
  */
 export function ScribingSection({
   grimoires,
   scripts,
-  currentPatch,
+  patchOrder,
 }: {
   grimoires: Grimoire[];
   scripts: ScribingScript[];
-  currentPatch: string;
+  patchOrder: PatchCode[];
 }) {
   if (grimoires.length === 0 && scripts.length === 0) return null;
+
+  const badge = (entity: { firstSeenPatch: PatchCode; lastChangedPatch: PatchCode }) =>
+    entityChangeStatus(entity, patchOrder).kind !== "tracked" ? (
+      <EntityChangeBadge entity={entity} patchOrder={patchOrder} />
+    ) : null;
 
   return (
     <div className="mt-10">
@@ -43,7 +42,7 @@ export function ScribingSection({
             <CardHeader className="border-b border-border">
               <CardTitle className="flex flex-wrap items-center gap-2">
                 {g.name}
-                {g.lastChangedPatch === currentPatch && <ChangedBadge patch={currentPatch} />}
+                {badge(g)}
               </CardTitle>
               <CardDescription>{g.lineLabel} grimoire</CardDescription>
             </CardHeader>
@@ -79,7 +78,7 @@ export function ScribingSection({
                   >
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="text-sm font-medium">{s.name}</span>
-                      {s.lastChangedPatch === currentPatch && <ChangedBadge patch={currentPatch} />}
+                      {badge(s)}
                     </div>
                     <p className="text-xs text-muted-foreground">{s.description}</p>
                   </div>
