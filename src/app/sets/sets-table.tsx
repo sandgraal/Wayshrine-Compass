@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import type { GearSet, PatchCode } from "@/lib/types";
 import { EntityChangeBadge } from "@/components/entity-change-badge";
+import { EntitySigil } from "@/components/entity-sigil";
+import { setTypeArt } from "@/lib/entity-art";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -80,6 +82,7 @@ export function SetsTable({
               <TableRow key={s.id} id={s.id} className="scroll-mt-24">
                 <TableCell className="font-medium">
                   <span className="flex items-center gap-2">
+                    <EntitySigil src={setTypeArt(s)} />
                     {s.name}
                     {s.mythicSlot && <Badge variant="outline">Mythic</Badge>}
                   </span>
