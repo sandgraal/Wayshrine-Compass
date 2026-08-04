@@ -1,6 +1,7 @@
 import type { GuidanceBlock, Platform } from "@/lib/types";
 
-export const PLATFORM_COOKIE = "wc-platform";
+/** localStorage key for the platform toggle (client-side only, never a cookie). */
+export const PLATFORM_STORAGE_KEY = "wc-platform";
 
 export interface RenderedGuidance {
   title: string;

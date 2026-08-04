@@ -3,20 +3,16 @@
  * engine's NextAction ids. The deterministic engine knows nothing about this
  * map (CLAUDE.md invariant: its output shape never changes for presentation).
  *
- * Files live in `public/whatnext/` as 512px-square WebPs. Cards render
- * identically without art: a map miss or an absent id in SHIPPED_IDS both
- * produce no thumbnail, avoiding a mount-then-fail layout shift.
+ * Files live in `public/whatnext/` as 512px-square WebPs, one per entry plus
+ * the shared companion illustration. Every entry has its file on disk (the
+ * acceptance test asserts it), so a map hit is always renderable; a map miss
+ * produces no thumbnail and the card renders identically without art.
  *
  * `unlock-companion-<id>` actions share one generic companion illustration.
- *
- * Workflow: add the action id to SHIPPED_IDS once its WebP lands in
- * public/whatnext/. ACTION_ART holds the expected filenames as a reference
- * even before they ship.
  */
 
 const COMPANION_ART = "/whatnext/unlock-companion.webp";
 
-/** Expected filenames — add entries here when planning art; see SHIPPED_IDS. */
 export const ACTION_ART: Partial<Record<string, string>> = {
   "set-mundus": "/whatnext/set-mundus.webp",
   "mount-training": "/whatnext/mount-training.webp",
@@ -39,39 +35,7 @@ export const ACTION_ART: Partial<Record<string, string>> = {
   "slot-cp": "/whatnext/slot-cp.webp",
 };
 
-/**
- * Action ids whose WebP file is present in public/whatnext/.
- * Use "unlock-companion" to activate the shared companion illustration.
- * Add an id here as soon as its file lands; actionArt() returns undefined for
- * any id absent from this set so no request is fired before the file ships.
- */
-const SHIPPED_IDS = new Set<string>([
-  "set-mundus",
-  "mount-training",
-  "zone-story",
-  "collect-skyshards",
-  "unlock-wayshrines",
-  "daily-random-normal",
-  "training-gear",
-  "join-guilds",
-  "craft-certification",
-  "price-tracking",
-  "overland-zone",
-  "dungeon-normal-rotation",
-  "vet-dungeon-progression",
-  "first-normal-trial",
-  "level-first-trials",
-  "pvp-intro",
-  "unlock-scribing",
-  "unlock-subclassing",
-  "slot-cp",
-  "unlock-companion",
-]);
-
 export function actionArt(actionId: string): string | undefined {
-  if (actionId.startsWith("unlock-companion-")) {
-    return SHIPPED_IDS.has("unlock-companion") ? COMPANION_ART : undefined;
-  }
-  if (!SHIPPED_IDS.has(actionId)) return undefined;
+  if (actionId.startsWith("unlock-companion-")) return COMPANION_ART;
   return ACTION_ART[actionId];
 }

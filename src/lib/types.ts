@@ -126,6 +126,7 @@ export interface CpStar {
   slottable: boolean;
   /** Stable upstream identifier, when the source carries one. See GearSet.gameId. */
   gameId?: string;
+  firstSeenPatch: PatchCode;
   lastChangedPatch: PatchCode;
 }
 
@@ -334,7 +335,7 @@ export interface PatchDataset {
   patch: Patch;
   sets: Omit<GearSet, "firstSeenPatch" | "lastChangedPatch">[];
   skills: Omit<Skill, "firstSeenPatch" | "lastChangedPatch">[];
-  cpStars: Omit<CpStar, "lastChangedPatch">[];
+  cpStars: Omit<CpStar, "firstSeenPatch" | "lastChangedPatch">[];
   grimoires: Omit<Grimoire, "firstSeenPatch" | "lastChangedPatch">[];
   scripts: Omit<ScribingScript, "firstSeenPatch" | "lastChangedPatch">[];
   classMasteryLines: Omit<ClassMasteryLine, "firstSeenPatch" | "lastChangedPatch">[];

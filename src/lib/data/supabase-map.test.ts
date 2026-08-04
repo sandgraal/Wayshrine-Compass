@@ -55,7 +55,7 @@ describe("supabase row mappers", () => {
 
   it("cp stars, mundus, food round-trip", () => {
     for (const s of cpStars) {
-      const row = { id: s.id, tree: s.tree, name: s.name, effect: { text: s.effect }, slottable: s.slottable, last_changed_patch: s.lastChangedPatch };
+      const row = { id: s.id, tree: s.tree, name: s.name, effect: { text: s.effect }, slottable: s.slottable, first_seen_patch: s.firstSeenPatch, last_changed_patch: s.lastChangedPatch };
       expect(rowToCpStar(row)).toEqual(s);
     }
     for (const m of mundusStones) {

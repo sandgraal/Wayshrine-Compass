@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Builds" };
 
+export const revalidate = 300;
+
 const ROLES = ["dps", "tank", "healer"] as const;
 const CONTENT = ["trial", "dungeon", "leveling"] as const;
 

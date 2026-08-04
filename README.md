@@ -60,7 +60,7 @@ provenance, build flags, and an `ingest_runs` audit row are persisted.
 
 ### Console mode
 
-The header toggle persists a cookie. Guidance blocks are authored with a platform flag; in console
+The header toggle persists to localStorage. Guidance blocks are authored with a platform flag; in console
 mode addon-dependent blocks are replaced by their authored console alternative (or dropped). The
 What Next engine applies the same filter to its recommendations.
 

@@ -51,8 +51,8 @@ upsert(
 );
 upsert(
   "cp_stars",
-  ["id", "tree", "name", "effect", "slottable", "last_changed_patch"],
-  cpStars.map((s) => [s.id, s.tree, s.name, { text: s.effect }, s.slottable, s.lastChangedPatch]),
+  ["id", "tree", "name", "effect", "slottable", "first_seen_patch", "last_changed_patch"],
+  cpStars.map((s) => [s.id, s.tree, s.name, { text: s.effect }, s.slottable, s.firstSeenPatch, s.lastChangedPatch]),
   "id"
 );
 upsert(

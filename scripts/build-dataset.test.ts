@@ -105,12 +105,12 @@ describe("public/dataset/current.json", () => {
     }
   });
 
-  it("matches the migration 0004 Class Mastery backfill row-for-row", () => {
+  it("matches the migration 0005 Class Mastery backfill row-for-row", () => {
     // The backfill exists so the first ingest after deploy diffs clean; a
     // drifted row would mark every referencing build needs_review. See
-    // supabase/migrations/0004_scribing_class_mastery.sql.
+    // supabase/migrations/0005_scribing_class_mastery.sql.
     const sql = fs.readFileSync(
-      path.resolve(__dirname, "..", "supabase", "migrations", "0004_scribing_class_mastery.sql"),
+      path.resolve(__dirname, "..", "supabase", "migrations", "0005_scribing_class_mastery.sql"),
       "utf8"
     );
     const unq = (s: string) => s.replace(/''/g, "'");

@@ -79,6 +79,7 @@ async function main() {
       name: s.name,
       effect: { text: s.effect },
       slottable: s.slottable,
+      first_seen_patch: s.firstSeenPatch,
       last_changed_patch: s.lastChangedPatch,
     }))
   );

@@ -24,7 +24,8 @@ export function persistenceConfigured(): boolean {
 
 /**
  * Applies a pipeline run to Supabase through the ingest_apply database
- * function (supabase/migrations/0002_ingest_apply.sql), so the patch row,
+ * function (current definition: supabase/migrations/0006_ingest_apply_v4.sql),
+ * so the patch row,
  * entity upserts, removal reconciliation, build flags, and audit row commit
  * or roll back as one transaction.
  */
@@ -79,6 +80,7 @@ export async function persistIngest(
       effect: { text: s.effect },
       slottable: s.slottable,
       game_id: s.gameId ?? null,
+      first_seen_patch: s.firstSeenPatch,
       last_changed_patch: s.lastChangedPatch,
     })),
     grimoires: result.store.grimoires.map((g) => ({
