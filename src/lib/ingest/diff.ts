@@ -15,8 +15,13 @@ import { buildEntityRefs } from "@/lib/entities";
 
 type AnyEntity = { id: string; name: string } & Record<string, unknown>;
 
-/** Fields that are metadata, not game-mechanical definition. */
-const IGNORED_FIELDS = new Set(["firstSeenPatch", "lastChangedPatch", "gameId"]);
+/**
+ * Fields that are metadata, not game-mechanical definition. `passive` is
+ * picker metadata: a real active↔passive conversion always rewrites the
+ * description too, so ignoring it here costs nothing and lets the flag
+ * backfill across the catalog without manufacturing 233 fake changes.
+ */
+const IGNORED_FIELDS = new Set(["firstSeenPatch", "lastChangedPatch", "gameId", "passive"]);
 
 function stable(value: unknown): string {
   if (value === null || typeof value !== "object") return JSON.stringify(value);
