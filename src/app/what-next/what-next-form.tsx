@@ -1,10 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Clock, Sparkles } from "lucide-react";
-import type { PlayerGoal, PlayerPlatform, PlayerProfile } from "@/lib/types";
+import { Check, Clock, Sparkles, Undo2, X } from "lucide-react";
+import type { NextAction, PlayerGoal, PlayerPlatform, PlayerProfile } from "@/lib/types";
 import { ALL_CLASSES } from "@/lib/types";
-import { whatNext } from "@/lib/engine/whatNext";
+import { selectActions } from "./select-actions";
+import { useWhatNextProfile, useWhatNextProgress } from "./progress-store";
 import { ActionThumb } from "./action-thumb";
 import { companions } from "@/data/companions";
 import { ALL_DLC_IDS } from "@/data/zones";
@@ -61,25 +62,41 @@ const DLC_LABELS: Record<string, string> = {
   "seasons-of-the-worm-cult": "Worm Cult (2025)",
 };
 
-export function WhatNextForm() {
-  const [profile, setProfile] = useState<PlayerProfile>({
-    platform: "xbox",
-    className: "sorcerer",
-    level: 6,
-    cp: 0,
-    esoPlus: true,
-    dlcOwned: [],
-    companionsOwned: [],
-    goal: "leveling",
-    hoursPerWeek: 5,
-  });
-  const [submitted, setSubmitted] = useState(false);
+const DEFAULT_PROFILE: PlayerProfile = {
+  platform: "xbox",
+  className: "sorcerer",
+  level: 6,
+  cp: 0,
+  esoPlus: true,
+  dlcOwned: [],
+  companionsOwned: [],
+  goal: "leveling",
+  hoursPerWeek: 5,
+};
 
-  const actions = useMemo(() => (submitted ? whatNext(profile) : []), [submitted, profile]);
+export function WhatNextForm() {
+  const { storedProfile, saveProfile } = useWhatNextProfile();
+  const { progress, markDone, unmarkDone, dismiss, undismiss, resetProgress } = useWhatNextProgress();
+  // Edits before the first submission stay local; the first submission
+  // persists the profile, and from then on results recompute live on every
+  // edit instead of blanking (the stored profile doubles as "submitted").
+  const [draft, setDraft] = useState<PlayerProfile | null>(null);
+  const submitted = storedProfile !== null;
+  const profile = draft ?? storedProfile ?? DEFAULT_PROFILE;
+
+  const selected = useMemo(
+    () => (submitted ? selectActions(profile, progress) : null),
+    [submitted, profile, progress]
+  );
 
   const set = <K extends keyof PlayerProfile>(key: K, value: PlayerProfile[K]) => {
-    setProfile((p) => ({ ...p, [key]: value }));
-    setSubmitted(false);
+    const next = { ...profile, [key]: value };
+    if (submitted) {
+      saveProfile(next);
+      setDraft(null);
+    } else {
+      setDraft(next);
+    }
   };
 
   return (
@@ -197,39 +214,145 @@ export function WhatNextForm() {
           />
         </Field>
 
-        <button
-          onClick={() => setSubmitted(true)}
-          className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
-        >
-          <Sparkles className="size-4" /> Show my next 5 actions
-        </button>
+        {!submitted && (
+          <button
+            onClick={() => saveProfile(profile)}
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+          >
+            <Sparkles className="size-4" /> Show my next 5 actions
+          </button>
+        )}
       </div>
 
-      {submitted && (
-        <ol className="space-y-3">
-          {actions.map((action, i) => (
-            <li key={action.id} className="rounded-lg border border-border bg-card p-4">
-              <div className="flex items-start gap-3">
-                <ActionThumb actionId={action.id} />
-                <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                  {i + 1}
-                </span>
-                <div className="min-w-0">
-                  <h3 className="font-semibold">{action.title}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{action.why}</p>
-                  <p className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                    <span className="text-verified">Payoff: {action.payoff}</span>
-                    <span className="inline-flex items-center gap-1">
-                      <Clock className="size-3" /> {action.timeCost}
+      {selected && (
+        <div className="space-y-4">
+          {selected.visible.length > 0 ? (
+            <ol className="space-y-3">
+              {selected.visible.map((action, i) => (
+                <li key={action.id} className="rounded-lg border border-border bg-card p-4">
+                  <div className="flex items-start gap-3">
+                    <ActionThumb actionId={action.id} />
+                    <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                      {i + 1}
                     </span>
-                  </p>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ol>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-semibold">{action.title}</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">{action.why}</p>
+                      <p className="mt-1.5 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                        <span className="text-verified">Payoff: {action.payoff}</span>
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="size-3" /> {action.timeCost}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="flex shrink-0 flex-col gap-1.5">
+                      <button
+                        onClick={() => {
+                          markDone(action.id);
+                          const companionMatch = action.id.match(/^unlock-companion-(.+)$/);
+                          if (companionMatch) {
+                            const companionId = companionMatch[1];
+                            set("companionsOwned", [...new Set([...profile.companionsOwned, companionId])]);
+                          }
+                        }}
+                        title="Mark as done"
+                        className="inline-flex items-center gap-1 rounded-md border border-verified/40 px-2 py-1 text-xs text-verified hover:bg-verified/10"
+                      >
+                        <Check className="size-3" /> Done
+                      </button>
+                      <button
+                        onClick={() => dismiss(action.id)}
+                        title="Hide this suggestion"
+                        className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-xs text-muted-foreground hover:bg-accent"
+                      >
+                        <X className="size-3" /> Hide
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p className="rounded-lg border border-border bg-card p-4 text-sm text-muted-foreground">
+              Nothing left to suggest for this profile: everything the engine recommends is marked
+              done or hidden. Adjust the profile above, or reset your progress below.
+            </p>
+          )}
+
+          {selected.completed.length > 0 && (
+            <details className="rounded-lg border border-border bg-card p-4">
+              <summary className="cursor-pointer text-sm font-medium">
+                Completed ({selected.completed.length})
+              </summary>
+              <ul className="mt-3 space-y-2">
+                {selected.completed.map((action) => (
+                  <ProgressRow
+                    key={action.id}
+                    action={action}
+                    undoLabel="Not done yet"
+                    onUndo={() => unmarkDone(action.id)}
+                    struck
+                  />
+                ))}
+              </ul>
+            </details>
+          )}
+
+          {selected.hidden.length > 0 && (
+            <details className="rounded-lg border border-border bg-card p-4">
+              <summary className="cursor-pointer text-sm font-medium">
+                Hidden ({selected.hidden.length})
+              </summary>
+              <ul className="mt-3 space-y-2">
+                {selected.hidden.map((action) => (
+                  <ProgressRow
+                    key={action.id}
+                    action={action}
+                    undoLabel="Show again"
+                    onUndo={() => undismiss(action.id)}
+                  />
+                ))}
+              </ul>
+            </details>
+          )}
+
+          {(progress.done.length > 0 || progress.dismissed.length > 0) && (
+            <button
+              onClick={resetProgress}
+              className="text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+            >
+              Reset checklist progress
+            </button>
+          )}
+        </div>
       )}
     </div>
+  );
+}
+
+function ProgressRow({
+  action,
+  undoLabel,
+  onUndo,
+  struck,
+}: {
+  action: NextAction;
+  undoLabel: string;
+  onUndo: () => void;
+  struck?: boolean;
+}) {
+  return (
+    <li className="flex items-center justify-between gap-3 text-sm">
+      <span className={cn("text-muted-foreground", struck && "line-through decoration-verified/60")}>
+        {action.title}
+      </span>
+      <button
+        onClick={onUndo}
+        className="inline-flex shrink-0 items-center gap-1 rounded-md border border-border px-2 py-1 text-xs text-muted-foreground hover:bg-accent"
+      >
+        <Undo2 className="size-3" /> {undoLabel}
+      </button>
+    </li>
   );
 }
 
