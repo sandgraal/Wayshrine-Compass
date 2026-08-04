@@ -56,7 +56,7 @@ function titleCase(id: string): string {
 
 /** How a zone is unlocked, classified from its gate id. */
 export function zoneAccess(zone: Zone): ZoneAccess {
-  if (!zone.dlcRequired) {
+  if (!zone.dlcRequired || zone.dlcRequired === "morrowind") {
     return {
       tier: "Base game",
       packName: null,
