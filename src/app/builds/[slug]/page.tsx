@@ -4,7 +4,12 @@ import type { Metadata } from "next";
 import { GitFork } from "lucide-react";
 import { getDb } from "@/lib/data";
 import { buildEntityRefs } from "@/lib/entities";
-import { fetchRecentIngestRuns, persistenceConfigured } from "@/lib/ingest/persist";
+import {
+  fetchIngestRunReports,
+  fetchRecentIngestRuns,
+  persistenceConfigured,
+} from "@/lib/ingest/persist";
+import { SinceLastVisit, type RecentReferencedChange } from "./since-last-visit";
 import { builds as seedBuilds } from "@/data/builds";
 import { BuildGuidance } from "@/components/build-guidance";
 import { FreshnessBadge } from "@/components/freshness-badge";
@@ -117,6 +122,25 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
       // optional evidence; never fail the page over it
     }
   }
+  // Recent observed changes intersecting this build's references, for the
+  // client-side "since your last visit" note. Live database only; capped.
+  let recentChanges: RecentReferencedChange[] = [];
+  if (persistenceConfigured() && db.source === "supabase") {
+    try {
+      const refs = new Set(buildEntityRefs(build).map((r) => `${r.entityType}:${r.entityId}`));
+      const runs = await fetchIngestRunReports(5);
+      recentChanges = runs
+        .flatMap((run) =>
+          (run.report?.changes ?? [])
+            .filter((c) => refs.has(`${c.entityType}:${c.entityId}`) && c.kind !== "added")
+            .map((c) => ({ ranAt: run.ranAt, entityName: c.entityName, summary: c.summary }))
+        )
+        .slice(0, 24);
+    } catch {
+      // the note is optional; never fail the page over it
+    }
+  }
+
   const portrait = portraitForBuild(build);
   const mundus = db.mundusById.get(build.mundusId);
   const food = db.foodById.get(build.foodId);
@@ -185,6 +209,8 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
           </Link>
         </Button>
       </div>
+
+      <SinceLastVisit slug={build.slug} changes={recentChanges} />
 
       {freshness.status === "verified" ? (
         <div className="mb-6 flex items-start gap-2 rounded-md border border-verified/40 bg-verified/10 px-3 py-2 text-xs">

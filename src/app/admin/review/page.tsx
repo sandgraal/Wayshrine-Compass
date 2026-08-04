@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getDb } from "@/lib/data";
 import { ReviewConsole, type ReviewItem } from "./review-console";
 
-export const metadata: Metadata = { title: "Review Queue" };
+export const metadata: Metadata = { title: "Review Queue", robots: { index: false } };
 
 /**
  * Admin console: every build with its computed freshness and the exact amber

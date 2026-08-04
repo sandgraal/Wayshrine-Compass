@@ -36,6 +36,30 @@ function changedFields(prev: AnyEntity, next: AnyEntity): string[] {
   return out;
 }
 
+/**
+ * Values are capped so a 12-bonus set's jsonb can't bloat the audit row;
+ * the changelog shows enough of each side to understand the change.
+ */
+const FIELD_DIFF_CAP = 240;
+
+function clipValue(v: unknown): string {
+  if (v === undefined) return "(absent)";
+  const s = typeof v === "string" ? v : stable(v);
+  return s.length > FIELD_DIFF_CAP ? `${s.slice(0, FIELD_DIFF_CAP - 1)}…` : s;
+}
+
+function fieldDiffs(
+  prev: AnyEntity,
+  next: AnyEntity,
+  fields: string[]
+): { field: string; before: string; after: string }[] {
+  return fields.map((field) => ({
+    field,
+    before: clipValue(prev[field]),
+    after: clipValue(next[field]),
+  }));
+}
+
 /* ------------------------------------------------------------------ */
 /* Rename detection                                                    */
 /*                                                                     */
@@ -219,6 +243,7 @@ function diffCollection(
         entityName: entity.name,
         kind: "changed",
         changedFields: fields,
+        fieldDiffs: fieldDiffs(before, entity, fields),
         summary: `${entity.name}: ${fields.join(", ")} changed.`,
       });
     }
@@ -240,6 +265,7 @@ function diffCollection(
       entityName: from.name,
       kind: "renamed",
       changedFields: fields,
+      fieldDiffs: fieldDiffs(from, to, fields),
       renamedTo: { entityId: to.id, entityName: to.name },
       summary:
         from.name === to.name

@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
-import type { PatchDataset } from "@/lib/types";
+import type { DiffReport, PatchDataset } from "@/lib/types";
 import type { Db } from "@/lib/data/core";
+import type { IngestRunReport } from "@/lib/changelog";
 import type { IngestResult } from "./pipeline";
 
 /**
@@ -170,6 +171,39 @@ export async function fetchRecentIngestRuns(limit = 10): Promise<IngestRunSummar
     changes: Number(r.changes ?? 0),
     flaggedBuilds: Number(r.flagged_builds ?? 0),
   }));
+}
+
+/**
+ * Recent ingest runs WITH their full persisted DiffReports, for the public
+ * run feed on /patch-tracker. Unlike fetchRecentIngestRuns (summary counts
+ * via the 0003 view), this reads the report jsonb itself — service-role,
+ * server-side only, RSC-rendered so the payload never reaches the client
+ * unrendered. Callers must check persistenceConfigured() first.
+ */
+export async function fetchIngestRunReports(limit = 20): Promise<IngestRunReport[]> {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
+  const { data, error } = await supabase
+    .from("ingest_runs")
+    .select("id, ran_at, from_patch, to_patch, report, flagged")
+    .order("ran_at", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(`ingest_runs read failed: ${error.message}`);
+
+  return (data ?? []).map((r) => {
+    const report = r.report as DiffReport | Record<string, never> | null;
+    return {
+      id: Number(r.id),
+      ranAt: String(r.ran_at),
+      fromPatch: (r.from_patch as string | null) ?? null,
+      toPatch: (r.to_patch as string | null) ?? null,
+      report: report && Array.isArray((report as DiffReport).changes) ? (report as DiffReport) : null,
+      flaggedBuilds: Array.isArray(r.flagged) ? r.flagged.length : 0,
+    };
+  });
 }
 
 /** The build row changed between the reviewer's read and the re-stamp. */

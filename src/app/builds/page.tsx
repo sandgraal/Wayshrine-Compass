@@ -14,27 +14,37 @@ export const revalidate = 300;
 
 const ROLES = ["dps", "tank", "healer"] as const;
 const CONTENT = ["trial", "dungeon", "leveling"] as const;
+const FRESHNESS = ["verified", "needs_review", "stale"] as const;
+const FRESHNESS_LABEL: Record<(typeof FRESHNESS)[number], string> = {
+  verified: "Verified",
+  needs_review: "Needs review",
+  stale: "Stale",
+};
 
 export default async function BuildsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ class?: string; role?: string; content?: string }>;
+  searchParams: Promise<{ class?: string; role?: string; content?: string; freshness?: string }>;
 }) {
   const db = await getDb();
   const params = await searchParams;
   const cls = ALL_CLASSES.includes(params.class as ClassName) ? (params.class as ClassName) : undefined;
   const role = ROLES.includes(params.role as (typeof ROLES)[number]) ? params.role : undefined;
   const content = CONTENT.includes(params.content as (typeof CONTENT)[number]) ? params.content : undefined;
+  const freshness = FRESHNESS.includes(params.freshness as (typeof FRESHNESS)[number])
+    ? (params.freshness as (typeof FRESHNESS)[number])
+    : undefined;
 
   const filtered = db.builds.filter(
     (b) =>
       (!cls || b.className === cls) &&
       (!role || b.role === role) &&
-      (!content || b.contentType === content)
+      (!content || b.contentType === content) &&
+      (!freshness || db.freshness(b).status === freshness)
   );
 
   const filterLink = (patch: Record<string, string | undefined>) => {
-    const next = { class: cls, role, content, ...patch };
+    const next = { class: cls, role, content, freshness, ...patch };
     const qs = Object.entries(next)
       .filter(([, v]) => v)
       .map(([k, v]) => `${k}=${v}`)
@@ -71,6 +81,13 @@ export default async function BuildsPage({
           <FilterChip href={filterLink({ content: undefined })} active={!content} label="All" />
           {CONTENT.map((c) => (
             <FilterChip key={c} href={filterLink({ content: c })} active={content === c} label={c} />
+          ))}
+        </div>
+        <div className="flex flex-wrap items-center gap-1">
+          <span className="mr-1 text-xs uppercase tracking-wide text-muted-foreground">Freshness</span>
+          <FilterChip href={filterLink({ freshness: undefined })} active={!freshness} label="All" />
+          {FRESHNESS.map((f) => (
+            <FilterChip key={f} href={filterLink({ freshness: f })} active={freshness === f} label={FRESHNESS_LABEL[f]} />
           ))}
         </div>
       </div>

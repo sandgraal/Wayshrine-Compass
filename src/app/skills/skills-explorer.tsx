@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ALL_CLASSES, type ClassName, type PatchCode, type Skill } from "@/lib/types";
 import { entityChangeStatus } from "@/lib/freshness";
 import { EntityChangeBadge } from "@/components/entity-change-badge";
@@ -27,7 +27,7 @@ function SkillRow({ s, patchOrder }: { s: Skill; patchOrder: PatchCode[] }) {
   // there is an observed change (or a post-baseline addition) to report.
   const status = entityChangeStatus(s, patchOrder);
   return (
-    <div className="flex flex-col gap-1.5 border-b border-border py-3 first:pt-0 last:border-b-0 last:pb-0">
+    <div id={s.id} className="flex scroll-mt-24 flex-col gap-1.5 border-b border-border py-3 first:pt-0 last:border-b-0 last:pb-0">
       <div className="flex flex-wrap items-center gap-2">
         <span className={cn("text-sm font-medium", s.ultimate && "text-primary")}>{s.name}</span>
         <Badge variant={s.ultimate ? "default" : "secondary"}>{s.ultimate ? "Ultimate" : "Active"}</Badge>
@@ -49,6 +49,32 @@ export function SkillsExplorer({
   patchOrder: PatchCode[];
 }) {
   const [cls, setCls] = useState<ClassName>(ALL_CLASSES[0]);
+
+  // Deep links (/skills#<skill-id>, e.g. from the patch tracker) target rows
+  // that only render for the selected class — switch the selector to the
+  // target's class first, then scroll once that render commits.
+  const [pendingHash, setPendingHash] = useState<string | null>(null);
+  useEffect(() => {
+    const apply = () => {
+      const id = window.location.hash.slice(1);
+      if (!id) return;
+      const target = skills.find((s) => s.id === id);
+      if (!target) return;
+      if (target.className) setCls(target.className);
+      setPendingHash(id);
+    };
+    apply();
+    window.addEventListener("hashchange", apply);
+    return () => window.removeEventListener("hashchange", apply);
+  }, [skills]);
+  useEffect(() => {
+    if (!pendingHash) return;
+    const el = document.getElementById(pendingHash);
+    if (el) {
+      el.scrollIntoView({ block: "center" });
+      setPendingHash(null);
+    }
+  }, [pendingHash, cls]);
 
   const classSkills = skills.filter((s) => s.className === cls);
   const lines = [...new Set(classSkills.map((s) => s.line))];
