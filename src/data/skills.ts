@@ -40,14 +40,20 @@ export const skills: Skill[] = [
   // Class Mastery (U50) retuned each class's primary spammable — reflected in provenance so builds slotting it read as needs-review.
   sk("dragonknight", "ardent-flame", "Ardent Flame", "Lava Whip", { desc: "Lash an enemy with flame, dealing flame damage.", morphs: ["Molten Whip", "Flame Lash"], patch: { last: "U50" } }),
   sk("dragonknight", "ardent-flame", "Ardent Flame", "Searing Strike", { desc: "Slash an enemy, dealing flame damage over time.", morphs: ["Venomous Claw", "Burning Embers"] }),
+  // Pre-U50 entries retained so the ingest rename-detection tests (diff.test.ts)
+  // have their fixtures: the U50 dataset renamed/removed these four, and no build
+  // references them — the generated builds slot the current successors above.
+  sk("dragonknight", "ardent-flame", "Ardent Flame", "Fiery Breath", { desc: "Exhale flame in a cone, dealing damage over time.", morphs: ["Noxious Breath", "Engulfing Flames"] }),
   sk("dragonknight", "draconic-power", "Draconic Power", "Dragon Leap", { ult: true, desc: "Launch to an enemy, knocking back and stunning nearby foes.", morphs: ["Take Flight", "Ferocious Leap"] }),
   sk("dragonknight", "draconic-power", "Draconic Power", "Burnished Scales", { desc: "Gain Major Resolve and retaliate against melee attackers with your dragon scales.", morphs: ["Hardened Scales", "Volatile Scales"] }),
   sk("dragonknight", "draconic-power", "Draconic Power", "Dark Talons", { desc: "Immobilize nearby enemies with flame talons.", morphs: ["Burning Talons", "Choking Talons"] }),
   sk("dragonknight", "draconic-power", "Draconic Power", "Dragon Blood", { desc: "Heal yourself based on your missing Health.", morphs: ["Green Dragon Blood", "Coagulating Blood"] }),
+  sk("dragonknight", "draconic-power", "Draconic Power", "Spiked Armor", { desc: "Gain Major Resolve and return damage to melee attackers.", morphs: ["Hardened Armor", "Volatile Armor"] }), // retained pre-U50 fixture; unreferenced
   sk("dragonknight", "earthen-heart", "Earthen Heart", "Magma Armor", { ult: true, desc: "Limit incoming damage and deal flame damage to nearby enemies.", morphs: ["Magma Shell", "Corrosive Armor"] }),
   sk("dragonknight", "earthen-heart", "Earthen Heart", "Landslide", { desc: "Rip the earth in a line, dealing physical damage and setting enemies Off Balance.", morphs: ["Stone Giant", "Obsidian Shard"] }),
   sk("dragonknight", "earthen-heart", "Earthen Heart", "Obsidian Shield", { desc: "Shield yourself and nearby allies.", morphs: ["Igneous Shield", "Fragmented Shield"] }),
   sk("dragonknight", "earthen-heart", "Earthen Heart", "Petrify", { desc: "Encase an enemy in stone, stunning them.", morphs: ["Fossilize", "Shattering Rocks"] }),
+  sk("dragonknight", "earthen-heart", "Earthen Heart", "Stonefist", { desc: "Crush an enemy with stone, dealing physical damage.", morphs: ["Stone Giant", "Obsidian Shard"] }), // retained pre-U50 fixture; unreferenced
 
   /* ---------------- Sorcerer ---------------- */
   sk("sorcerer", "dark-magic", "Dark Magic", "Negate Magic", { ult: true, desc: "Create a globe of magic suppression, silencing and stunning enemies inside.", morphs: ["Suppression Field", "Absorption Field"] }),
@@ -72,6 +78,7 @@ export const skills: Skill[] = [
   sk("nightblade", "shadow", "Shadow", "Shadow Cloak", { desc: "Vanish from sight for a short time.", morphs: ["Shadowy Disguise", "Dark Cloak"] }),
   sk("nightblade", "shadow", "Shadow", "Dark Veil", { desc: "Strike from the shadows to stun and set enemies Off Balance.", morphs: ["Surprise Attack", "Concealed Weapon"] }),
   sk("nightblade", "shadow", "Shadow", "Path of Darkness", { desc: "Create a path that speeds and heals allies.", morphs: ["Twisting Path", "Refreshing Path"] }),
+  sk("nightblade", "shadow", "Shadow", "Veiled Strike", { desc: "Strike from stealth to stun and set off balance.", morphs: ["Surprise Attack", "Concealed Weapon"] }), // retained pre-U50 fixture; unreferenced
   sk("nightblade", "siphoning", "Siphoning", "Soul Shred", { ult: true, desc: "Damage and stun nearby enemies; allies can synergize to heal.", morphs: ["Soul Siphon", "Soul Tether"] }),
   sk("nightblade", "siphoning", "Siphoning", "Strife", { desc: "Deal magic damage and heal yourself or an ally for a portion.", morphs: ["Funnel Health", "Swallow Soul"] }),
   sk("nightblade", "siphoning", "Siphoning", "Cripple", { desc: "Sap an enemy's speed and deal magic damage over time.", morphs: ["Debilitate", "Crippling Grasp"] }),

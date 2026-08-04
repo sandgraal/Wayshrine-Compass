@@ -1,11 +1,15 @@
 import type {
   Build,
+  ClassMasteryLine,
   Companion,
   CpStar,
+  EntitySupersession,
   Food,
   GearSet,
+  Grimoire,
   MundusStone,
   Patch,
+  ScribingScript,
   Skill,
   Zone,
 } from "@/lib/types";
@@ -17,16 +21,35 @@ export interface DbData {
   sets: GearSet[];
   skills: Skill[];
   cpStars: CpStar[];
+  grimoires: Grimoire[];
+  scripts: ScribingScript[];
+  classMasteryLines: ClassMasteryLine[];
   companions: Companion[];
   mundusStones: MundusStone[];
   foods: Food[];
   zones: Zone[];
   builds: Build[];
+  /** Recorded entity renames, so freshness can name a removed ref's successor. */
+  supersessions?: EntitySupersession[];
   /** Label shown in the footer so the active source is auditable. */
   source: "seed" | "supabase";
 }
 
 const TRACKED_ENTITY_TYPES = new Set(["set", "skill", "cp_star"]);
+
+/**
+ * Newer tracked types (Scribing + Class Mastery, U50 modeling). Tracked so a
+ * removed grimoire/script/class line ambers the builds referencing it — but
+ * only when the data source actually carries the collection. A live database
+ * that predates their first ingest has empty tables, and treating an empty
+ * collection as authoritative would mass-amber every build with a
+ * subclassLines entry. Empty ⇒ not authoritative ⇒ freshness skips the type.
+ */
+const TRACKED_WHEN_PRESENT: [string, (data: DbData) => number][] = [
+  ["grimoire", (d) => d.grimoires.length],
+  ["script", (d) => d.scripts.length],
+  ["mastery_line", (d) => d.classMasteryLines.length],
+];
 
 /**
  * Builds the read facade every page consumes. Seed mode and Supabase mode
@@ -41,12 +64,47 @@ export function buildDb(data: DbData) {
   const setById = new Map(data.sets.map((s) => [s.id, s]));
   const skillById = new Map(data.skills.map((s) => [s.id, s]));
   const cpStarById = new Map(data.cpStars.map((s) => [s.id, s]));
+  const grimoireById = new Map(data.grimoires.map((g) => [g.id, g]));
+  const scriptById = new Map(data.scripts.map((s) => [s.id, s]));
+  const masteryLineById = new Map(data.classMasteryLines.map((m) => [m.id, m]));
   const mundusById = new Map(data.mundusStones.map((m) => [m.id, m]));
   const foodById = new Map(data.foods.map((f) => [f.id, f]));
   const buildBySlug = new Map(data.builds.map((b) => [b.slug, b]));
 
+  const tracked = new Set(TRACKED_ENTITY_TYPES);
+  for (const [type, count] of TRACKED_WHEN_PRESENT) {
+    if (count(data) > 0) tracked.add(type);
+  }
+
+  const supersededByDirect = new Map(
+    (data.supersessions ?? []).map((s) => [
+      `${s.entityType}:${s.oldId}`,
+      { oldName: s.oldName, newId: s.newId, newName: s.newName, patch: s.patch },
+    ])
+  );
+
+  // Resolve chains: A→B→C returns the terminal entry for A, with cycle
+  // protection so a malformed supersession loop never hangs the server.
+  function resolveSupersession(entityType: string, entityId: string) {
+    const visited = new Set<string>();
+    let key = `${entityType}:${entityId}`;
+    let entry = supersededByDirect.get(key);
+    if (!entry) return undefined;
+    while (entry) {
+      visited.add(key);
+      const nextKey = `${entityType}:${entry.newId}`;
+      if (visited.has(nextKey)) break;
+      const next = supersededByDirect.get(nextKey);
+      if (!next) break;
+      entry = next;
+      key = nextKey;
+    }
+    return entry;
+  }
+
   const provenance: ProvenanceIndex = {
-    tracks: (entityType) => TRACKED_ENTITY_TYPES.has(entityType),
+    tracks: (entityType) => tracked.has(entityType),
+    supersededBy: (entityType, entityId) => resolveSupersession(entityType, entityId),
     get(entityType, entityId) {
       switch (entityType) {
         case "set": {
@@ -59,6 +117,18 @@ export function buildDb(data: DbData) {
         }
         case "cp_star": {
           const e = cpStarById.get(entityId);
+          return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
+        }
+        case "grimoire": {
+          const e = grimoireById.get(entityId);
+          return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
+        }
+        case "script": {
+          const e = scriptById.get(entityId);
+          return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
+        }
+        case "mastery_line": {
+          const e = masteryLineById.get(entityId);
           return e && { name: e.name, lastChangedPatch: e.lastChangedPatch };
         }
         default:
@@ -75,6 +145,9 @@ export function buildDb(data: DbData) {
     sets: data.sets,
     skills: data.skills,
     cpStars: data.cpStars,
+    grimoires: data.grimoires,
+    scripts: data.scripts,
+    classMasteryLines: data.classMasteryLines,
     companions: data.companions,
     mundusStones: data.mundusStones,
     foods: data.foods,
@@ -83,6 +156,9 @@ export function buildDb(data: DbData) {
     setById,
     skillById,
     cpStarById,
+    grimoireById,
+    scriptById,
+    masteryLineById,
     mundusById,
     foodById,
     getBuild(slug: string): Build | undefined {

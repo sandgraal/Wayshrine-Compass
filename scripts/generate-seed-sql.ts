@@ -14,6 +14,9 @@ import { zones } from "../src/data/zones";
 import { mundusStones } from "../src/data/mundus";
 import { foods } from "../src/data/food";
 import { builds } from "../src/data/builds";
+import { grimoires } from "../src/data/grimoires";
+import { scribingScripts } from "../src/data/scribingScripts";
+import { classMasteryLines } from "../src/data/classMastery";
 import { buildEntityRefs } from "../src/lib/entities";
 
 const q = (v: unknown): string => {
@@ -61,6 +64,24 @@ upsert(
 upsert("zones", ["id", "name", "dlc_required", "level_scaled"], zones.map((z) => [z.id, z.name, z.dlcRequired, z.levelScaled]), "id");
 upsert("mundus_stones", ["id", "name", "effect"], mundusStones.map((m) => [m.id, m.name, { text: m.effect, stats: m.stats ?? [] }]), "id");
 upsert("foods", ["id", "name", "effect"], foods.map((f) => [f.id, f.name, { text: f.effect, stats: f.stats ?? [] }]), "id");
+upsert(
+  "grimoires",
+  ["id", "name", "line", "line_label", "description", "acquisition", "dlc_required", "focus_scripts", "signature_scripts", "affix_scripts", "first_seen_patch", "last_changed_patch"],
+  grimoires.map((g) => [g.id, g.name, g.line, g.lineLabel, g.description, g.acquisition, g.dlcRequired, g.focusScripts, g.signatureScripts, g.affixScripts, g.firstSeenPatch, g.lastChangedPatch]),
+  "id"
+);
+upsert(
+  "scribing_scripts",
+  ["id", "name", "slot", "description", "acquisition", "first_seen_patch", "last_changed_patch"],
+  scribingScripts.map((s) => [s.id, s.name, s.slot, s.description, s.acquisition, s.firstSeenPatch, s.lastChangedPatch]),
+  "id"
+);
+upsert(
+  "class_mastery_lines",
+  ["id", "name", "class", "line", "line_label", "graftable", "first_seen_patch", "last_changed_patch"],
+  classMasteryLines.map((m) => [m.id, m.name, m.className, m.line, m.lineLabel, m.graftable, m.firstSeenPatch, m.lastChangedPatch]),
+  "id"
+);
 upsert(
   "builds",
   ["id", "slug", "name", "class", "subclass_lines", "role", "content_type", "author", "status", "patch_verified", "gear", "front_bar", "back_bar", "cp", "mundus_id", "food_id", "guidance", "review_reasons"],

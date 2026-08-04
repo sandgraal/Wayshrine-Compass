@@ -80,6 +80,12 @@ export interface GearSet {
   bonuses: SetBonus[];
   /** Mythics occupy exactly one slot. */
   mythicSlot?: GearSlot;
+  /**
+   * Stable upstream identifier (e.g. UESP's numeric id), when the source
+   * carries one. Optional — the seed omits it. The diff engine uses it as a
+   * definitive rename signal when both sides of a diff carry it.
+   */
+  gameId?: string;
   firstSeenPatch: PatchCode;
   lastChangedPatch: PatchCode;
 }
@@ -99,6 +105,13 @@ export interface Skill {
   ultimate: boolean;
   description: string;
   morphs: SkillMorph[];
+  /**
+   * Stable upstream identifier (e.g. UESP's abilityId). Skill ids derive from
+   * name + line, so an in-game rename mints a new id; a preserved gameId lets
+   * the diff engine recognize the successor definitively. Optional — the seed
+   * omits it. See src/lib/ingest/diff.ts.
+   */
+  gameId?: string;
   firstSeenPatch: PatchCode;
   lastChangedPatch: PatchCode;
 }
@@ -111,6 +124,8 @@ export interface CpStar {
   name: string;
   effect: string;
   slottable: boolean;
+  /** Stable upstream identifier, when the source carries one. See GearSet.gameId. */
+  gameId?: string;
   lastChangedPatch: PatchCode;
 }
 
@@ -130,6 +145,58 @@ export interface Zone {
   name: string;
   dlcRequired: string | null;
   levelScaled: boolean;
+}
+
+export type ScriptSlot = "focus" | "signature" | "affix";
+
+export const SCRIPT_SLOTS: ScriptSlot[] = ["focus", "signature", "affix"];
+
+/** A Scribing script (Focus/Signature/Affix), written into a grimoire's slot. */
+export interface ScribingScript {
+  id: string;
+  name: string;
+  slot: ScriptSlot;
+  description: string;
+  /** Player-facing acquisition note ("where do I get this?"). */
+  acquisition: string;
+  firstSeenPatch: PatchCode;
+  lastChangedPatch: PatchCode;
+}
+
+/** A Scribing grimoire: the base skill players customize with three scripts. */
+export interface Grimoire {
+  id: string;
+  name: string;
+  /** Skill line the grimoire slots under, e.g. "bow", "soul-magic". */
+  line: string;
+  lineLabel: string;
+  description: string;
+  acquisition: string;
+  /** Scribing ships with the Gold Road chapter; null would mean base game. */
+  dlcRequired: string | null;
+  /** Compatible script ids per slot — entity refs, never free text. */
+  focusScripts: string[];
+  signatureScripts: string[];
+  affixScripts: string[];
+  firstSeenPatch: PatchCode;
+  lastChangedPatch: PatchCode;
+}
+
+/**
+ * A class skill line as a Class Mastery (subclassing) unit — what a build's
+ * subclassLines entry points at. Ids follow `mastery-<class>-<line>`.
+ */
+export interface ClassMasteryLine {
+  id: string;
+  /** Display name, class-qualified — line labels repeat across classes. */
+  name: string;
+  className: ClassName;
+  line: string;
+  lineLabel: string;
+  /** False for the class's own Class Mastery meta line — it can't be grafted. */
+  graftable: boolean;
+  firstSeenPatch: PatchCode;
+  lastChangedPatch: PatchCode;
 }
 
 export interface MundusStone {
@@ -208,7 +275,16 @@ export interface GuidanceBlock {
 
 export type BuildStatus = "verified" | "needs_review" | "stale";
 
-export type EntityType = "set" | "skill" | "cp_star" | "companion" | "mundus" | "food";
+export type EntityType =
+  | "set"
+  | "skill"
+  | "cp_star"
+  | "companion"
+  | "mundus"
+  | "food"
+  | "grimoire"
+  | "script"
+  | "mastery_line";
 
 export interface BuildEntityRef {
   entityType: EntityType;
@@ -242,6 +318,8 @@ export interface Build {
   cp: Record<CpTree, string[]>; // slotted star ids per tree
   mundusId: string;
   foodId: string;
+  /** Scribed skills slotted by this build: grimoire + chosen scripts, by id. */
+  scribedSkills?: { grimoireId: string; scriptIds: string[] }[];
   guidance: GuidanceBlock[];
   /** Populated by the ingestion pipeline when flagged. */
   needsReviewReasons: ChangeNote[];
@@ -257,23 +335,46 @@ export interface PatchDataset {
   sets: Omit<GearSet, "firstSeenPatch" | "lastChangedPatch">[];
   skills: Omit<Skill, "firstSeenPatch" | "lastChangedPatch">[];
   cpStars: Omit<CpStar, "lastChangedPatch">[];
+  grimoires: Omit<Grimoire, "firstSeenPatch" | "lastChangedPatch">[];
+  scripts: Omit<ScribingScript, "firstSeenPatch" | "lastChangedPatch">[];
+  classMasteryLines: Omit<ClassMasteryLine, "firstSeenPatch" | "lastChangedPatch">[];
 }
 
-export type ChangeKind = "added" | "changed" | "removed";
+export type ChangeKind = "added" | "changed" | "removed" | "renamed";
 
 export interface EntityChange {
   entityType: EntityType;
+  /** For a `renamed` change this is the OLD id — the one builds still reference. */
   entityId: string;
+  /** For a `renamed` change this is the OLD name. */
   entityName: string;
   kind: ChangeKind;
   changedFields: string[];
   summary: string;
+  /** Present only when kind === "renamed": the successor the old id maps to. */
+  renamedTo?: { entityId: string; entityName: string };
 }
 
 export interface DiffReport {
   fromPatch: PatchCode;
   toPatch: PatchCode;
   changes: EntityChange[];
+}
+
+/**
+ * A recorded entity rename: the old id X was dropped and superseded by the new
+ * id Y in `patch`. Persisted (supabase/migrations/0004) and folded into the
+ * provenance index so freshness can name the successor of a removed reference
+ * — builds are never silently rewritten to the new id (that stays an authoring
+ * decision; builds reference entities only by id).
+ */
+export interface EntitySupersession {
+  entityType: EntityType;
+  oldId: string;
+  oldName: string;
+  newId: string;
+  newName: string;
+  patch: PatchCode;
 }
 
 export interface AffectedBuild {

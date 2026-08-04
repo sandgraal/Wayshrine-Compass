@@ -1,11 +1,15 @@
 import type {
   Build,
+  ClassMasteryLine,
   Companion,
   CpStar,
+  EntitySupersession,
   Food,
   GearSet,
+  Grimoire,
   MundusStone,
   Patch,
+  ScribingScript,
   Skill,
   StatDelta,
   Zone,
@@ -42,6 +46,7 @@ export function rowToSet(r: Row): GearSet {
     dlcRequired: (r.dlc_required as string | null) ?? null,
     bonuses: (r.bonuses as GearSet["bonuses"]) ?? [],
     mythicSlot: (r.mythic_slot as GearSet["mythicSlot"]) ?? undefined,
+    gameId: (r.game_id as string | null) ?? undefined,
     firstSeenPatch: String(r.first_seen_patch),
     lastChangedPatch: String(r.last_changed_patch),
   };
@@ -57,6 +62,7 @@ export function rowToSkill(r: Row): Skill {
     ultimate: Boolean(r.ultimate),
     description: String(r.description ?? ""),
     morphs: (r.morphs as Skill["morphs"]) ?? [],
+    gameId: (r.game_id as string | null) ?? undefined,
     firstSeenPatch: String(r.first_seen_patch),
     lastChangedPatch: String(r.last_changed_patch),
   };
@@ -70,6 +76,49 @@ export function rowToCpStar(r: Row): CpStar {
     name: String(r.name),
     effect: effect.text ?? "",
     slottable: Boolean(r.slottable),
+    gameId: (r.game_id as string | null) ?? undefined,
+    lastChangedPatch: String(r.last_changed_patch),
+  };
+}
+
+export function rowToGrimoire(r: Row): Grimoire {
+  return {
+    id: String(r.id),
+    name: String(r.name),
+    line: String(r.line),
+    lineLabel: String(r.line_label),
+    description: String(r.description ?? ""),
+    acquisition: String(r.acquisition ?? ""),
+    dlcRequired: (r.dlc_required as string | null) ?? null,
+    focusScripts: (r.focus_scripts as string[]) ?? [],
+    signatureScripts: (r.signature_scripts as string[]) ?? [],
+    affixScripts: (r.affix_scripts as string[]) ?? [],
+    firstSeenPatch: String(r.first_seen_patch),
+    lastChangedPatch: String(r.last_changed_patch),
+  };
+}
+
+export function rowToScript(r: Row): ScribingScript {
+  return {
+    id: String(r.id),
+    name: String(r.name),
+    slot: r.slot as ScribingScript["slot"],
+    description: String(r.description ?? ""),
+    acquisition: String(r.acquisition ?? ""),
+    firstSeenPatch: String(r.first_seen_patch),
+    lastChangedPatch: String(r.last_changed_patch),
+  };
+}
+
+export function rowToMasteryLine(r: Row): ClassMasteryLine {
+  return {
+    id: String(r.id),
+    name: String(r.name),
+    className: r.class as ClassMasteryLine["className"],
+    line: String(r.line),
+    lineLabel: String(r.line_label),
+    graftable: Boolean(r.graftable),
+    firstSeenPatch: String(r.first_seen_patch),
     lastChangedPatch: String(r.last_changed_patch),
   };
 }
@@ -133,7 +182,23 @@ export function rowToBuild(r: Row): Build {
     cp: (r.cp as Build["cp"]) ?? { warfare: [], fitness: [], craft: [] },
     mundusId: String(r.mundus_id ?? ""),
     foodId: String(r.food_id ?? ""),
+    // Column default is [] — normalize to "absent" so seed and DB agree.
+    scribedSkills:
+      Array.isArray(r.scribed_skills) && r.scribed_skills.length > 0
+        ? (r.scribed_skills as Build["scribedSkills"])
+        : undefined,
     guidance: (r.guidance as Build["guidance"]) ?? [],
     needsReviewReasons: (r.review_reasons as Build["needsReviewReasons"]) ?? [],
+  };
+}
+
+export function rowToSupersession(r: Row): EntitySupersession {
+  return {
+    entityType: r.entity_type as EntitySupersession["entityType"],
+    oldId: String(r.old_id),
+    oldName: String(r.old_name),
+    newId: String(r.new_id),
+    newName: String(r.new_name),
+    patch: String(r.patch),
   };
 }

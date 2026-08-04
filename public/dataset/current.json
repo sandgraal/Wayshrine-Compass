@@ -21944,5 +21944,1200 @@
       "effect": "Grants 41 Weapon and Spell Damage to your damaging abilities per stage.",
       "slottable": true
     }
+  ],
+  "grimoires": [
+    {
+      "id": "grimoire-banner-bearer",
+      "name": "Banner Bearer",
+      "line": "support",
+      "lineLabel": "Support",
+      "description": "Bring out a banner to inspire yourself and nearby group members.",
+      "acquisition": "Purchased from Chronicler Firandil in the Scholarium after earning the Sigil of the Luminary Indrik. Requires \"Alliance War Skill Apprentice\" achievement to purchase.",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-flame-damage",
+        "script-immobilize",
+        "script-magic-damage",
+        "script-mitigation",
+        "script-multi-target",
+        "script-physical-damage",
+        "script-restore-resources",
+        "script-shock-damage"
+      ],
+      "signatureScripts": [
+        "script-cavaliers-charge",
+        "script-class-flourish",
+        "script-crusaders-defiance",
+        "script-druids-resurgence",
+        "script-sages-remedy",
+        "script-thiefs-swiftness",
+        "script-warmages-defense",
+        "script-wayfarers-mastery"
+      ],
+      "affixScripts": [
+        "script-berserk",
+        "script-brutality-and-sorcery",
+        "script-courage",
+        "script-heroism",
+        "script-intellect-and-endurance",
+        "script-protection",
+        "script-resolve",
+        "script-savagery-and-prophecy"
+      ]
+    },
+    {
+      "id": "grimoire-elemental-explosion",
+      "name": "Elemental Explosion",
+      "line": "destruction-staff",
+      "lineLabel": "Destruction Staff",
+      "description": "Channel the power in your staff to fling a bolt of volatile magic, causing an elemental explosion at the target location.",
+      "acquisition": "Purchased from Chronicler Firandil in the Scholarium after earning the Sigil of the Luminary Indrik. Requires \"Destruction Staff Apprentice\" achievement to purchase.",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-dispel",
+        "script-flame-damage",
+        "script-frost-damage",
+        "script-knockback",
+        "script-magic-damage",
+        "script-physical-damage",
+        "script-shock-damage",
+        "script-stun",
+        "script-trauma"
+      ],
+      "signatureScripts": [
+        "script-assassins-misery",
+        "script-class-flourish",
+        "script-druids-resurgence",
+        "script-hunters-snare",
+        "script-immobilizing-strike",
+        "script-lingering-torment",
+        "script-warmages-defense"
+      ],
+      "affixScripts": [
+        "script-brittle",
+        "script-brutality-and-sorcery",
+        "script-cowardice",
+        "script-defile",
+        "script-enervation",
+        "script-lifesteal",
+        "script-magickasteal",
+        "script-off-balance",
+        "script-savagery-and-prophecy"
+      ]
+    },
+    {
+      "id": "grimoire-menders-bond",
+      "name": "Mender's Bond",
+      "line": "restoration-staff",
+      "lineLabel": "Restoration Staff",
+      "description": "Tether yourself to an ally, manifesting a life link between you and them.",
+      "acquisition": "Purchased from Chronicler Firandil in the Scholarium after earning the Sigil of the Luminary Indrik. Requires \"Restoration Staff Apprentice\" achievement to purchase.",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-damage-shield",
+        "script-generate-ultimate",
+        "script-healing",
+        "script-immobilize",
+        "script-magic-damage",
+        "script-mitigation",
+        "script-restore-resources"
+      ],
+      "signatureScripts": [
+        "script-class-flourish",
+        "script-crusaders-defiance",
+        "script-druids-resurgence",
+        "script-hunters-snare",
+        "script-knights-valor",
+        "script-sages-remedy",
+        "script-warmages-defense"
+      ],
+      "affixScripts": [
+        "script-breach",
+        "script-brittle",
+        "script-courage",
+        "script-empower",
+        "script-evasion",
+        "script-force",
+        "script-heroism",
+        "script-intellect-and-endurance",
+        "script-maim",
+        "script-protection",
+        "script-vitality",
+        "script-vulnerability"
+      ]
+    },
+    {
+      "id": "grimoire-shield-throw",
+      "name": "Shield Throw",
+      "line": "one-hand-and-shield",
+      "lineLabel": "One Hand and Shield",
+      "description": "Hurl your shield at an enemy, which then returns to you.",
+      "acquisition": "Purchased from Chronicler Firandil in the Scholarium after earning the Sigil of the Luminary Indrik. Requires \"One Hand and Shield Apprentice\" achievement to purchase.",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-frost-damage",
+        "script-immobilize",
+        "script-knockback",
+        "script-magic-damage",
+        "script-multi-target",
+        "script-physical-damage",
+        "script-pull",
+        "script-taunt"
+      ],
+      "signatureScripts": [
+        "script-class-flourish",
+        "script-druids-resurgence",
+        "script-fencers-parry",
+        "script-knights-valor",
+        "script-lingering-torment",
+        "script-sages-remedy",
+        "script-thiefs-swiftness",
+        "script-wayfarers-mastery"
+      ],
+      "affixScripts": [
+        "script-brutality-and-sorcery",
+        "script-cowardice",
+        "script-enervation",
+        "script-evasion",
+        "script-interrupt",
+        "script-maim",
+        "script-off-balance",
+        "script-resolve",
+        "script-savagery-and-prophecy",
+        "script-vitality"
+      ]
+    },
+    {
+      "id": "grimoire-smash",
+      "name": "Smash",
+      "line": "two-handed",
+      "lineLabel": "Two Handed",
+      "description": "Drag your weapon along the ground to smash a cone in front of you.",
+      "acquisition": "Purchased from Chronicler Firandil in the Scholarium after earning the Sigil of the Luminary Indrik. Requires \"Two-Handed Apprentice\" achievement to purchase.",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-bleed-damage",
+        "script-damage-shield",
+        "script-healing",
+        "script-knockback",
+        "script-magic-damage",
+        "script-physical-damage",
+        "script-poison-damage",
+        "script-stun",
+        "script-taunt"
+      ],
+      "signatureScripts": [
+        "script-class-flourish",
+        "script-crusaders-defiance",
+        "script-druids-resurgence",
+        "script-fencers-parry",
+        "script-immobilizing-strike",
+        "script-leeching-thirst",
+        "script-lingering-torment",
+        "script-sages-remedy",
+        "script-wayfarers-mastery"
+      ],
+      "affixScripts": [
+        "script-berserk",
+        "script-breach",
+        "script-brutality-and-sorcery",
+        "script-expedition",
+        "script-force",
+        "script-interrupt",
+        "script-maim",
+        "script-mangle",
+        "script-savagery-and-prophecy",
+        "script-vitality"
+      ]
+    },
+    {
+      "id": "grimoire-soul-burst",
+      "name": "Soul Burst",
+      "line": "soul-magic",
+      "lineLabel": "Soul Magic",
+      "description": "Unleash a powerful burst of soul magic around you.",
+      "acquisition": "Obtained by completing the final quest in the Scribing quest line.",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-bleed-damage",
+        "script-damage-shield",
+        "script-disease-damage",
+        "script-flame-damage",
+        "script-frost-damage",
+        "script-healing",
+        "script-immobilize",
+        "script-magic-damage",
+        "script-physical-damage",
+        "script-pull",
+        "script-shock-damage"
+      ],
+      "signatureScripts": [
+        "script-anchorites-cruelty",
+        "script-anchorites-potency",
+        "script-class-flourish",
+        "script-crusaders-defiance",
+        "script-hunters-snare",
+        "script-lingering-torment",
+        "script-sages-remedy"
+      ],
+      "affixScripts": [
+        "script-breach",
+        "script-brutality-and-sorcery",
+        "script-courage",
+        "script-expedition",
+        "script-intellect-and-endurance",
+        "script-interrupt",
+        "script-magickasteal",
+        "script-maim",
+        "script-resolve",
+        "script-savagery-and-prophecy"
+      ]
+    },
+    {
+      "id": "grimoire-torchbearer",
+      "name": "Torchbearer",
+      "line": "fighters-guild",
+      "lineLabel": "Fighters Guild",
+      "description": "Conjure an imbued torch and sweep the area in front of you three times with its power.",
+      "acquisition": "Purchased from Chronicler Firandil in the Scholarium after earning the Sigil of the Luminary Indrik. Requires \"Fighters Guild Skill Apprentice\" achievement to purchase.",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-bleed-damage",
+        "script-flame-damage",
+        "script-frost-damage",
+        "script-generate-ultimate",
+        "script-healing",
+        "script-knockback",
+        "script-physical-damage",
+        "script-stun"
+      ],
+      "signatureScripts": [
+        "script-class-flourish",
+        "script-crusaders-defiance",
+        "script-druids-resurgence",
+        "script-gladiators-tenacity",
+        "script-hunters-snare",
+        "script-lingering-torment",
+        "script-warriors-opportunity"
+      ],
+      "affixScripts": [
+        "script-breach",
+        "script-brutality-and-sorcery",
+        "script-cowardice",
+        "script-evasion",
+        "script-heroism",
+        "script-mangle",
+        "script-resolve",
+        "script-savagery-and-prophecy",
+        "script-uncertainty",
+        "script-vitality"
+      ]
+    },
+    {
+      "id": "grimoire-trample",
+      "name": "Trample",
+      "line": "assault",
+      "lineLabel": "Assault",
+      "description": "Pierce the air with a shrill whistle, calling your mount forth to trample enemies in a line. This ability cannot be re-activated while your mount is already attacking.",
+      "acquisition": "Purchased from Chronicler Firandil in the Scholarium after earning the Sigil of the Luminary Indrik. Requires \"Alliance War Skill Apprentice\" achievement to purchase.",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-disease-damage",
+        "script-dispel",
+        "script-frost-damage",
+        "script-knockback",
+        "script-magic-damage",
+        "script-physical-damage",
+        "script-stun",
+        "script-trauma"
+      ],
+      "signatureScripts": [
+        "script-assassins-misery",
+        "script-cavaliers-charge",
+        "script-class-flourish",
+        "script-hunters-snare",
+        "script-immobilizing-strike",
+        "script-lingering-torment",
+        "script-thiefs-swiftness",
+        "script-warriors-opportunity",
+        "script-wayfarers-mastery"
+      ],
+      "affixScripts": [
+        "script-brutality-and-sorcery",
+        "script-cowardice",
+        "script-defile",
+        "script-expedition",
+        "script-heroism",
+        "script-mangle",
+        "script-off-balance",
+        "script-protection",
+        "script-savagery-and-prophecy",
+        "script-vulnerability"
+      ]
+    },
+    {
+      "id": "grimoire-traveling-knife",
+      "name": "Traveling Knife",
+      "line": "dual-wield",
+      "lineLabel": "Dual Wield",
+      "description": "Twirl and throw an enchanted dagger at an enemy, which returns to you after a short delay and hits additional enemies in the path.",
+      "acquisition": "Purchased from Chronicler Firandil in the Scholarium after earning the Sigil of the Luminary Indrik. Requires \"Dual Wield Apprentice\" achievement to purchase.",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-bleed-damage",
+        "script-frost-damage",
+        "script-magic-damage",
+        "script-multi-target",
+        "script-physical-damage",
+        "script-poison-damage",
+        "script-pull",
+        "script-stun"
+      ],
+      "signatureScripts": [
+        "script-assassins-misery",
+        "script-class-flourish",
+        "script-fencers-parry",
+        "script-hunters-snare",
+        "script-leeching-thirst",
+        "script-lingering-torment",
+        "script-warmages-defense",
+        "script-warriors-opportunity",
+        "script-wayfarers-mastery"
+      ],
+      "affixScripts": [
+        "script-berserk",
+        "script-brutality-and-sorcery",
+        "script-expedition",
+        "script-force",
+        "script-lifesteal",
+        "script-maim",
+        "script-off-balance",
+        "script-savagery-and-prophecy",
+        "script-uncertainty",
+        "script-vulnerability"
+      ]
+    },
+    {
+      "id": "grimoire-ulfsilds-contingency",
+      "name": "Ulfsild's Contingency",
+      "line": "mages-guild",
+      "lineLabel": "Mages Guild",
+      "description": "Imbue yourself with the magical runes of Ulfsild. These runes trigger when you cast an ability with a cost, causing a burst of magic around you.",
+      "acquisition": "Purchased from Chronicler Firandil in the Scholarium after earning the Sigil of the Luminary Indrik. Requires \"Mages Guild Skill Apprentice\" achievement to purchase.",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-bleed-damage",
+        "script-damage-shield",
+        "script-flame-damage",
+        "script-frost-damage",
+        "script-healing",
+        "script-immobilize",
+        "script-knockback",
+        "script-magic-damage",
+        "script-shock-damage"
+      ],
+      "signatureScripts": [
+        "script-class-flourish",
+        "script-gladiators-tenacity",
+        "script-growing-impact",
+        "script-hunters-snare",
+        "script-lingering-torment",
+        "script-sages-remedy",
+        "script-warriors-opportunity"
+      ],
+      "affixScripts": [
+        "script-breach",
+        "script-brutality-and-sorcery",
+        "script-enervation",
+        "script-force",
+        "script-intellect-and-endurance",
+        "script-magickasteal",
+        "script-protection",
+        "script-resolve",
+        "script-savagery-and-prophecy",
+        "script-vulnerability"
+      ]
+    },
+    {
+      "id": "grimoire-vault",
+      "name": "Vault",
+      "line": "bow",
+      "lineLabel": "Bow",
+      "description": "Fire a burst at your feet while flipping backwards 15 meters.\n\nCasting again within 4 seconds increases the cost by 33%.",
+      "acquisition": "Purchased from Chronicler Firandil in the Scholarium after earning the Sigil of the Luminary Indrik. Requires \"Bow Apprentice\" achievement to purchase.",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-bleed-damage",
+        "script-disease-damage",
+        "script-flame-damage",
+        "script-healing",
+        "script-immobilize",
+        "script-physical-damage",
+        "script-poison-damage",
+        "script-taunt"
+      ],
+      "signatureScripts": [
+        "script-class-flourish",
+        "script-crusaders-defiance",
+        "script-druids-resurgence",
+        "script-hunters-snare",
+        "script-lingering-torment",
+        "script-sages-remedy",
+        "script-thiefs-swiftness",
+        "script-wayfarers-mastery"
+      ],
+      "affixScripts": [
+        "script-berserk",
+        "script-brutality-and-sorcery",
+        "script-evasion",
+        "script-expedition",
+        "script-force",
+        "script-intellect-and-endurance",
+        "script-lifesteal",
+        "script-maim",
+        "script-off-balance",
+        "script-savagery-and-prophecy",
+        "script-vulnerability"
+      ]
+    },
+    {
+      "id": "grimoire-wield-soul",
+      "name": "Wield Soul",
+      "line": "soul-magic",
+      "lineLabel": "Soul Magic",
+      "description": "Launch a concentrated blast of soul magic at a target.",
+      "acquisition": "Obtained from quest \"The Second Era of Scribing\".",
+      "dlcRequired": "gold-road",
+      "focusScripts": [
+        "script-bleed-damage",
+        "script-damage-shield",
+        "script-disease-damage",
+        "script-flame-damage",
+        "script-frost-damage",
+        "script-healing",
+        "script-magic-damage",
+        "script-physical-damage",
+        "script-pull",
+        "script-shock-damage",
+        "script-stun"
+      ],
+      "signatureScripts": [
+        "script-anchorites-cruelty",
+        "script-anchorites-potency",
+        "script-class-flourish",
+        "script-druids-resurgence",
+        "script-lingering-torment",
+        "script-sages-remedy"
+      ],
+      "affixScripts": [
+        "script-breach",
+        "script-brutality-and-sorcery",
+        "script-cowardice",
+        "script-defile",
+        "script-empower",
+        "script-intellect-and-endurance",
+        "script-maim",
+        "script-resolve",
+        "script-savagery-and-prophecy",
+        "script-vitality"
+      ]
+    }
+  ],
+  "scripts": [
+    {
+      "id": "script-anchorites-cruelty",
+      "name": "Anchorite's Cruelty",
+      "slot": "signature",
+      "description": "Adds a consume soul gem to deal oblivion damage effect to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-anchorites-potency",
+      "name": "Anchorite's Potency",
+      "slot": "signature",
+      "description": "Adds a consume soul gem to grant ultimate effect to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-assassins-misery",
+      "name": "Assassin's Misery",
+      "slot": "signature",
+      "description": "Adds improved use of status effects to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-berserk",
+      "name": "Berserk",
+      "slot": "affix",
+      "description": "Adds Berserk, a buff increasing damage done, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-bleed-damage",
+      "name": "Bleed Damage",
+      "slot": "focus",
+      "description": "Adds bleed damage to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-breach",
+      "name": "Breach",
+      "slot": "affix",
+      "description": "Adds Breach, a debuff reducing physical and spell resistance, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from quest \"The Second Era of Scribing\"."
+    },
+    {
+      "id": "script-brittle",
+      "name": "Brittle",
+      "slot": "affix",
+      "description": "Adds Brittle, a debuff increasing critical damage taken, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-brutality-and-sorcery",
+      "name": "Brutality and Sorcery",
+      "slot": "affix",
+      "description": "Adds Brutality and Sorcery, buffs increasing weapon and spell damage, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-cavaliers-charge",
+      "name": "Cavalier's Charge",
+      "slot": "signature",
+      "description": "Adds an increase to damage as ability persists effect to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-class-flourish",
+      "name": "Class Flourish",
+      "slot": "signature",
+      "description": "Adds a class signature enhancement to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-courage",
+      "name": "Courage",
+      "slot": "affix",
+      "description": "Adds Courage, a buff increasing weapon and spell damage, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-cowardice",
+      "name": "Cowardice",
+      "slot": "affix",
+      "description": "Adds Cowardice, a debuff reducing weapon and spell damage, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-crusaders-defiance",
+      "name": "Crusader's Defiance",
+      "slot": "signature",
+      "description": "Adds removal of debilitating effects to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-damage-shield",
+      "name": "Damage Shield",
+      "slot": "focus",
+      "description": "Adds a damage shield to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from a notable Mages Guild hall after unlocking the Sigil of the Luminary Dragon."
+    },
+    {
+      "id": "script-defile",
+      "name": "Defile",
+      "slot": "affix",
+      "description": "Adds Defile, a debuff reducing healing received, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-disease-damage",
+      "name": "Disease Damage",
+      "slot": "focus",
+      "description": "Adds disease damage to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-dispel",
+      "name": "Dispel",
+      "slot": "focus",
+      "description": "Adds a dispel to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-druids-resurgence",
+      "name": "Druid's Resurgence",
+      "slot": "signature",
+      "description": "Adds resource restoration to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from a notable Mages Guild hall after unlocking the Sigil of the Luminary Dragon."
+    },
+    {
+      "id": "script-empower",
+      "name": "Empower",
+      "slot": "affix",
+      "description": "Adds Empower, a buff increasing heavy attack damage, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-enervation",
+      "name": "Enervation",
+      "slot": "affix",
+      "description": "Adds Enervation, a debuff reducing critical damage, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-evasion",
+      "name": "Evasion",
+      "slot": "affix",
+      "description": "Adds Evasion, a buff reducing damage from area effects, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-expedition",
+      "name": "Expedition",
+      "slot": "affix",
+      "description": "Adds Expedition, a buff increasing movement speed, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-fencers-parry",
+      "name": "Fencer's Parry",
+      "slot": "signature",
+      "description": "Adds deflection of next direct damage attack to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-flame-damage",
+      "name": "Flame Damage",
+      "slot": "focus",
+      "description": "Adds flame damage to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-force",
+      "name": "Force",
+      "slot": "affix",
+      "description": "Adds Force, a buff increasing critical damage, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-frost-damage",
+      "name": "Frost Damage",
+      "slot": "focus",
+      "description": "Adds frost damage to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-generate-ultimate",
+      "name": "Generate Ultimate",
+      "slot": "focus",
+      "description": "Adds ultimate generation to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-gladiators-tenacity",
+      "name": "Gladiator's Tenacity",
+      "slot": "signature",
+      "description": "Adds damage reduction to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-growing-impact",
+      "name": "Growing Impact",
+      "slot": "signature",
+      "description": "Adds enhanced buff and debuff application to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-healing",
+      "name": "Healing",
+      "slot": "focus",
+      "description": "Adds healing to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from quest \"The Wing of the Indrik\"."
+    },
+    {
+      "id": "script-heroism",
+      "name": "Heroism",
+      "slot": "affix",
+      "description": "Adds Heroism, a buff increasing ultimate generation, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-hunters-snare",
+      "name": "Hunter's Snare",
+      "slot": "signature",
+      "description": "Adds a slowing effect to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from a notable Mages Guild hall after unlocking the Sigil of the Luminary Dragon."
+    },
+    {
+      "id": "script-immobilize",
+      "name": "Immobilize",
+      "slot": "focus",
+      "description": "Adds an immobilization effect to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-immobilizing-strike",
+      "name": "Immobilizing Strike",
+      "slot": "signature",
+      "description": "Adds an immobilization effect to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-intellect-and-endurance",
+      "name": "Intellect and Endurance",
+      "slot": "affix",
+      "description": "Adds Intellect and Endurance, buffs increasing magicka and stamina recovery, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-interrupt",
+      "name": "Interrupt",
+      "slot": "affix",
+      "description": "Adds interruption effect to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-knights-valor",
+      "name": "Knight's Valor",
+      "slot": "signature",
+      "description": "Adds improved use of bash or blocking to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-knockback",
+      "name": "Knockback",
+      "slot": "focus",
+      "description": "Adds a knockback to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-leeching-thirst",
+      "name": "Leeching Thirst",
+      "slot": "signature",
+      "description": "Adds a heal for percentage of damage done to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-lifesteal",
+      "name": "Lifesteal",
+      "slot": "affix",
+      "description": "Adds Lifesteal, a debuff granting healing to attackers, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-lingering-torment",
+      "name": "Lingering Torment",
+      "slot": "signature",
+      "description": "Adds damage over time to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from quest \"The Second Era of Scribing\"."
+    },
+    {
+      "id": "script-magic-damage",
+      "name": "Magic Damage",
+      "slot": "focus",
+      "description": "Adds magic damage to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from quest \"The Second Era of Scribing\"."
+    },
+    {
+      "id": "script-magickasteal",
+      "name": "Magickasteal",
+      "slot": "affix",
+      "description": "Adds Magickasteal, a debuff granting magicka restoration to attackers, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-maim",
+      "name": "Maim",
+      "slot": "affix",
+      "description": "Adds Maim, a debuff reducing damage dealt, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from a notable Mages Guild hall after unlocking the Sigil of the Luminary Dragon."
+    },
+    {
+      "id": "script-mangle",
+      "name": "Mangle",
+      "slot": "affix",
+      "description": "Adds Mangle, a debuff reducing max health, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-mitigation",
+      "name": "Mitigation",
+      "slot": "focus",
+      "description": "Adds damage reduction to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-multi-target",
+      "name": "Multi-Target",
+      "slot": "focus",
+      "description": "Adds a multi-target hit to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-off-balance",
+      "name": "Off Balance",
+      "slot": "affix",
+      "description": "Adds off balance effect to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from quest \"The Wing of the Indrik\"."
+    },
+    {
+      "id": "script-physical-damage",
+      "name": "Physical Damage",
+      "slot": "focus",
+      "description": "Adds physical damage to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from a notable Mages Guild hall after unlocking the Sigil of the Luminary Dragon."
+    },
+    {
+      "id": "script-poison-damage",
+      "name": "Poison Damage",
+      "slot": "focus",
+      "description": "Adds poison damage to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-protection",
+      "name": "Protection",
+      "slot": "affix",
+      "description": "Adds Protection, a buff reducing damage taken, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-pull",
+      "name": "Pull",
+      "slot": "focus",
+      "description": "Adds a pull to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-resolve",
+      "name": "Resolve",
+      "slot": "affix",
+      "description": "Adds Resolve, a buff increasing physical and spell resistance, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from quest \"The Wing of the Indrik\"."
+    },
+    {
+      "id": "script-restore-resources",
+      "name": "Restore Resources",
+      "slot": "focus",
+      "description": "Adds resource restoration to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-sages-remedy",
+      "name": "Sage's Remedy",
+      "slot": "signature",
+      "description": "Adds healing over time to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from quest \"The Wing of the Indrik\"."
+    },
+    {
+      "id": "script-savagery-and-prophecy",
+      "name": "Savagery and Prophecy",
+      "slot": "affix",
+      "description": "Adds Savagery and Prophecy, buffs increasing weapon and spell critical chance, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-shock-damage",
+      "name": "Shock Damage",
+      "slot": "focus",
+      "description": "Adds shock damage to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-stun",
+      "name": "Stun",
+      "slot": "focus",
+      "description": "Adds a stun to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from a notable Mages Guild hall after unlocking the Sigil of the Luminary Dragon."
+    },
+    {
+      "id": "script-taunt",
+      "name": "Taunt",
+      "slot": "focus",
+      "description": "Adds a taunt to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-thiefs-swiftness",
+      "name": "Thief's Swiftness",
+      "slot": "signature",
+      "description": "Adds improvement to your mobility to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-trauma",
+      "name": "Trauma",
+      "slot": "focus",
+      "description": "Adds healing absorption effect to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily Delve quests, daily Mages Guild quests, and PvP Rewards for the Worthy."
+    },
+    {
+      "id": "script-uncertainty",
+      "name": "Uncertainty",
+      "slot": "affix",
+      "description": "Adds Uncertainty, a debuff reducing weapon critical damage, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Event quests, daily Imperial City quests, and daily Undaunted quests."
+    },
+    {
+      "id": "script-vitality",
+      "name": "Vitality",
+      "slot": "affix",
+      "description": "Adds Vitality, a buff increasing healing received, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from a notable Mages Guild hall after unlocking the Sigil of the Luminary Dragon."
+    },
+    {
+      "id": "script-vulnerability",
+      "name": "Vulnerability",
+      "slot": "affix",
+      "description": "Adds Vulnerability, a debuff increasing damage taken, to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from a notable Mages Guild hall after unlocking the Sigil of the Luminary Dragon."
+    },
+    {
+      "id": "script-warmages-defense",
+      "name": "Warmage's Defense",
+      "slot": "signature",
+      "description": "Adds a damage shield to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    },
+    {
+      "id": "script-warriors-opportunity",
+      "name": "Warrior's Opportunity",
+      "slot": "signature",
+      "description": "Adds an improve your next direct damage attack effect to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired from a notable Mages Guild hall after unlocking the Sigil of the Luminary Dragon."
+    },
+    {
+      "id": "script-wayfarers-mastery",
+      "name": "Wayfarer's Mastery",
+      "slot": "signature",
+      "description": "Adds improved functionality of skill line passives to a scribed skill when written to a grimoire.",
+      "acquisition": "Acquired primarily from daily World Boss quests, daily Cyrodiil quests, and daily Fighters Guild quests."
+    }
+  ],
+  "classMasteryLines": [
+    {
+      "id": "mastery-arcanist-class-mastery",
+      "name": "Class Mastery (Arcanist)",
+      "className": "arcanist",
+      "line": "class-mastery",
+      "lineLabel": "Class Mastery",
+      "graftable": false
+    },
+    {
+      "id": "mastery-arcanist-curative-runeforms",
+      "name": "Curative Runeforms (Arcanist)",
+      "className": "arcanist",
+      "line": "curative-runeforms",
+      "lineLabel": "Curative Runeforms",
+      "graftable": true
+    },
+    {
+      "id": "mastery-arcanist-herald-of-the-tome",
+      "name": "Herald of the Tome (Arcanist)",
+      "className": "arcanist",
+      "line": "herald-of-the-tome",
+      "lineLabel": "Herald of the Tome",
+      "graftable": true
+    },
+    {
+      "id": "mastery-arcanist-soldier-of-apocrypha",
+      "name": "Soldier of Apocrypha (Arcanist)",
+      "className": "arcanist",
+      "line": "soldier-of-apocrypha",
+      "lineLabel": "Soldier of Apocrypha",
+      "graftable": true
+    },
+    {
+      "id": "mastery-dragonknight-ardent-flame",
+      "name": "Ardent Flame (Dragonknight)",
+      "className": "dragonknight",
+      "line": "ardent-flame",
+      "lineLabel": "Ardent Flame",
+      "graftable": true
+    },
+    {
+      "id": "mastery-dragonknight-class-mastery",
+      "name": "Class Mastery (Dragonknight)",
+      "className": "dragonknight",
+      "line": "class-mastery",
+      "lineLabel": "Class Mastery",
+      "graftable": false
+    },
+    {
+      "id": "mastery-dragonknight-draconic-power",
+      "name": "Draconic Power (Dragonknight)",
+      "className": "dragonknight",
+      "line": "draconic-power",
+      "lineLabel": "Draconic Power",
+      "graftable": true
+    },
+    {
+      "id": "mastery-dragonknight-earthen-heart",
+      "name": "Earthen Heart (Dragonknight)",
+      "className": "dragonknight",
+      "line": "earthen-heart",
+      "lineLabel": "Earthen Heart",
+      "graftable": true
+    },
+    {
+      "id": "mastery-necromancer-bone-tyrant",
+      "name": "Bone Tyrant (Necromancer)",
+      "className": "necromancer",
+      "line": "bone-tyrant",
+      "lineLabel": "Bone Tyrant",
+      "graftable": true
+    },
+    {
+      "id": "mastery-necromancer-class-mastery",
+      "name": "Class Mastery (Necromancer)",
+      "className": "necromancer",
+      "line": "class-mastery",
+      "lineLabel": "Class Mastery",
+      "graftable": false
+    },
+    {
+      "id": "mastery-necromancer-grave-lord",
+      "name": "Grave Lord (Necromancer)",
+      "className": "necromancer",
+      "line": "grave-lord",
+      "lineLabel": "Grave Lord",
+      "graftable": true
+    },
+    {
+      "id": "mastery-necromancer-living-death",
+      "name": "Living Death (Necromancer)",
+      "className": "necromancer",
+      "line": "living-death",
+      "lineLabel": "Living Death",
+      "graftable": true
+    },
+    {
+      "id": "mastery-nightblade-assassination",
+      "name": "Assassination (Nightblade)",
+      "className": "nightblade",
+      "line": "assassination",
+      "lineLabel": "Assassination",
+      "graftable": true
+    },
+    {
+      "id": "mastery-nightblade-class-mastery",
+      "name": "Class Mastery (Nightblade)",
+      "className": "nightblade",
+      "line": "class-mastery",
+      "lineLabel": "Class Mastery",
+      "graftable": false
+    },
+    {
+      "id": "mastery-nightblade-shadow",
+      "name": "Shadow (Nightblade)",
+      "className": "nightblade",
+      "line": "shadow",
+      "lineLabel": "Shadow",
+      "graftable": true
+    },
+    {
+      "id": "mastery-nightblade-siphoning",
+      "name": "Siphoning (Nightblade)",
+      "className": "nightblade",
+      "line": "siphoning",
+      "lineLabel": "Siphoning",
+      "graftable": true
+    },
+    {
+      "id": "mastery-sorcerer-class-mastery",
+      "name": "Class Mastery (Sorcerer)",
+      "className": "sorcerer",
+      "line": "class-mastery",
+      "lineLabel": "Class Mastery",
+      "graftable": false
+    },
+    {
+      "id": "mastery-sorcerer-daedric-summoning",
+      "name": "Daedric Summoning (Sorcerer)",
+      "className": "sorcerer",
+      "line": "daedric-summoning",
+      "lineLabel": "Daedric Summoning",
+      "graftable": true
+    },
+    {
+      "id": "mastery-sorcerer-dark-magic",
+      "name": "Dark Magic (Sorcerer)",
+      "className": "sorcerer",
+      "line": "dark-magic",
+      "lineLabel": "Dark Magic",
+      "graftable": true
+    },
+    {
+      "id": "mastery-sorcerer-storm-calling",
+      "name": "Storm Calling (Sorcerer)",
+      "className": "sorcerer",
+      "line": "storm-calling",
+      "lineLabel": "Storm Calling",
+      "graftable": true
+    },
+    {
+      "id": "mastery-templar-aedric-spear",
+      "name": "Aedric Spear (Templar)",
+      "className": "templar",
+      "line": "aedric-spear",
+      "lineLabel": "Aedric Spear",
+      "graftable": true
+    },
+    {
+      "id": "mastery-templar-class-mastery",
+      "name": "Class Mastery (Templar)",
+      "className": "templar",
+      "line": "class-mastery",
+      "lineLabel": "Class Mastery",
+      "graftable": false
+    },
+    {
+      "id": "mastery-templar-dawns-wrath",
+      "name": "Dawn's Wrath (Templar)",
+      "className": "templar",
+      "line": "dawns-wrath",
+      "lineLabel": "Dawn's Wrath",
+      "graftable": true
+    },
+    {
+      "id": "mastery-templar-restoring-light",
+      "name": "Restoring Light (Templar)",
+      "className": "templar",
+      "line": "restoring-light",
+      "lineLabel": "Restoring Light",
+      "graftable": true
+    },
+    {
+      "id": "mastery-warden-animal-companions",
+      "name": "Animal Companions (Warden)",
+      "className": "warden",
+      "line": "animal-companions",
+      "lineLabel": "Animal Companions",
+      "graftable": true
+    },
+    {
+      "id": "mastery-warden-class-mastery",
+      "name": "Class Mastery (Warden)",
+      "className": "warden",
+      "line": "class-mastery",
+      "lineLabel": "Class Mastery",
+      "graftable": false
+    },
+    {
+      "id": "mastery-warden-green-balance",
+      "name": "Green Balance (Warden)",
+      "className": "warden",
+      "line": "green-balance",
+      "lineLabel": "Green Balance",
+      "graftable": true
+    },
+    {
+      "id": "mastery-warden-winters-embrace",
+      "name": "Winter's Embrace (Warden)",
+      "className": "warden",
+      "line": "winters-embrace",
+      "lineLabel": "Winter's Embrace",
+      "graftable": true
+    }
   ]
 }

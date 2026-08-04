@@ -3,7 +3,37 @@ import { builds } from "@/data/builds";
 import { sets } from "@/data/sets";
 import { skills } from "@/data/skills";
 import { cpStars } from "@/data/cpStars";
-import { buildEntityRefs, changedReferencedEntities } from "./entities";
+import { buildEntityRefs, changedReferencedEntities, masteryLineId } from "./entities";
+
+describe("buildEntityRefs (Scribing + Class Mastery)", () => {
+  it("derives mastery_line refs from every subclassLines entry", () => {
+    for (const b of builds) {
+      const refs = new Set(buildEntityRefs(b).map((r) => `${r.entityType}:${r.entityId}`));
+      for (const line of b.subclassLines) {
+        expect(refs).toContain(`mastery_line:${masteryLineId(line)}`);
+      }
+    }
+    expect(masteryLineId("sorcerer/storm-calling")).toBe("mastery-sorcerer-storm-calling");
+  });
+
+  it("derives grimoire and script refs from scribedSkills", () => {
+    const base = builds[0];
+    const scribed = {
+      ...base,
+      scribedSkills: [
+        { grimoireId: "grimoire-wield-soul", scriptIds: ["script-flame-damage", "script-off-balance"] },
+      ],
+    };
+    const refs = buildEntityRefs(scribed).map((r) => `${r.entityType}:${r.entityId}`);
+    expect(refs).toContain("grimoire:grimoire-wield-soul");
+    expect(refs).toContain("script:script-flame-damage");
+    expect(refs).toContain("script:script-off-balance");
+    // Absent scribedSkills contributes nothing.
+    const plain = buildEntityRefs(base).map((r) => r.entityType);
+    expect(plain).not.toContain("grimoire");
+    expect(plain).not.toContain("script");
+  });
+});
 
 describe("changedReferencedEntities", () => {
   const changed = changedReferencedEntities(builds, { sets, skills, cpStars }, "U50");

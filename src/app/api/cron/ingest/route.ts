@@ -60,7 +60,14 @@ export async function GET(request: Request) {
   // Same-patch refetches are normal (the dump updates in place); the diff
   // engine returns an empty report when nothing actually changed.
   const result = runIngest(
-    { sets: db.sets, skills: db.skills, cpStars: db.cpStars },
+    {
+      sets: db.sets,
+      skills: db.skills,
+      cpStars: db.cpStars,
+      grimoires: db.grimoires,
+      scripts: db.scripts,
+      classMasteryLines: db.classMasteryLines,
+    },
     db.currentPatch,
     incoming,
     db.builds
