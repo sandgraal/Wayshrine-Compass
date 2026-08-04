@@ -94,3 +94,30 @@ describe("whatNext engine (Phase 3 acceptance)", () => {
     }
   });
 });
+
+describe("hoursPerWeek gates scheduled group content", () => {
+  it("holds back veteran dungeon progression below 4 hours a week", () => {
+    const vetReady: PlayerProfile = { ...baseProfile, level: 50, cp: 300, goal: "dungeons" };
+    expect(whatNext({ ...vetReady, hoursPerWeek: 3 }, 10).map((a) => a.id)).not.toContain(
+      "vet-dungeon-progression"
+    );
+    expect(whatNext({ ...vetReady, hoursPerWeek: 4 }, 10).map((a) => a.id)).toContain(
+      "vet-dungeon-progression"
+    );
+  });
+
+  it("holds back the first normal trial below 4 hours a week", () => {
+    const trialReady: PlayerProfile = { ...baseProfile, level: 50, cp: 200, goal: "trials" };
+    expect(whatNext({ ...trialReady, hoursPerWeek: 3 }, 10).map((a) => a.id)).not.toContain(
+      "first-normal-trial"
+    );
+    expect(whatNext({ ...trialReady, hoursPerWeek: 4 }, 10).map((a) => a.id)).toContain(
+      "first-normal-trial"
+    );
+  });
+
+  it("keeps solo advice ungated by the time budget", () => {
+    const lowHours: PlayerProfile = { ...baseProfile, level: 20, goal: "leveling", hoursPerWeek: 1 };
+    expect(whatNext(lowHours).length).toBe(5);
+  });
+});
