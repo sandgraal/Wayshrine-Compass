@@ -55,12 +55,12 @@ describe("zoneAccess", () => {
 describe("setsForZone", () => {
   it("matches chapter/DLC zones on the exact gate", () => {
     const highIsle = setsForZone(zoneById("zone-high-isle"), sets);
-    expect(highIsle.length).toBe(4);
+    expect(highIsle.length).toBe(5);
     expect(highIsle.every((s) => s.dlcRequired === "high-isle")).toBe(true);
 
     expect(setsForZone(zoneById("zone-telvanni-peninsula"), sets).length).toBe(2);
-    expect(setsForZone(zoneById("zone-blackwood"), sets).length).toBe(2);
-    expect(setsForZone(zoneById("zone-west-weald"), sets).length).toBe(2);
+    expect(setsForZone(zoneById("zone-blackwood"), sets).length).toBe(4);
+    expect(setsForZone(zoneById("zone-west-weald"), sets).length).toBe(3);
   });
 
   it("never leaks a set gated to a different chapter", () => {

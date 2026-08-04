@@ -25,11 +25,11 @@ const KIND_LABEL: Record<ChangedReferencedEntity["entityType"], string> = {
 };
 
 const FEATURED_SLUGS = [
-  "nightblade-dps",
+  "arcanist-trial-dps", // new: endgame trial beam DPS
   "sorcerer-dps",
-  "arcanist-tank",
-  "templar-healer",
   "dragonknight-tank",
+  "templar-healer",
+  "warden-solo", // new: accessible solo / one-bar-friendly
   "necromancer-tank",
 ];
 
@@ -87,7 +87,17 @@ export default async function Home() {
   const withFreshness = db.builds.map((build) => ({ build, freshness: db.freshness(build) }));
   const verifiedCount = withFreshness.filter((b) => b.freshness.status === "verified").length;
 
-  const verifiedExample = withFreshness.find((b) => b.freshness.status === "verified")?.freshness;
+  // Builds ship un-reviewed for the current patch (the /admin sign-off is a
+  // human step), so none compute to "verified". The freshness legend still
+  // illustrates the green state with a synthetic example — it explains the
+  // badge, it is not a build claiming to be verified.
+  const verifiedExample: Freshness =
+    withFreshness.find((b) => b.freshness.status === "verified")?.freshness ?? {
+      status: "verified",
+      reasons: [],
+      patchVerified: db.currentPatch,
+      patchesBehind: 0,
+    };
   const needsReviewExample = withFreshness.find((b) => b.freshness.status === "needs_review")?.freshness;
   const staleExample = withFreshness.find((b) => b.freshness.status === "stale")?.freshness;
 
@@ -139,7 +149,8 @@ export default async function Home() {
           <h2 className="text-2xl font-bold">Know at a glance whether a build still holds up</h2>
           <p className="max-w-2xl text-sm text-muted-foreground">
             Every build carries a trust status computed against the current patch — {verifiedCount}{" "}
-            of {db.builds.length} builds are verified for {db.currentPatch} right now.
+            of {db.builds.length} are human-verified for {db.currentPatch} right now, with the rest
+            flagged amber or stale until a reviewer signs them off.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-3">

@@ -37,17 +37,23 @@ function sk(
 export const skills: Skill[] = [
   /* ---------------- Dragonknight ---------------- */
   sk("dragonknight", "ardent-flame", "Ardent Flame", "Dragonknight Standard", { ult: true, desc: "Call down a battle standard, dealing flame damage over time in the area.", morphs: ["Shifting Standard", "Standard of Might"] }),
-  sk("dragonknight", "ardent-flame", "Ardent Flame", "Lava Whip", { desc: "Lash an enemy with flame, dealing flame damage.", morphs: ["Molten Whip", "Flame Lash"] }),
+  // Class Mastery (U50) retuned each class's primary spammable — reflected in provenance so builds slotting it read as needs-review.
+  sk("dragonknight", "ardent-flame", "Ardent Flame", "Lava Whip", { desc: "Lash an enemy with flame, dealing flame damage.", morphs: ["Molten Whip", "Flame Lash"], patch: { last: "U50" } }),
   sk("dragonknight", "ardent-flame", "Ardent Flame", "Searing Strike", { desc: "Slash an enemy, dealing flame damage over time.", morphs: ["Venomous Claw", "Burning Embers"] }),
+  // Pre-U50 entries retained so the ingest rename-detection tests (diff.test.ts)
+  // have their fixtures: the U50 dataset renamed/removed these four, and no build
+  // references them — the generated builds slot the current successors above.
   sk("dragonknight", "ardent-flame", "Ardent Flame", "Fiery Breath", { desc: "Exhale flame in a cone, dealing damage over time.", morphs: ["Noxious Breath", "Engulfing Flames"] }),
   sk("dragonknight", "draconic-power", "Draconic Power", "Dragon Leap", { ult: true, desc: "Launch to an enemy, knocking back and stunning nearby foes.", morphs: ["Take Flight", "Ferocious Leap"] }),
-  sk("dragonknight", "draconic-power", "Draconic Power", "Spiked Armor", { desc: "Gain Major Resolve and return damage to melee attackers.", morphs: ["Hardened Armor", "Volatile Armor"] }),
+  sk("dragonknight", "draconic-power", "Draconic Power", "Chains of Flame", { desc: "Conjure fiery chains to yank a distant enemy to you.", morphs: ["Chains of Devastation", "Chains of Dominance"] }),
   sk("dragonknight", "draconic-power", "Draconic Power", "Dark Talons", { desc: "Immobilize nearby enemies with flame talons.", morphs: ["Burning Talons", "Choking Talons"] }),
   sk("dragonknight", "draconic-power", "Draconic Power", "Dragon Blood", { desc: "Heal yourself based on your missing Health.", morphs: ["Green Dragon Blood", "Coagulating Blood"] }),
+  sk("dragonknight", "draconic-power", "Draconic Power", "Spiked Armor", { desc: "Gain Major Resolve and return damage to melee attackers.", morphs: ["Hardened Armor", "Volatile Armor"] }), // retained pre-U50 fixture; unreferenced
   sk("dragonknight", "earthen-heart", "Earthen Heart", "Magma Armor", { ult: true, desc: "Limit incoming damage and deal flame damage to nearby enemies.", morphs: ["Magma Shell", "Corrosive Armor"] }),
-  sk("dragonknight", "earthen-heart", "Earthen Heart", "Stonefist", { desc: "Crush an enemy with stone, dealing physical damage.", morphs: ["Stone Giant", "Obsidian Shard"] }),
+  sk("dragonknight", "earthen-heart", "Earthen Heart", "Molten Weapons", { desc: "Empower your weapons, granting you and nearby allies increased Weapon and Spell Damage.", morphs: ["Igneous Weapons", "Molten Armaments"] }),
   sk("dragonknight", "earthen-heart", "Earthen Heart", "Obsidian Shield", { desc: "Shield yourself and nearby allies.", morphs: ["Igneous Shield", "Fragmented Shield"] }),
   sk("dragonknight", "earthen-heart", "Earthen Heart", "Petrify", { desc: "Encase an enemy in stone, stunning them.", morphs: ["Fossilize", "Shattering Rocks"] }),
+  sk("dragonknight", "earthen-heart", "Earthen Heart", "Stonefist", { desc: "Crush an enemy with stone, dealing physical damage.", morphs: ["Stone Giant", "Obsidian Shard"] }), // retained pre-U50 fixture; unreferenced
 
   /* ---------------- Sorcerer ---------------- */
   sk("sorcerer", "dark-magic", "Dark Magic", "Negate Magic", { ult: true, desc: "Create a globe of magic suppression, silencing and stunning enemies inside.", morphs: ["Suppression Field", "Absorption Field"] }),
@@ -65,13 +71,14 @@ export const skills: Skill[] = [
 
   /* ---------------- Nightblade ---------------- */
   sk("nightblade", "assassination", "Assassination", "Death Stroke", { ult: true, desc: "Strike an enemy, increasing your damage against them.", morphs: ["Incapacitating Strike", "Soul Harvest"] }),
-  sk("nightblade", "assassination", "Assassination", "Assassin's Blade", { desc: "Execute attack dealing massive damage to low-health enemies.", morphs: ["Killer's Blade", "Impale"] }),
+  sk("nightblade", "assassination", "Assassination", "Assassin's Blade", { desc: "Execute attack dealing massive damage to low-health enemies.", morphs: ["Killer's Blade", "Impale"], patch: { last: "U50" } }),
   sk("nightblade", "assassination", "Assassination", "Teleport Strike", { desc: "Flash to an enemy and strike them.", morphs: ["Lotus Fan", "Ambush"] }),
   sk("nightblade", "assassination", "Assassination", "Grim Focus", { desc: "Stack light and heavy attacks to fire a spectral bow proc.", morphs: ["Relentless Focus", "Merciless Resolve"] }),
   sk("nightblade", "shadow", "Shadow", "Consuming Darkness", { ult: true, desc: "Create an area of shadow that reduces enemy damage and lets allies slip into it.", morphs: ["Bolstering Darkness", "Veil of Blades"] }),
   sk("nightblade", "shadow", "Shadow", "Shadow Cloak", { desc: "Vanish from sight for a short time.", morphs: ["Shadowy Disguise", "Dark Cloak"] }),
-  sk("nightblade", "shadow", "Shadow", "Veiled Strike", { desc: "Strike from stealth to stun and set off balance.", morphs: ["Surprise Attack", "Concealed Weapon"] }),
+  sk("nightblade", "shadow", "Shadow", "Blur", { desc: "Blur your form, gaining evasion against incoming area attacks.", morphs: ["Mirage", "Phantasmal Escape"] }),
   sk("nightblade", "shadow", "Shadow", "Path of Darkness", { desc: "Create a path that speeds and heals allies.", morphs: ["Twisting Path", "Refreshing Path"] }),
+  sk("nightblade", "shadow", "Shadow", "Veiled Strike", { desc: "Strike from stealth to stun and set off balance.", morphs: ["Surprise Attack", "Concealed Weapon"] }), // retained pre-U50 fixture; unreferenced
   sk("nightblade", "siphoning", "Siphoning", "Soul Shred", { ult: true, desc: "Damage and stun nearby enemies; allies can synergize to heal.", morphs: ["Soul Siphon", "Soul Tether"] }),
   sk("nightblade", "siphoning", "Siphoning", "Strife", { desc: "Deal magic damage and heal yourself or an ally for a portion.", morphs: ["Funnel Health", "Swallow Soul"] }),
   sk("nightblade", "siphoning", "Siphoning", "Cripple", { desc: "Sap an enemy's speed and deal magic damage over time.", morphs: ["Debilitate", "Crippling Grasp"] }),
@@ -79,7 +86,7 @@ export const skills: Skill[] = [
 
   /* ---------------- Templar ---------------- */
   sk("templar", "aedric-spear", "Aedric Spear", "Radial Sweep", { ult: true, desc: "Swing your spear around you, damaging nearby enemies.", morphs: ["Empowering Sweep", "Crescent Sweep"] }),
-  sk("templar", "aedric-spear", "Aedric Spear", "Puncturing Strikes", { desc: "Channel a flurry of spear jabs in front of you.", morphs: ["Biting Jabs", "Puncturing Sweep"] }),
+  sk("templar", "aedric-spear", "Aedric Spear", "Puncturing Strikes", { desc: "Channel a flurry of spear jabs in front of you.", morphs: ["Biting Jabs", "Puncturing Sweep"], patch: { last: "U50" } }),
   sk("templar", "aedric-spear", "Aedric Spear", "Spear Shards", { desc: "Throw a spear into an area; allies can synergize for resources.", morphs: ["Luminous Shards", "Blazing Spear"] }),
   sk("templar", "aedric-spear", "Aedric Spear", "Piercing Javelin", { desc: "Hurl a javelin that knocks an enemy back.", morphs: ["Aurora Javelin", "Binding Javelin"] }),
   sk("templar", "dawns-wrath", "Dawn's Wrath", "Nova", { ult: true, desc: "Call down a fragment of the sun, crushing enemies in the area.", morphs: ["Solar Prison", "Solar Disturbance"] }),
@@ -93,7 +100,7 @@ export const skills: Skill[] = [
 
   /* ---------------- Warden ---------------- */
   sk("warden", "animal-companions", "Animal Companions", "Feral Guardian", { ult: true, desc: "Summon a grizzly to fight at your side.", morphs: ["Eternal Guardian", "Wild Guardian"] }),
-  sk("warden", "animal-companions", "Animal Companions", "Dive", { desc: "Command a cliff racer to dive-bomb an enemy.", morphs: ["Cutting Dive", "Screaming Cliff Racer"] }),
+  sk("warden", "animal-companions", "Animal Companions", "Dive", { desc: "Command a cliff racer to dive-bomb an enemy.", morphs: ["Cutting Dive", "Screaming Cliff Racer"], patch: { last: "U50" } }),
   sk("warden", "animal-companions", "Animal Companions", "Scorch", { desc: "Shalk erupt from the ground after a delay, damaging enemies.", morphs: ["Subterranean Assault", "Deep Fissure"] }),
   sk("warden", "animal-companions", "Animal Companions", "Betty Netch", { desc: "Summon a netch that restores resources and grants Major buffs.", morphs: ["Blue Betty", "Bull Netch"] }),
   sk("warden", "green-balance", "Green Balance", "Secluded Grove", { ult: true, desc: "Grow a healing forest in an area.", morphs: ["Enchanted Forest", "Healing Thicket"] }),
@@ -107,7 +114,7 @@ export const skills: Skill[] = [
 
   /* ---------------- Necromancer ---------------- */
   sk("necromancer", "grave-lord", "Grave Lord", "Frozen Colossus", { ult: true, desc: "Summon a colossus that smashes the area and applies Major Vulnerability.", morphs: ["Pestilent Colossus", "Glacial Colossus"] }),
-  sk("necromancer", "grave-lord", "Grave Lord", "Flame Skull", { desc: "Lob an explosive skull; every third cast hits harder.", morphs: ["Venom Skull", "Ricochet Skull"] }),
+  sk("necromancer", "grave-lord", "Grave Lord", "Flame Skull", { desc: "Lob an explosive skull; every third cast hits harder.", morphs: ["Venom Skull", "Ricochet Skull"], patch: { last: "U50" } }),
   // Renamed from Blastbones in the U50 dataset; id must match the datamined
   // skill-necromancer-grave-lord-sacrificial-bones so builds stay resolvable.
   sk("necromancer", "grave-lord", "Grave Lord", "Sacrificial Bones", { desc: "Summon a skeleton that leaps to you, empowering your necromancy.", morphs: ["Blighted Blastbones", "Grave Lord's Sacrifice"], patch: { last: "U49" } }),
@@ -123,7 +130,7 @@ export const skills: Skill[] = [
 
   /* ---------------- Arcanist ---------------- */
   sk("arcanist", "herald-of-the-tome", "Herald of the Tome", "The Unblinking Eye", { ult: true, desc: "Summon a scion of Hermaeus Mora that beams enemies; can be repositioned.", morphs: ["The Tide King's Gaze", "The Languid Eye"] }),
-  sk("arcanist", "herald-of-the-tome", "Herald of the Tome", "Runeblades", { desc: "Fling spectral runeblades; generates Crux.", morphs: ["Writhing Runeblades", "Escalating Runeblades"] }),
+  sk("arcanist", "herald-of-the-tome", "Herald of the Tome", "Runeblades", { desc: "Fling spectral runeblades; generates Crux.", morphs: ["Writhing Runeblades", "Escalating Runeblades"], patch: { last: "U50" } }),
   sk("arcanist", "herald-of-the-tome", "Herald of the Tome", "Fatecarver", { desc: "Channel a beam of pure fate energy; consumes Crux for power.", morphs: ["Pragmatic Fatecarver", "Exhausting Fatecarver"], patch: { last: "U50" } }),
   sk("arcanist", "herald-of-the-tome", "Herald of the Tome", "Abyssal Impact", { desc: "Tentacles strike in a line, applying Abyssal Ink.", morphs: ["Cephaliarch's Flail", "Tentacular Dread"] }),
   sk("arcanist", "soldier-of-apocrypha", "Soldier of Apocrypha", "Gibbering Shield", { ult: true, desc: "Absorb damage and release it back as an explosion.", morphs: ["Sanctum of the Abyssal Sea", "Gibbering Shelter"] }),
