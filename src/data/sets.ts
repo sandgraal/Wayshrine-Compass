@@ -593,4 +593,35 @@ export const sets: GearSet[] = [
     firstSeenPatch: "U48",
     lastChangedPatch: "U48",
   },
+  // ---- Stamina DPS staples (scaffolded from the artifact) ----
+  {
+    id: "set-arms-of-relequen",
+    name: "Arms of Relequen",
+    type: "trial",
+    source: "Cloudrest trial — Summerset",
+    dlcRequired: "summerset",
+    bonuses: [
+      b(2, "Adds 129 Weapon and Spell Damage", [dmg(129)]),
+      b(3, "Gain Minor Slayer, increasing your damage to Dungeon, Trial, and Arena monsters by 5%"),
+      b(4, "Adds 1487 Offensive Penetration", [pen(1487)]),
+      b(5, "Your light and heavy attacks stack harmful winds on the target, dealing Physical Damage over time that scales with your Weapon or Spell Damage — the payoff for weaving every global"),
+    ],
+    firstSeenPatch: "U48",
+    lastChangedPatch: "U48",
+  },
+  {
+    id: "set-briarheart",
+    name: "Briarheart",
+    type: "overland",
+    source: "Wrothgar — overland drops & guild traders",
+    dlcRequired: "orsinium",
+    bonuses: [
+      b(2, "Adds 657 Critical Chance", [crit(657)]),
+      b(3, "Adds 1096 Maximum Stamina", [stam(1096)]),
+      b(4, "Adds 657 Critical Chance", [crit(657)]),
+      b(5, "Dealing Critical Damage grants you a burst of Weapon and Spell Damage and a small self-heal, on a short cooldown"),
+    ],
+    firstSeenPatch: "U48",
+    lastChangedPatch: "U48",
+  },
 ];
