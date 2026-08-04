@@ -51,7 +51,7 @@ export default async function SetsPage({
         </div>
       )}
       <div className="mt-6">
-        <SetsTable sets={sets} currentPatch={db.currentPatch} />
+        <SetsTable sets={sets} patchOrder={db.patchOrder} />
       </div>
     </div>
   );

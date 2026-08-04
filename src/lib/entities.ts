@@ -69,7 +69,7 @@ export function changedReferencedEntities(
   // Scoped to the original three types on purpose: refs of the newer tracked
   // types (grimoire/script/mastery_line) are skipped here, not counted as
   // removed — the homepage consumes this against exactly these collections.
-  const byType: Partial<Record<ChangedReferencedEntity["entityType"], Map<string, { name: string; lastChangedPatch: PatchCode }>>> = {
+  const byType: Partial<Record<ChangedReferencedEntity["entityType"], Map<string, { name: string; firstSeenPatch: PatchCode; lastChangedPatch: PatchCode }>>> = {
     set: new Map(entities.sets.map((e) => [e.id, e])),
     skill: new Map(entities.skills.map((e) => [e.id, e])),
     cp_star: new Map(entities.cpStars.map((e) => [e.id, e])),
@@ -84,7 +84,10 @@ export function changedReferencedEntities(
     const entity = index.get(ref.entityId);
     if (!entity) {
       removed.push({ entityType, entityId: ref.entityId, name: ref.entityId, removed: true });
-    } else if (entity.lastChangedPatch === patch) {
+    } else if (entity.lastChangedPatch === patch && entity.lastChangedPatch !== entity.firstSeenPatch) {
+      // Equal stamps mean the entity ENTERED tracking at `patch` (the baseline
+      // catalog import, or a later addition) — listing it under "changed this
+      // patch" would be freshness theater, not evidence.
       changed.push({ entityType, entityId: ref.entityId, name: entity.name, removed: false });
     }
   }

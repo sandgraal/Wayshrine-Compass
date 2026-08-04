@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { GearSet } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import type { GearSet, PatchCode } from "@/lib/types";
+import { EntityChangeBadge } from "@/components/entity-change-badge";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,30 +15,13 @@ import {
 } from "@/components/ui/select";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 
-/**
- * Sets have no human review step, so they never earn the build badge's green
- * "verified" state (see src/lib/freshness.ts). This shows raw provenance
- * instead: amber naming the patch when the set changed in the current patch,
- * a neutral "last changed" note otherwise.
- */
-function LastChangedIndicator({ set, currentPatch }: { set: GearSet; currentPatch: string }) {
-  const changedNow = set.lastChangedPatch === currentPatch;
-  return (
-    <span
-      className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium whitespace-nowrap",
-        changedNow
-          ? "bg-needs-review/15 text-needs-review border-needs-review/40"
-          : "border-border bg-secondary text-muted-foreground"
-      )}
-    >
-      <span className={cn("size-1.5 rounded-full", changedNow ? "bg-needs-review" : "bg-muted-foreground/50")} />
-      {changedNow ? `Changed in ${currentPatch}` : `Last changed ${set.lastChangedPatch}`}
-    </span>
-  );
-}
-
-export function SetsTable({ sets, currentPatch }: { sets: GearSet[]; currentPatch: string }) {
+export function SetsTable({
+  sets,
+  patchOrder,
+}: {
+  sets: GearSet[];
+  patchOrder: PatchCode[];
+}) {
   const [q, setQ] = useState("");
   const [type, setType] = useState("all");
 
@@ -117,7 +100,7 @@ export function SetsTable({ sets, currentPatch }: { sets: GearSet[]; currentPatc
                 </TableCell>
                 <TableCell className="text-muted-foreground">{s.source}</TableCell>
                 <TableCell>
-                  <LastChangedIndicator set={s} currentPatch={currentPatch} />
+                  <EntityChangeBadge entity={s} patchOrder={patchOrder} />
                 </TableCell>
               </TableRow>
             ))}
