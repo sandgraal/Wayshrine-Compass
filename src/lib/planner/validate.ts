@@ -172,8 +172,10 @@ export const BASE_STATS: Record<StatDelta["stat"], number> = {
 
 export interface ComputedStats {
   totals: Record<StatDelta["stat"], number>;
-  /** Which set bonuses are active at the equipped piece counts. */
-  activeBonuses: { setName: string; pieces: number; effect: string }[];
+  /** Which set bonuses are active at the equipped piece counts. `stats` is the
+   * structured portion already folded into `totals` — consumers (the DPS
+   * estimator) use its presence to avoid double-counting a bonus. */
+  activeBonuses: { setName: string; pieces: number; effect: string; stats?: StatDelta[] }[];
 }
 
 export function computeStats(
@@ -192,7 +194,7 @@ export function computeStats(
     if (!set) continue;
     for (const bonus of set.bonuses) {
       if (bonus.pieces <= count) {
-        activeBonuses.push({ setName: set.name, pieces: bonus.pieces, effect: bonus.effect });
+        activeBonuses.push({ setName: set.name, pieces: bonus.pieces, effect: bonus.effect, stats: bonus.stats });
         for (const delta of bonus.stats ?? []) {
           totals[delta.stat] += delta.amount;
         }

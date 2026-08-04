@@ -74,7 +74,9 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 
 ## Open work items (in rough priority order)
 
-(Done: real dataset source + `DATASET_URL`, service-role persistence, admin review workflow.)
+(Done: real dataset source + `DATASET_URL`, service-role persistence, admin review workflow,
+planner DPS estimation — `src/lib/planner/dps.ts` + `bonus-extract.ts`, surfaced in the
+Computed Stats rail as an explicit model with assumptions and a "not modeled" list.)
 
 1. Renamed-skill build references: 4 seed skills no longer exist in the U50 dataset —
    `fiery-breath`, `spiked-armor`, `stonefist` (dragonknight), `veiled-strike` (nightblade) —
@@ -91,4 +93,3 @@ Supabase Postgres. Production: https://wayshrine-compass.vercel.app (Vercel proj
 4. Builds expansion against the real catalog (the 28 seed builds only reference a slice of
    the datamined sets/skills).
 5. Scribing (Grimoires/Scripts) and Class Mastery entities are not yet modeled in the schema.
-6. Planner DPS estimation (explicitly deferred in the v1 spec).
