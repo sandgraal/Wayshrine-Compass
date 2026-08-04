@@ -17,6 +17,9 @@ import { zones } from "../src/data/zones";
 import { mundusStones } from "../src/data/mundus";
 import { foods } from "../src/data/food";
 import { builds } from "../src/data/builds";
+import { grimoires } from "../src/data/grimoires";
+import { scribingScripts } from "../src/data/scribingScripts";
+import { classMasteryLines } from "../src/data/classMastery";
 import { buildEntityRefs } from "../src/lib/entities";
 
 const url = process.env.SUPABASE_URL;
@@ -102,6 +105,48 @@ async function main() {
   await upsert(
     "foods",
     foods.map((f) => ({ id: f.id, name: f.name, effect: { text: f.effect, stats: f.stats ?? [] } }))
+  );
+  await upsert(
+    "grimoires",
+    grimoires.map((g) => ({
+      id: g.id,
+      name: g.name,
+      line: g.line,
+      line_label: g.lineLabel,
+      description: g.description,
+      acquisition: g.acquisition,
+      dlc_required: g.dlcRequired,
+      focus_scripts: g.focusScripts,
+      signature_scripts: g.signatureScripts,
+      affix_scripts: g.affixScripts,
+      first_seen_patch: g.firstSeenPatch,
+      last_changed_patch: g.lastChangedPatch,
+    }))
+  );
+  await upsert(
+    "scribing_scripts",
+    scribingScripts.map((s) => ({
+      id: s.id,
+      name: s.name,
+      slot: s.slot,
+      description: s.description,
+      acquisition: s.acquisition,
+      first_seen_patch: s.firstSeenPatch,
+      last_changed_patch: s.lastChangedPatch,
+    }))
+  );
+  await upsert(
+    "class_mastery_lines",
+    classMasteryLines.map((m) => ({
+      id: m.id,
+      name: m.name,
+      class: m.className,
+      line: m.line,
+      line_label: m.lineLabel,
+      graftable: m.graftable,
+      first_seen_patch: m.firstSeenPatch,
+      last_changed_patch: m.lastChangedPatch,
+    }))
   );
   await upsert(
     "builds",
