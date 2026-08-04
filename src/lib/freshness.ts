@@ -73,12 +73,18 @@ export function entityChangeStatus(
 ): EntityChangeStatus {
   const firstIdx = patchOrder.indexOf(entity.firstSeenPatch);
   const changedIdx = patchOrder.indexOf(entity.lastChangedPatch);
-  // A code missing from the patch table can't be ordered — fall back to raw
-  // inequality so a stamp newer than the known table still reads as changed.
+  const patchNumber = (code: PatchCode) => {
+    const match = /^U(\d+)$/.exec(code);
+    return match ? Number(match[1]) : undefined;
+  };
+  const firstNumber = patchNumber(entity.firstSeenPatch);
+  const changedNumber = patchNumber(entity.lastChangedPatch);
   const isChanged =
-    firstIdx === -1 || changedIdx === -1
-      ? entity.lastChangedPatch !== entity.firstSeenPatch
-      : changedIdx > firstIdx;
+    firstIdx !== -1 && changedIdx !== -1
+      ? changedIdx > firstIdx
+      : firstNumber !== undefined && changedNumber !== undefined
+        ? changedNumber > firstNumber
+        : false;
   if (isChanged) return { kind: "changed", patch: entity.lastChangedPatch };
   const baseline = patchIndex(patchOrder, TRACKING_BASELINE_PATCH);
   if (patchIndex(patchOrder, entity.firstSeenPatch) > baseline) {
