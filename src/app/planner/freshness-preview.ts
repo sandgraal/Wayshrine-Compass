@@ -1,4 +1,4 @@
-import type { ChangeNote, CpStar, GearSet, PatchCode, Skill } from "@/lib/types";
+import type { ChangeNote, PatchCode } from "@/lib/types";
 
 /** Entity ids a draft currently references, per tracked type. Duplicates are fine. */
 export interface PlannerDraftRefs {
@@ -7,10 +7,17 @@ export interface PlannerDraftRefs {
   cpStarIds: string[];
 }
 
+/** The provenance slice the preview reads; any richer entity shape satisfies it. */
+export interface ProvenanceSlice {
+  name: string;
+  firstSeenPatch: PatchCode;
+  lastChangedPatch: PatchCode;
+}
+
 export interface LiveEntities {
-  setById: Map<string, GearSet>;
-  skillById: Map<string, Skill>;
-  cpStarById: Map<string, CpStar>;
+  setById: ReadonlyMap<string, ProvenanceSlice>;
+  skillById: ReadonlyMap<string, ProvenanceSlice>;
+  cpStarById: ReadonlyMap<string, ProvenanceSlice>;
 }
 
 /**
@@ -35,10 +42,10 @@ export function computeFreshnessPreview(
 ): FreshnessPreview {
   const reasons: ChangeNote[] = [];
 
-  const check = <E extends { name: string; firstSeenPatch: PatchCode; lastChangedPatch: PatchCode }>(
+  const check = (
     entityType: "set" | "skill" | "cp_star",
     ids: string[],
-    byId: Map<string, E>
+    byId: ReadonlyMap<string, ProvenanceSlice>
   ) => {
     for (const entityId of new Set(ids)) {
       const entity = byId.get(entityId);

@@ -69,16 +69,27 @@ export default async function PatchTrackerPage() {
   const genuinelyChanged = (e: { firstSeenPatch: string; lastChangedPatch: string }, code: string) =>
     e.lastChangedPatch === code && e.lastChangedPatch !== e.firstSeenPatch;
 
+  // All six tracked collections — omitting the newer types here would let a
+  // grimoire/script/mastery change render as "no observed changes".
+  const collections: [{ id: string; name: string; firstSeenPatch: string; lastChangedPatch: string }[], string][] = [
+    [db.sets, "set"],
+    [db.skills, "skill"],
+    [db.cpStars, "CP star"],
+    [db.grimoires, "grimoire"],
+    [db.scripts, "script"],
+    [db.classMasteryLines, "mastery line"],
+  ];
+
   const patchHistory = [...db.patches].reverse().map((patch) => {
-    const changed = [
-      ...db.sets.filter((s) => genuinelyChanged(s, patch.code)).map((s) => ({ id: s.id, name: s.name, kind: "set" })),
-      ...db.skills.filter((s) => genuinelyChanged(s, patch.code)).map((s) => ({ id: s.id, name: s.name, kind: "skill" })),
-      ...db.cpStars.filter((s) => genuinelyChanged(s, patch.code)).map((s) => ({ id: s.id, name: s.name, kind: "CP star" })),
-    ];
-    const enteredTracking =
-      db.sets.filter((s) => s.lastChangedPatch === patch.code && s.firstSeenPatch === s.lastChangedPatch).length +
-      db.skills.filter((s) => s.lastChangedPatch === patch.code && s.firstSeenPatch === s.lastChangedPatch).length +
-      db.cpStars.filter((s) => s.lastChangedPatch === patch.code && s.firstSeenPatch === s.lastChangedPatch).length;
+    const changed = collections.flatMap(([rows, kind]) =>
+      rows.filter((e) => genuinelyChanged(e, patch.code)).map((e) => ({ id: e.id, name: e.name, kind }))
+    );
+    const enteredTracking = collections.reduce(
+      (sum, [rows]) =>
+        sum +
+        rows.filter((e) => e.lastChangedPatch === patch.code && e.firstSeenPatch === e.lastChangedPatch).length,
+      0
+    );
     return { patch, changed, enteredTracking };
   });
 
@@ -172,7 +183,7 @@ export default async function PatchTrackerPage() {
                   </p>
                   <ul className="mt-1.5 space-y-1.5 text-sm">
                     {group.items.map((item) => {
-                      const href = changeHref(item.entityType, item.entityId);
+const href = changeHref(item.entityType, item.renamedTo?.entityId ?? item.entityId);
                       return (
                         <li key={`${item.entityType}:${item.entityId}`}>
                           {href ? (
@@ -185,19 +196,20 @@ export default async function PatchTrackerPage() {
                           {item.kind === "renamed" && item.renamedTo && (
                             <span className="text-muted-foreground"> now {item.renamedTo.entityName}</span>
                           )}
-                          {item.kind === "changed" &&
-                            (item.fieldDiffs && item.fieldDiffs.length > 0 ? (
-                              <span className="mt-0.5 block text-xs text-muted-foreground">
-                                {item.fieldDiffs.map((d) => (
-                                  <span key={d.field} className="mr-3 inline-block">
-                                    <span className="font-mono">{d.field}</span>: {d.before}{" "}
-                                    <span aria-hidden>&rarr;</span> {d.after}
-                                  </span>
-                                ))}
-                              </span>
-                            ) : (
-                              <span className="text-muted-foreground"> ({item.changedFields.join(", ")})</span>
-                            ))}
+{(item.kind === "changed" || item.kind === "renamed") &&
+  item.changedFields.length > 0 &&
+  (item.fieldDiffs && item.fieldDiffs.length > 0 ? (
+    <span className="mt-0.5 block text-xs text-muted-foreground">
+      {item.fieldDiffs.map((d) => (
+        <span key={d.field} className="mr-3 inline-block">
+          <span className="font-mono">{d.field}</span>: {d.before}{" "}
+          <span aria-hidden>&rarr;</span> {d.after}
+        </span>
+      ))}
+    </span>
+  ) : (
+    <span className="text-muted-foreground"> ({item.changedFields.join(", ")})</span>
+  ))}
                         </li>
                       );
                     })}

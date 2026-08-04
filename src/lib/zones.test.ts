@@ -79,9 +79,9 @@ describe("setsForZone", () => {
   });
 
   it("returns nothing rather than guessing when a zone has no curated sets", () => {
-    // Base game with no source mention, and a chapter the seed doesn't cover.
+    // Base game with no source mention, and a DLC zone the seed doesn't cover.
     expect(setsForZone(zoneById("zone-auridon"), sets)).toEqual([]);
-    expect(setsForZone(zoneById("zone-summerset"), sets)).toEqual([]);
+    expect(setsForZone(zoneById("zone-galen"), sets)).toEqual([]);
   });
 });
 

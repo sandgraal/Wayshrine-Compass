@@ -407,6 +407,9 @@ function transformSkills(raw) {
       line: kebab(lineName),
       lineLabel: lineName,
       ultimate: baseRow.type === "Ultimate",
+      // Passives can never be slotted on a bar; the planner and sanitizer
+      // filter on this. UESP's type field is Active/Passive/Ultimate.
+      passive: baseRow.type === "Passive",
       description: stripEsoCodes(baseRow.description),
       className: className ? className.toLowerCase() : null,
       morphs,
