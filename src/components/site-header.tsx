@@ -12,6 +12,7 @@ const NAV = [
   { href: "/planner", label: "Planner" },
   { href: "/sets", label: "Sets" },
   { href: "/skills", label: "Skills" },
+  { href: "/zones", label: "Zones" },
   { href: "/patch-tracker", label: "Patch Tracker" },
 ];
 
