@@ -167,6 +167,13 @@ export function buildDb(data: DbData) {
     freshness(build: Build): Freshness {
       return computeFreshness(build, provenance, currentPatch, patchOrder);
     },
+    /**
+     * Entity types freshness is authoritative for with THIS data source
+     * (mundus/food are never patch-tracked; grimoire/script/mastery_line only
+     * when their collections are populated). Evidence copy that claims "N
+     * references checked" must count through this, not raw buildEntityRefs.
+     */
+    trackedEntityTypes: tracked as ReadonlySet<string>,
   };
 }
 
