@@ -45,12 +45,12 @@ export const skills: Skill[] = [
   // references them — the generated builds slot the current successors above.
   sk("dragonknight", "ardent-flame", "Ardent Flame", "Fiery Breath", { desc: "Exhale flame in a cone, dealing damage over time.", morphs: ["Noxious Breath", "Engulfing Flames"] }),
   sk("dragonknight", "draconic-power", "Draconic Power", "Dragon Leap", { ult: true, desc: "Launch to an enemy, knocking back and stunning nearby foes.", morphs: ["Take Flight", "Ferocious Leap"] }),
-  sk("dragonknight", "draconic-power", "Draconic Power", "Burnished Scales", { desc: "Gain Major Resolve and retaliate against melee attackers with your dragon scales.", morphs: ["Hardened Scales", "Volatile Scales"] }),
+  sk("dragonknight", "draconic-power", "Draconic Power", "Chains of Flame", { desc: "Conjure fiery chains to yank a distant enemy to you.", morphs: ["Chains of Devastation", "Chains of Dominance"] }),
   sk("dragonknight", "draconic-power", "Draconic Power", "Dark Talons", { desc: "Immobilize nearby enemies with flame talons.", morphs: ["Burning Talons", "Choking Talons"] }),
   sk("dragonknight", "draconic-power", "Draconic Power", "Dragon Blood", { desc: "Heal yourself based on your missing Health.", morphs: ["Green Dragon Blood", "Coagulating Blood"] }),
   sk("dragonknight", "draconic-power", "Draconic Power", "Spiked Armor", { desc: "Gain Major Resolve and return damage to melee attackers.", morphs: ["Hardened Armor", "Volatile Armor"] }), // retained pre-U50 fixture; unreferenced
   sk("dragonknight", "earthen-heart", "Earthen Heart", "Magma Armor", { ult: true, desc: "Limit incoming damage and deal flame damage to nearby enemies.", morphs: ["Magma Shell", "Corrosive Armor"] }),
-  sk("dragonknight", "earthen-heart", "Earthen Heart", "Landslide", { desc: "Rip the earth in a line, dealing physical damage and setting enemies Off Balance.", morphs: ["Stone Giant", "Obsidian Shard"] }),
+  sk("dragonknight", "earthen-heart", "Earthen Heart", "Molten Weapons", { desc: "Empower your weapons, granting you and nearby allies increased Weapon and Spell Damage.", morphs: ["Igneous Weapons", "Molten Armaments"] }),
   sk("dragonknight", "earthen-heart", "Earthen Heart", "Obsidian Shield", { desc: "Shield yourself and nearby allies.", morphs: ["Igneous Shield", "Fragmented Shield"] }),
   sk("dragonknight", "earthen-heart", "Earthen Heart", "Petrify", { desc: "Encase an enemy in stone, stunning them.", morphs: ["Fossilize", "Shattering Rocks"] }),
   sk("dragonknight", "earthen-heart", "Earthen Heart", "Stonefist", { desc: "Crush an enemy with stone, dealing physical damage.", morphs: ["Stone Giant", "Obsidian Shard"] }), // retained pre-U50 fixture; unreferenced
@@ -76,7 +76,7 @@ export const skills: Skill[] = [
   sk("nightblade", "assassination", "Assassination", "Grim Focus", { desc: "Stack light and heavy attacks to fire a spectral bow proc.", morphs: ["Relentless Focus", "Merciless Resolve"] }),
   sk("nightblade", "shadow", "Shadow", "Consuming Darkness", { ult: true, desc: "Create an area of shadow that reduces enemy damage and lets allies slip into it.", morphs: ["Bolstering Darkness", "Veil of Blades"] }),
   sk("nightblade", "shadow", "Shadow", "Shadow Cloak", { desc: "Vanish from sight for a short time.", morphs: ["Shadowy Disguise", "Dark Cloak"] }),
-  sk("nightblade", "shadow", "Shadow", "Dark Veil", { desc: "Strike from the shadows to stun and set enemies Off Balance.", morphs: ["Surprise Attack", "Concealed Weapon"] }),
+  sk("nightblade", "shadow", "Shadow", "Blur", { desc: "Blur your form, gaining evasion against incoming area attacks.", morphs: ["Mirage", "Phantasmal Escape"] }),
   sk("nightblade", "shadow", "Shadow", "Path of Darkness", { desc: "Create a path that speeds and heals allies.", morphs: ["Twisting Path", "Refreshing Path"] }),
   sk("nightblade", "shadow", "Shadow", "Veiled Strike", { desc: "Strike from stealth to stun and set off balance.", morphs: ["Surprise Attack", "Concealed Weapon"] }), // retained pre-U50 fixture; unreferenced
   sk("nightblade", "siphoning", "Siphoning", "Soul Shred", { ult: true, desc: "Damage and stun nearby enemies; allies can synergize to heal.", morphs: ["Soul Siphon", "Soul Tether"] }),

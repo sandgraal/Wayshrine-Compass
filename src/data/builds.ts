@@ -467,8 +467,8 @@ function soloGuidance(className: ClassName, selfHeal: string): GuidanceBlock[] {
     },
     {
       platform: "all",
-      title: "Make it a one-bar build",
-      body: "Want to run a single bar? Equip the Oakensoul Ring mythic and move your most important buffs onto the front bar — the ring grants the Major buffs your back bar was providing, at the cost of bar-swapping. It is a huge accessibility win for new players and anyone who finds weaving awkward.",
+      title: "Prefer a single bar?",
+      body: "The gear table above is the standard two-bar setup. If weaving feels awkward, a one-bar variant of this playstyle is built around the Oakensoul Ring mythic — it grants the Major buffs a back bar usually provides in exchange for locking you to one bar. Treat that as its own loadout you assemble separately (the ring replaces a jewelry piece and you rebuild the single bar around your priority skills), not a drop-in swap for the gear here.",
     },
     {
       platform: "pc",
@@ -510,8 +510,8 @@ const authoredBuilds: Build[] = [
       [
         weaponSkill("one-hand-and-shield", "Puncture").id,
         weaponSkill("one-hand-and-shield", "Low Slash").id,
-        classSkill("dragonknight", "draconic-power", "Burnished Scales").id,
-        classSkill("dragonknight", "earthen-heart", "Landslide").id,
+        classSkill("dragonknight", "draconic-power", "Chains of Flame").id,
+        classSkill("dragonknight", "earthen-heart", "Petrify").id,
         weaponSkill("undaunted", "Inner Fire").id,
       ],
       classSkill("dragonknight", "earthen-heart", "Magma Armor").id
@@ -537,7 +537,7 @@ const authoredBuilds: Build[] = [
       {
         platform: "all",
         title: "The Dragonknight main-tank job",
-        body: "You are the anchor. Keep Pierce Armor on the boss at all times, hold Burnished Scales for Major Resolve, and pull adds into your Dark Talons so the group can cleave them. Obsidian Shield feeds the group damage shields on every cast, and Magma Armor is your 'do not die' button when a mechanic slips through. Lucent Echoes turns your blocking into raw group damage, so block early and often — your uptime on it is a DPS increase for everyone behind you.",
+        body: "You are the anchor. Keep Pierce Armor on the boss at all times, chain stragglers back into the pack with Chains of Flame, and lock a dangerous add down with Petrify. Choking Talons pins trash so the group can cleave it, Obsidian Shield feeds group damage shields on every cast, and Magma Armor is your 'do not die' button when a mechanic slips through. Lucent Echoes rewards your blocking with a group buff, so block early and often — your uptime on it helps everyone behind you.",
       },
       {
         platform: "all",
@@ -574,7 +574,7 @@ const authoredBuilds: Build[] = [
       [
         classSkill("dragonknight", "ardent-flame", "Lava Whip").id,
         classSkill("dragonknight", "ardent-flame", "Searing Strike").id,
-        classSkill("dragonknight", "draconic-power", "Burnished Scales").id,
+        classSkill("dragonknight", "draconic-power", "Chains of Flame").id,
         classSkill("dragonknight", "draconic-power", "Dragon Blood").id,
         weaponSkill("two-handed", "Uppercut").id,
       ],
@@ -582,7 +582,7 @@ const authoredBuilds: Build[] = [
     ),
     backBar: bar(
       [
-        classSkill("dragonknight", "earthen-heart", "Landslide").id,
+        classSkill("dragonknight", "earthen-heart", "Molten Weapons").id,
         classSkill("dragonknight", "earthen-heart", "Obsidian Shield").id,
         classSkill("dragonknight", "draconic-power", "Dark Talons").id,
         weaponSkill("two-handed", "Critical Charge").id,
@@ -597,7 +597,7 @@ const authoredBuilds: Build[] = [
     },
     mundusId: "mundus-shadow",
     foodId: "food-artaeum-takeaway-broth",
-    guidance: soloGuidance("dragonknight", "Dragon Blood's burst heal and Burnished Scales' shield"),
+    guidance: soloGuidance("dragonknight", "Dragon Blood's burst self-heal and heavy-armor bulk"),
   }),
 
   /* ---------------- Sorcerer ---------------- */
@@ -654,14 +654,14 @@ const authoredBuilds: Build[] = [
       {
         platform: "all",
         title: "Sustaining Bahsei's",
-        body: "Because Bahsei's Mania rewards low Magicka, avoid over-healing your own pool. Heavy attack only when you genuinely need the resources, and let Sul-Xan's Torment's soul explosion add free area damage while you keep single-target pressure on the boss.",
+        body: "Because Bahsei's Mania rewards low Magicka, avoid over-healing your own pool — heavy attack only when you genuinely need the resources. Sul-Xan's Torment leaves a vengeful soul when an enemy you damaged dies; sweep through it to bank a burst of Critical Chance and Critical Damage for the next target.",
       },
       {
         platform: "pc",
         title: "Measuring the trade-off",
         body: "Parse the same fight twice in Combat Metrics — once playing safe, once riding low Magicka with Bahsei's — to see exactly how much the risk is worth on your setup.",
         consoleAlternative:
-          "On console, judge it by kill speed on the 21-million dummy is not available, so use the 6M skeleton: if you can drop it comfortably under 90 seconds without dying, your Bahsei's uptime is where it needs to be.",
+          "On console you have no parse addon, so judge it by kill speed instead: on the 6-million target skeleton, dropping it comfortably under 90 seconds without dying means your Bahsei's uptime is where it needs to be.",
       },
     ],
   }),
@@ -739,7 +739,7 @@ const authoredBuilds: Build[] = [
     backBar: bar(
       [
         classSkill("nightblade", "siphoning", "Cripple").id,
-        classSkill("nightblade", "shadow", "Dark Veil").id,
+        classSkill("nightblade", "shadow", "Blur").id,
         classSkill("nightblade", "siphoning", "Siphoning Strikes").id,
         weaponSkill("undaunted", "Blood Altar").id,
         weaponSkill("restoration-staff", "Steadfast Ward").id,
@@ -870,7 +870,7 @@ const authoredBuilds: Build[] = [
       {
         platform: "all",
         title: "Positioning for Spear Shards",
-        body: "Drop Luminous Shards under the group when a stamina-hungry teammate needs resources — the synergy is free sustain for them and Minor Sorcery adjacency for you. Sul-Xan's Torment adds passive burst while you focus on the channel.",
+        body: "Drop Luminous Shards under the group when a stamina-hungry teammate needs resources — the synergy is free sustain for them and Minor Sorcery adjacency for you. As jabbed targets die, step through the vengeful souls Sul-Xan's Torment leaves behind for a Critical Chance and Critical Damage boost.",
       },
       {
         platform: "pc",
@@ -1194,7 +1194,7 @@ const authoredBuilds: Build[] = [
       {
         platform: "all",
         title: "Beam positioning",
-        body: "Fatecarver is a long line — angle it through the boss and any adds so every tick lands on multiple targets. Ansuul's Torment and Sul-Xan's Torment both reward the sustained pressure that this channel naturally provides.",
+        body: "Fatecarver is a long line — angle it through the boss and any adds so every tick lands on multiple targets. Ansuul's Torment rewards the cast-time pressure this channel provides, and the vengeful souls Sul-Xan's Torment drops are easy to scoop up as adds die around you.",
       },
       {
         platform: "pc",
