@@ -7,7 +7,7 @@ import {
   type IngestRunSummary,
 } from "@/lib/ingest/persist";
 
-export const metadata: Metadata = { title: "Admin" };
+export const metadata: Metadata = { title: "Admin", robots: { index: false } };
 
 /**
  * Admin hub: pipeline health at a glance — current patch, active data source,

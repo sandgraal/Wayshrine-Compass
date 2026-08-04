@@ -360,6 +360,13 @@ export interface EntityChange {
   summary: string;
   /** Present only when kind === "renamed": the successor the old id maps to. */
   renamedTo?: { entityId: string; entityName: string };
+  /**
+   * Old→new values per changed field, compact-stringified and length-capped,
+   * so the public changelog can show what actually changed rather than just
+   * which field moved. Optional: reports persisted before this field render
+   * field names only.
+   */
+  fieldDiffs?: { field: string; before: string; after: string }[];
 }
 
 export interface DiffReport {
