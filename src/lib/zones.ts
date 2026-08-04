@@ -101,10 +101,12 @@ function baseZoneToken(zone: Zone): string {
  * guessing.
  */
 export function setsForZone(zone: Zone, sets: GearSet[]): GearSet[] {
-  if (zone.dlcRequired) {
-    return sets.filter((s) => s.dlcRequired === zone.dlcRequired);
-  }
   const token = baseZoneToken(zone).toLowerCase();
+  if (zone.dlcRequired) {
+    return sets.filter(
+      (s) => s.dlcRequired === zone.dlcRequired && s.source.toLowerCase().includes(token)
+    );
+  }
   return sets.filter((s) => s.dlcRequired === null && s.source.toLowerCase().includes(token));
 }
 

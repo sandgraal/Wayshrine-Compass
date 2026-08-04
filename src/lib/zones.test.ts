@@ -58,7 +58,7 @@ describe("setsForZone", () => {
     expect(highIsle.length).toBe(4);
     expect(highIsle.every((s) => s.dlcRequired === "high-isle")).toBe(true);
 
-    expect(setsForZone(zoneById("zone-telvanni-peninsula"), sets).length).toBe(3);
+    expect(setsForZone(zoneById("zone-telvanni-peninsula"), sets).length).toBe(2);
     expect(setsForZone(zoneById("zone-blackwood"), sets).length).toBe(2);
     expect(setsForZone(zoneById("zone-west-weald"), sets).length).toBe(2);
   });
