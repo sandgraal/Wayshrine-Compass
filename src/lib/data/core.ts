@@ -2,6 +2,7 @@ import type {
   Build,
   Companion,
   CpStar,
+  EntitySupersession,
   Food,
   GearSet,
   MundusStone,
@@ -22,6 +23,8 @@ export interface DbData {
   foods: Food[];
   zones: Zone[];
   builds: Build[];
+  /** Recorded entity renames, so freshness can name a removed ref's successor. */
+  supersessions?: EntitySupersession[];
   /** Label shown in the footer so the active source is auditable. */
   source: "seed" | "supabase";
 }
@@ -45,8 +48,16 @@ export function buildDb(data: DbData) {
   const foodById = new Map(data.foods.map((f) => [f.id, f]));
   const buildBySlug = new Map(data.builds.map((b) => [b.slug, b]));
 
+  const supersededBy = new Map(
+    (data.supersessions ?? []).map((s) => [
+      `${s.entityType}:${s.oldId}`,
+      { oldName: s.oldName, newId: s.newId, newName: s.newName, patch: s.patch },
+    ])
+  );
+
   const provenance: ProvenanceIndex = {
     tracks: (entityType) => TRACKED_ENTITY_TYPES.has(entityType),
+    supersededBy: (entityType, entityId) => supersededBy.get(`${entityType}:${entityId}`),
     get(entityType, entityId) {
       switch (entityType) {
         case "set": {

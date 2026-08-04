@@ -77,6 +77,26 @@ describe("parsePatchDataset", () => {
     expect(parsePatchDataset({ ...valid, cpStars: [{ ...validStar, tree: "combat" }] })).toBeNull();
   });
 
+  it("tolerates an optional gameId and coerces it to a string", () => {
+    // The rename signal: UESP sends abilityId as a number; a hand-authored or
+    // third-party dataset may send a string. Both must survive parse as strings.
+    const parsed = parsePatchDataset({
+      ...valid,
+      skills: [{ ...validSkill, gameId: 12345 }],
+      sets: [{ ...validSet, gameId: "set-98765" }],
+    });
+    expect(parsed).not.toBeNull();
+    expect(parsed!.skills[0].gameId).toBe("12345");
+    expect(parsed!.sets[0].gameId).toBe("set-98765");
+    // Absent gameId stays absent (not coerced to "undefined"/"null").
+    expect(parsed!.cpStars[0].gameId).toBeUndefined();
+  });
+
+  it("rejects a gameId that is neither string nor number", () => {
+    expect(parsePatchDataset({ ...valid, skills: [{ ...validSkill, gameId: {} }] })).toBeNull();
+    expect(parsePatchDataset({ ...valid, skills: [{ ...validSkill, gameId: "" }] })).toBeNull();
+  });
+
   it("preserves explicit patch metadata", () => {
     const parsed = parsePatchDataset({
       ...valid,

@@ -368,6 +368,11 @@ function transformSkills(raw) {
     const id = `skill-${className ? kebab(className) : "weapon"}-${kebab(lineName)}-${kebab(baseName)}`;
     skills.push({
       id,
+      // Stable upstream id: the display id derives from name+line, so a rename
+      // mints a new id — abilityId survives it and lets the ingest diff engine
+      // recognize the successor definitively (src/lib/ingest/diff.ts). Emitted
+      // as gameId; abilityId stays a transient key for collision resolution.
+      gameId: baseRow.abilityId != null ? String(baseRow.abilityId) : undefined,
       abilityId: baseRow.abilityId,
       name: baseName,
       line: kebab(lineName),
