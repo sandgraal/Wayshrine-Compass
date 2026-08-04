@@ -10,6 +10,11 @@ import { ALL_DLC_IDS } from "@/data/zones";
  * - never recommends content gated behind DLC the player lacks
  * - never recommends content above the player's level gate
  * - never surfaces addon-dependent advice on console
+ *
+ * PERSISTENCE WARNING: action ids are stored in visitors' localStorage as
+ * done/dismissed progress (src/app/what-next/progress-store.ts). Renaming a
+ * rule's id strands that stored state — add the old id to ID_ALIASES in
+ * progress-store.ts in the same change.
  */
 
 export function ownedDlc(profile: PlayerProfile): Set<string> {
@@ -182,7 +187,9 @@ const rules: Rule[] = [
     };
   },
   (p) => {
-    if (p.goal !== "dungeons" || p.cp < 160) return null;
+    // Veteran progression means scheduled 45-minute group runs — below ~4
+    // hours a week the engine keeps recommending drop-in content instead.
+    if (p.goal !== "dungeons" || p.cp < 160 || p.hoursPerWeek < 4) return null;
     return {
       id: "vet-dungeon-progression",
       title: "Start veteran dungeon progression (base-game first)",
@@ -194,7 +201,9 @@ const rules: Rule[] = [
   },
   // --- Trials ------------------------------------------------------------
   (p) => {
-    if (p.goal !== "trials" || p.level < 50) return null;
+    // A trial is an organized 12-player hour — below ~4 hours a week the
+    // engine doesn't push scheduled group content.
+    if (p.goal !== "trials" || p.level < 50 || p.hoursPerWeek < 4) return null;
     return {
       id: "first-normal-trial",
       title: "Join a normal trial (Aetherian Archive is the classic starter)",
