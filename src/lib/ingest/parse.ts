@@ -129,7 +129,16 @@ export function parsePatchDataset(json: unknown): PatchDataset | null {
   // Scribing + Class Mastery collections are required: the dataset artifact
   // and this parser ship together, and a payload missing them is more likely
   // a truncated/legacy export than a deliberate empty state.
-  if (!Array.isArray(o.grimoires) || !Array.isArray(o.scripts) || !Array.isArray(o.classMasteryLines)) return null;
+  if (
+    !Array.isArray(o.grimoires) ||
+    !Array.isArray(o.scripts) ||
+    !Array.isArray(o.classMasteryLines) ||
+    o.grimoires.length === 0 ||
+    o.scripts.length === 0 ||
+    o.classMasteryLines.length === 0
+  ) {
+    return null;
+  }
   if (
     !o.grimoires.every(isGrimoireDef) ||
     !o.scripts.every(isScriptDef) ||
