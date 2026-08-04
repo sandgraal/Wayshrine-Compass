@@ -125,6 +125,22 @@ describe("diff engine (synthetic patch data)", () => {
     expect(report.changes).toHaveLength(4);
   });
 
+  it("emits old-to-new fieldDiffs for changed entities, capped in length", () => {
+    const report = diffDatasets(synthU50, synthU51);
+    const alpha = report.changes.find((c) => c.entityId === "set-alpha");
+    expect(alpha?.fieldDiffs).toBeDefined();
+    const bonuses = alpha!.fieldDiffs!.find((d) => d.field === "bonuses");
+    expect(bonuses).toBeDefined();
+    expect(bonuses!.before).not.toBe(bonuses!.after);
+    for (const d of alpha!.fieldDiffs!) {
+      expect(d.before.length).toBeLessThanOrEqual(240);
+      expect(d.after.length).toBeLessThanOrEqual(240);
+    }
+    // Additions and removals carry no per-field diff.
+    expect(report.changes.find((c) => c.entityId === "set-delta")?.fieldDiffs).toBeUndefined();
+    expect(report.changes.find((c) => c.entityId === "set-gamma")?.fieldDiffs).toBeUndefined();
+  });
+
   it("flags every build referencing a changed entity, and only those", () => {
     const report = diffDatasets(synthU50, synthU51);
 

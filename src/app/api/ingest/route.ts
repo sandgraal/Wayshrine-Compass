@@ -1,7 +1,12 @@
 import { NextResponse } from "next/server";
 import { runIngest } from "@/lib/ingest/pipeline";
 import { parsePatchDataset } from "@/lib/ingest/parse";
-import { canPersist, persistenceConfigured, persistIngest } from "@/lib/ingest/persist";
+import {
+  canPersist,
+  fetchRecentIngestRuns,
+  persistenceConfigured,
+  persistIngest,
+} from "@/lib/ingest/persist";
 import { getDb } from "@/lib/data";
 
 /**
@@ -72,19 +77,47 @@ export async function POST(request: Request) {
   });
 }
 
+/**
+ * Public, deliberately: the machine-readable face of the auditability
+ * position. It exposes exactly the counts /patch-tracker publishes, plus a
+ * summary of the latest pipeline run. Writes stay POST + secret, fail-closed.
+ */
 export async function GET() {
   const db = await getDb();
-  return NextResponse.json({
-    currentPatch: db.currentPatch,
-    source: db.source,
-    entities: {
-      sets: db.sets.length,
-      skills: db.skills.length,
-      cpStars: db.cpStars.length,
-      grimoires: db.grimoires.length,
-      scripts: db.scripts.length,
-      classMasteryLines: db.classMasteryLines.length,
+
+  let lastRun: { ranAt: string; fromPatch: string | null; toPatch: string | null; changes: number; flaggedBuilds: number } | null = null;
+  if (persistenceConfigured() && db.source === "supabase") {
+    try {
+      const [run] = await fetchRecentIngestRuns(1);
+      if (run) {
+        lastRun = {
+          ranAt: run.ranAt,
+          fromPatch: run.fromPatch,
+          toPatch: run.toPatch,
+          changes: run.changes,
+          flaggedBuilds: run.flaggedBuilds,
+        };
+      }
+    } catch {
+      // status endpoint stays available without the run summary
+    }
+  }
+
+  return NextResponse.json(
+    {
+      currentPatch: db.currentPatch,
+      source: db.source,
+      entities: {
+        sets: db.sets.length,
+        skills: db.skills.length,
+        cpStars: db.cpStars.length,
+        grimoires: db.grimoires.length,
+        scripts: db.scripts.length,
+        classMasteryLines: db.classMasteryLines.length,
+      },
+      builds: db.builds.length,
+      lastRun,
     },
-    builds: db.builds.length,
-  });
+    { headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" } }
+  );
 }
