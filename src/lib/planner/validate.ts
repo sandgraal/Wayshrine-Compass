@@ -1,4 +1,8 @@
 import type { GearAssignment, GearSet, StatDelta } from "@/lib/types";
+
+/** The slice of a set the validators and stat math read — callers may pass
+ * full GearSets or the planner's slim shapes. */
+export type GearSetLike = Pick<GearSet, "id" | "name" | "type" | "bonuses" | "mythicSlot">;
 import { GEAR_SLOTS } from "@/lib/types";
 
 /**
@@ -50,7 +54,7 @@ export function validateSubclassLines(
 
 export function validateGear(
   gear: GearAssignment[],
-  setById: Map<string, GearSet>
+  setById: Map<string, GearSetLike>
 ): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
 
@@ -180,7 +184,7 @@ export interface ComputedStats {
 
 export function computeStats(
   gear: GearAssignment[],
-  setById: Map<string, GearSet>,
+  setById: Map<string, GearSetLike>,
   extras: StatDelta[][] = [] // mundus, food, etc.
 ): ComputedStats {
   const totals = { ...BASE_STATS };

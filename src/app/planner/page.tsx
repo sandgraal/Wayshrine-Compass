@@ -8,6 +8,41 @@ export const metadata: Metadata = { title: "Build Planner" };
 
 export default async function PlannerPage() {
   const db = await getDb();
+
+  // Slim the catalog to the fields the planner reads before it crosses the
+  // RSC boundary: skill descriptions and morphs are the bulk of the payload
+  // and the planner renders neither.
+  const liveSets = db.sets.map((s) => ({
+    id: s.id,
+    name: s.name,
+    type: s.type,
+    source: s.source,
+    dlcRequired: s.dlcRequired,
+    bonuses: s.bonuses,
+    mythicSlot: s.mythicSlot,
+    firstSeenPatch: s.firstSeenPatch,
+    lastChangedPatch: s.lastChangedPatch,
+  }));
+  const liveSkills = db.skills.map((s) => ({
+    id: s.id,
+    name: s.name,
+    className: s.className,
+    line: s.line,
+    lineLabel: s.lineLabel,
+    ultimate: s.ultimate,
+    firstSeenPatch: s.firstSeenPatch,
+    lastChangedPatch: s.lastChangedPatch,
+  }));
+  const liveCpStars = db.cpStars.map((s) => ({
+    id: s.id,
+    name: s.name,
+    tree: s.tree,
+    slottable: s.slottable,
+    effect: s.effect,
+    firstSeenPatch: s.firstSeenPatch,
+    lastChangedPatch: s.lastChangedPatch,
+  }));
+
   return (
     <div>
       <span className="font-mono text-xs text-primary">PLANNER</span>
@@ -17,7 +52,7 @@ export default async function PlannerPage() {
         you go. Share it with a permalink, or fork any published build.
       </p>
       <Suspense>
-        <Planner currentPatch={db.currentPatch} liveSets={db.sets} liveSkills={db.skills} liveCpStars={db.cpStars} />
+        <Planner currentPatch={db.currentPatch} liveSets={liveSets} liveSkills={liveSkills} liveCpStars={liveCpStars} />
       </Suspense>
       <div className="py-6">
         <RuneDivider />
