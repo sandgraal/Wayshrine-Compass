@@ -35,8 +35,24 @@ function SkillRow({ s, patchOrder }: { s: Skill; patchOrder: PatchCode[] }) {
         <Badge variant={s.ultimate ? "default" : "secondary"}>{s.ultimate ? "Ultimate" : "Active"}</Badge>
         {status.kind !== "tracked" && <EntityChangeBadge entity={s} patchOrder={patchOrder} />}
       </div>
-      <p className="text-sm text-muted-foreground">{s.description}</p>
-      <p className="text-xs text-muted-foreground">{s.morphs.map((m) => m.name).join(" · ")}</p>
+      {/* whitespace-pre-line: datamined tooltips carry \n\n between the flavor
+          line and the mechanics — without it they run together. */}
+      <p className="whitespace-pre-line text-sm text-muted-foreground">{s.description}</p>
+      {/* Morphs as chips, and only when present — 233 passives have none and a
+          bare <p> left ragged empty gaps. */}
+      {s.morphs.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          <span className="text-xs text-muted-foreground">Morphs:</span>
+          {s.morphs.map((m) => (
+            <span
+              key={m.name}
+              className="rounded border border-border bg-secondary/50 px-1.5 py-0.5 text-xs text-muted-foreground"
+            >
+              {m.name}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -64,8 +80,14 @@ export function SkillsExplorer({
       if (!id) return;
       const target = skills.find((s) => s.id === id);
       if (target?.className) setCls(target.className);
-      // Scroll after the class-switch render has committed the target row.
-      setTimeout(() => document.getElementById(id)?.scrollIntoView({ block: "center" }), 50);
+      // Scroll after the class-switch render has committed the target row, and
+      // open the containing <details> for weapon/guild lines (their rows are
+      // hidden while collapsed, so scrollIntoView would otherwise no-op).
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        el?.closest("details")?.setAttribute("open", "");
+        el?.scrollIntoView({ block: "center" });
+      }, 50);
     };
     const initial = setTimeout(navigateToHash, 0);
     window.addEventListener("hashchange", navigateToHash);
@@ -135,25 +157,30 @@ export function SkillsExplorer({
       </div>
 
       <div className="mt-10">
-        <h2 className="mb-3 text-lg font-semibold">Weapon &amp; guild lines</h2>
-        <div className="grid gap-4 lg:grid-cols-3">
+        <h2 className="mb-1 text-lg font-semibold">Weapon &amp; guild lines</h2>
+        <p className="mb-3 text-sm text-muted-foreground">
+          Shared across every class. Expand a line to see its skills.
+        </p>
+        {/* Collapsed by default so the 21 shared lines don't bury the selected
+            class's kit — the class selector above finally shortens the page. */}
+        <div className="flex flex-col gap-2">
           {weaponGuildLines.map((line) => {
             const lineSkills = skills.filter((s) => !s.className && s.line === line);
             return (
-              <Card key={line}>
-                <CardHeader className="border-b border-border">
-                  <CardTitle className="flex items-center gap-2">
-                  <EntitySigil src={skillLineArt(lineSkills[0])} size={22} />
+              <details key={line} className="group rounded-xl border border-border bg-card">
+                <summary className="flex cursor-pointer items-center gap-2 px-4 py-3 text-sm font-medium marker:text-muted-foreground">
+                  <EntitySigil src={skillLineArt(lineSkills[0])} size={20} />
                   {lineSkills[0].lineLabel}
-                </CardTitle>
-                  <CardDescription>Weapon &amp; guild skill line</CardDescription>
-                </CardHeader>
-                <CardContent>
+                  <span className="ml-auto text-xs text-muted-foreground">
+                    {lineSkills.length} skill{lineSkills.length === 1 ? "" : "s"}
+                  </span>
+                </summary>
+                <div className="border-t border-border px-4 py-2">
                   {lineSkills.map((s) => (
                     <SkillRow key={s.id} s={s} patchOrder={patchOrder} />
                   ))}
-                </CardContent>
-              </Card>
+                </div>
+              </details>
             );
           })}
         </div>
