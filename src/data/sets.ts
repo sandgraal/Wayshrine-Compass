@@ -762,7 +762,8 @@ export const sets: GearSet[] = [
       b(2, "Adds 657 Critical Chance", [crit(657)]),
       b(3, "Adds 657 Critical Chance", [crit(657)]),
       b(4, "Adds 657 Critical Chance", [crit(657)]),
-      b(5, "Adds 892 Critical Chance and grants Minor Force, increasing your Critical Damage by 10%", [crit(892)]),
+      b(5, "Adds 892 Critical Chance", [crit(892)]),
+      b(5, "Grants Minor Force, increasing your Critical Damage by 10%", [{ stat: "criticalDamage", amount: 10 }]),
     ],
     firstSeenPatch: "U48",
     lastChangedPatch: "U48",
@@ -777,36 +778,13 @@ export const sets: GearSet[] = [
       b(2, "Adds 129 Magicka Recovery", [{ stat: "magickaRecovery", amount: 129 }]),
       b(3, "Adds 1096 Maximum Magicka", [mag(1096)]),
       b(4, "Adds 129 Magicka Recovery", [{ stat: "magickaRecovery", amount: 129 }]),
-      b(5, "Grants Magicka Recovery to you and up to 11 nearby group members; the buff persists through death"),
+      b(5, "Grants 145 Magicka Recovery to you and up to 11 nearby group members; persists through death", [{ stat: "magickaRecovery", amount: 145 }]),
     ],
     firstSeenPatch: "U48",
     lastChangedPatch: "U48",
   },
-  // ---- Database breadth: Maelstrom arena weapons (2-item) ----
-  {
-    id: "set-perfected-crushing-wall",
-    name: "Perfected Crushing Wall",
-    type: "arena",
-    source: "Maelstrom Arena — Wrothgar",
-    dlcRequired: "orsinium",
-    bonuses: [
-      b(1, "Adds 1190 Offensive Penetration", [pen(1190)]),
-      b(2, "Increases the damage of your Wall of Elements by 1250"),
-    ],
-    firstSeenPatch: "U48",
-    lastChangedPatch: "U48",
-  },
-  {
-    id: "set-perfected-cruel-flurry",
-    name: "Perfected Cruel Flurry",
-    type: "arena",
-    source: "Maelstrom Arena — Wrothgar",
-    dlcRequired: "orsinium",
-    bonuses: [
-      b(1, "Adds 103 Weapon and Spell Damage", [dmg(103)]),
-      b(2, "After you hit with Flurry, your single-target damage-over-time abilities gain a burst of Weapon and Spell Damage for 5 seconds"),
-    ],
-    firstSeenPatch: "U48",
-    lastChangedPatch: "U48",
-  },
+  // Note: Maelstrom/arena weapon sets (2-item, single physical weapon) are
+  // deliberately left out of the seed until the planner models arena-weapon
+  // slot/handedness — it counts each weapon slot as one piece, so a one-bar
+  // arena weapon would only ever activate its 1-piece bonus.
 ];
