@@ -209,6 +209,7 @@ export function Planner({
             {[0, 1, 2].map((i) => (
               <select
                 key={i}
+                aria-label={`Class skill line ${i + 1}`}
                 value={state.lines[i] ?? ""}
                 onChange={(e) => {
                   const lines = [...state.lines];
@@ -240,6 +241,7 @@ export function Planner({
                 <div key={slot} className="grid grid-cols-[110px_1fr_110px] items-center gap-2 text-sm">
                   <span className="text-xs text-muted-foreground">{SLOT_LABEL[slot]}</span>
                   <select
+                    aria-label={`${SLOT_LABEL[slot]} set`}
                     value={current?.setId ?? ""}
                     onChange={(e) => setGearSlot(slot, e.target.value)}
                     className="min-w-0 rounded-md border border-input bg-secondary px-2 py-1 text-xs"
@@ -256,6 +258,7 @@ export function Planner({
                     ))}
                   </select>
                   <select
+                    aria-label={`${SLOT_LABEL[slot]} trait`}
                     value={current?.trait ?? "Divines"}
                     onChange={(e) => current && setGearSlot(slot, current.setId, e.target.value)}
                     disabled={!current}
@@ -281,6 +284,7 @@ export function Planner({
                 {[0, 1, 2, 3, 4].map((i) => (
                   <select
                     key={i}
+                    aria-label={`${bar} bar, skill ${i + 1}`}
                     value={state.bar[bar][i] ?? ""}
                     onChange={(e) => {
                       const arr = [...state.bar[bar]];
@@ -300,6 +304,7 @@ export function Planner({
                   </select>
                 ))}
                 <select
+                  aria-label={`${bar} bar ultimate`}
                   value={bar === "front" ? state.bar.frontUlt : state.bar.backUlt}
                   onChange={(e) =>
                     update({ bar: { ...state.bar, [bar === "front" ? "frontUlt" : "backUlt"]: e.target.value } })
