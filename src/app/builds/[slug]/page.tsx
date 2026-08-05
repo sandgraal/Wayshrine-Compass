@@ -5,7 +5,7 @@ import { GitFork } from "lucide-react";
 import { getDb } from "@/lib/data";
 import { buildEntityRefs } from "@/lib/entities";
 import { computeStats } from "@/lib/planner/validate";
-import { estimateDps } from "@/lib/planner/dps";
+import { estimateLoadoutDps } from "@/lib/planner/dps";
 import {
   fetchIngestRunReports,
   fetchRecentIngestRuns,
@@ -157,23 +157,17 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
     0
   );
 
-  // Same pure engine the planner uses, so a forked build shows identical numbers.
+  // Same pure engine (and the same DPS adapter) the planner uses, so a forked
+  // build shows identical numbers — see estimateLoadoutDps.
   const computedStats = computeStats(build.gear, db.setById, [
     mundus?.stats ?? [],
     food?.stats ?? [],
   ]);
-  const dpsEstimate = estimateDps(computedStats.totals, [
-    ...computedStats.activeBonuses.map((b) => ({
-      source: `${b.setName} (${b.pieces}pc)`,
-      effect: b.effect,
-      structured: (b.stats?.length ?? 0) > 0,
-    })),
-    ...(["warfare", "fitness", "craft"] as const)
-      .flatMap((tree) => build.cp[tree])
-      .map((id) => db.cpStarById.get(id))
-      .filter((s): s is NonNullable<typeof s> => s !== undefined)
-      .map((s) => ({ source: `${s.name} (CP)`, effect: s.effect })),
-  ]);
+  const slottedCp = (["warfare", "fitness", "craft"] as const)
+    .flatMap((tree) => build.cp[tree])
+    .map((id) => db.cpStarById.get(id))
+    .filter((s): s is NonNullable<typeof s> => s !== undefined);
+  const dpsEstimate = estimateLoadoutDps(computedStats, slottedCp);
 
   return (
     <div>
