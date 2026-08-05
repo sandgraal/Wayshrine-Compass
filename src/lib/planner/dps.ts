@@ -1,4 +1,5 @@
 import type { StatDelta } from "@/lib/types";
+import type { ComputedStats } from "./validate";
 import { extractEffect } from "./bonus-extract";
 
 /**
@@ -108,6 +109,32 @@ export function estimateDps(
     },
     notModeled,
   };
+}
+
+/** A slotted Champion Point star as the DPS model reads it — name and effect only. */
+export interface CpStarLike {
+  name: string;
+  effect: string;
+}
+
+/**
+ * Assemble a DPS estimate from a computed stat profile plus the slotted CP
+ * stars. The planner, the build page, and the parity test all route through
+ * this one adapter, so the "(Npc)"/"(CP)" source labels and the `structured`
+ * rule that guards against double-counting live in exactly one place — the two
+ * surfaces cannot silently diverge by editing a copied adapter. Only
+ * `computeStats` and the CP id → star resolution differ per surface; how the
+ * estimate is assembled from those inputs does not.
+ */
+export function estimateLoadoutDps(stats: ComputedStats, cpStars: CpStarLike[]): DpsEstimate {
+  return estimateDps(stats.totals, [
+    ...stats.activeBonuses.map((b) => ({
+      source: `${b.setName} (${b.pieces}pc)`,
+      effect: b.effect,
+      structured: (b.stats?.length ?? 0) > 0,
+    })),
+    ...cpStars.map((s) => ({ source: `${s.name} (CP)`, effect: s.effect })),
+  ]);
 }
 
 /** Human-readable assumption list for the UI — kept next to the constants it describes. */
