@@ -9,7 +9,7 @@ import { selectActions } from "./select-actions";
 import { useWhatNextProfile, useWhatNextProgress } from "./progress-store";
 import { ActionThumb } from "./action-thumb";
 import { companions } from "@/data/companions";
-import { ALL_DLC_IDS } from "@/data/zones";
+import { ALL_DLC_IDS, DLC_LABELS } from "@/data/zones";
 import { cn } from "@/lib/utils";
 
 const GOALS: { id: PlayerGoal; label: string }[] = [
@@ -27,41 +27,6 @@ const PLATFORMS: { id: PlayerPlatform; label: string }[] = [
   { id: "playstation", label: "PlayStation" },
 ];
 
-const DLC_LABELS: Record<string, string> = {
-  "imperial-city": "Imperial City",
-  orsinium: "Orsinium",
-  "thieves-guild": "Thieves Guild",
-  "dark-brotherhood": "Dark Brotherhood",
-  "shadows-of-the-hist": "Shadows of the Hist",
-  morrowind: "Morrowind",
-  "horns-of-the-reach": "Horns of the Reach",
-  "clockwork-city": "Clockwork City",
-  "dragon-bones": "Dragon Bones",
-  summerset: "Summerset",
-  wolfhunter: "Wolfhunter",
-  murkmire: "Murkmire",
-  wrathstone: "Wrathstone",
-  elsweyr: "Elsweyr",
-  scalebreaker: "Scalebreaker",
-  dragonhold: "Dragonhold",
-  harrowstorm: "Harrowstorm",
-  greymoor: "Greymoor",
-  stonethorn: "Stonethorn",
-  markarth: "Markarth",
-  "flames-of-ambition": "Flames of Ambition",
-  blackwood: "Blackwood",
-  "waking-flame": "Waking Flame",
-  deadlands: "Deadlands",
-  "ascending-tide": "Ascending Tide",
-  "high-isle": "High Isle",
-  "lost-depths": "Lost Depths",
-  firesong: "Firesong",
-  "scribes-of-fate": "Scribes of Fate",
-  necrom: "Necrom",
-  "scions-of-ithelia": "Scions of Ithelia",
-  "gold-road": "Gold Road",
-  "seasons-of-the-worm-cult": "Worm Cult (2025)",
-};
 
 const DEFAULT_PROFILE: PlayerProfile = {
   platform: "xbox",

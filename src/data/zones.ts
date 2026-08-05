@@ -56,3 +56,46 @@ export const ALL_DLC_IDS = [
   "gold-road",
   "seasons-of-the-worm-cult",
 ];
+
+/** Player-facing chapter/DLC names, keyed by the ids used in `dlcRequired`. */
+export const DLC_LABELS: Record<string, string> = {
+  "imperial-city": "Imperial City",
+  orsinium: "Orsinium",
+  "thieves-guild": "Thieves Guild",
+  "dark-brotherhood": "Dark Brotherhood",
+  "shadows-of-the-hist": "Shadows of the Hist",
+  morrowind: "Morrowind",
+  "horns-of-the-reach": "Horns of the Reach",
+  "clockwork-city": "Clockwork City",
+  "dragon-bones": "Dragon Bones",
+  summerset: "Summerset",
+  wolfhunter: "Wolfhunter",
+  murkmire: "Murkmire",
+  wrathstone: "Wrathstone",
+  elsweyr: "Elsweyr",
+  scalebreaker: "Scalebreaker",
+  dragonhold: "Dragonhold",
+  harrowstorm: "Harrowstorm",
+  greymoor: "Greymoor",
+  stonethorn: "Stonethorn",
+  markarth: "Markarth",
+  "flames-of-ambition": "Flames of Ambition",
+  blackwood: "Blackwood",
+  "waking-flame": "Waking Flame",
+  deadlands: "Deadlands",
+  "ascending-tide": "Ascending Tide",
+  "high-isle": "High Isle",
+  "lost-depths": "Lost Depths",
+  firesong: "Firesong",
+  "scribes-of-fate": "Scribes of Fate",
+  necrom: "Necrom",
+  "scions-of-ithelia": "Scions of Ithelia",
+  "gold-road": "Gold Road",
+  "seasons-of-the-worm-cult": "Worm Cult (2025)",
+};
+
+/** Label for a `dlcRequired` value; null (base game) reads as "Base game". */
+export function dlcLabel(dlcRequired: string | null): string {
+  if (!dlcRequired) return "Base game";
+  return DLC_LABELS[dlcRequired] ?? dlcRequired;
+}
