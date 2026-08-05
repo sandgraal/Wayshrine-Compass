@@ -119,4 +119,9 @@ Remaining work is the improvement program below.)
 
 (What Next card art shipped — all 20 WebPs live in public/whatnext/. The broader improvement
 program of 2026-08 is tracked in the session plan + memory: freshness signal integrity, patch
-tracker rebuild, What Next check-off, entity art system, planner overhaul, de-AI pass.)
+tracker rebuild, What Next check-off, entity art system, planner overhaul, de-AI pass. The
+de-AI pass is complete: 1/2 scrubbed served files/copy/metadata (#43); 2/2 replaced the Geist
+default type stack with Space Grotesk (display) / Inter (body) / JetBrains Mono (accents) —
+headings get the display face via a base rule in globals.css — and rebuilt the home "how it
+works" 01/02/03 card grid as a connected step path. The per-build OG image font moved to a
+vendored static Space Grotesk 600 instance in src/assets/og/.)

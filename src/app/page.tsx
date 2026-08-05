@@ -71,13 +71,48 @@ function BuildCard({ build, freshness, currentPatch }: { build: Build; freshness
   );
 }
 
-function StepCard({ n, title, body }: { n: string; title: string; body: string }) {
+const HOW_IT_WORKS = [
+  {
+    n: "01",
+    title: "Track",
+    body: "Every build is linked to the exact skills, sets and champion points it depends on.",
+  },
+  {
+    n: "02",
+    title: "Detect",
+    body: "When an update changes one of those entities, the build's freshness status updates automatically.",
+  },
+  {
+    n: "03",
+    title: "Alert",
+    body: "Open any build and see exactly what moved, with console-safe guidance where a PC addon isn't an option.",
+  },
+] as const;
+
+/** The three steps as connected waypoints along a path, not three boxed cards:
+ *  each numbered node trails a line toward the next (desktop), and the whole
+ *  thing collapses to a plain numbered stack on mobile. */
+function HowItWorksPath() {
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-border bg-card p-5">
-      <span className="font-mono text-xs text-primary">{n}</span>
-      <h3 className="text-sm font-semibold">{title}</h3>
-      <p className="text-sm text-muted-foreground">{body}</p>
-    </div>
+    <ol className="grid gap-x-6 gap-y-8 sm:grid-cols-3">
+      {HOW_IT_WORKS.map((step, i) => (
+        <li key={step.n} className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <span className="sigil-ring size-11 font-mono text-sm font-semibold">{step.n}</span>
+            {i < HOW_IT_WORKS.length - 1 && (
+              <span
+                aria-hidden
+                className="hidden h-px flex-1 bg-gradient-to-r from-primary/45 to-transparent sm:block"
+              />
+            )}
+          </div>
+          <div className="flex flex-col gap-1">
+            <h3 className="text-base font-semibold">{step.title}</h3>
+            <p className="text-sm text-muted-foreground">{step.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }
 
@@ -219,23 +254,7 @@ export default async function Home() {
           <span className="font-mono text-xs text-primary">HOW IT WORKS</span>
           <h2 className="text-2xl font-bold">Patch tracking, without the guesswork</h2>
         </div>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <StepCard
-            n="01"
-            title="Track"
-            body="Every build is linked to the exact skills, sets and champion points it depends on."
-          />
-          <StepCard
-            n="02"
-            title="Detect"
-            body="When an update changes one of those entities, the build's freshness status updates automatically."
-          />
-          <StepCard
-            n="03"
-            title="Alert"
-            body="Open any build and see exactly what moved, with console-safe guidance where a PC addon isn't an option."
-          />
-        </div>
+        <HowItWorksPath />
       </section>
 
       <div className="py-16">
