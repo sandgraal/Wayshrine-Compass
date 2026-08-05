@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { ALL_CLASSES, type ClassName, type PatchCode, type Skill } from "@/lib/types";
 import { entityChangeStatus } from "@/lib/freshness";
 import { EntityChangeBadge } from "@/components/entity-change-badge";
+import { EntitySigil } from "@/components/entity-sigil";
+import { skillLineArt } from "@/lib/entity-art";
 import { ClassSigil } from "@/components/illustrations";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
@@ -116,7 +118,10 @@ export function SkillsExplorer({
           return (
             <Card key={line}>
               <CardHeader className="border-b border-border">
-                <CardTitle>{lineSkills[0].lineLabel}</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <EntitySigil src={skillLineArt(lineSkills[0])} size={22} />
+                  {lineSkills[0].lineLabel}
+                </CardTitle>
                 <CardDescription>{capitalize(cls)} skill line</CardDescription>
               </CardHeader>
               <CardContent>
@@ -137,7 +142,10 @@ export function SkillsExplorer({
             return (
               <Card key={line}>
                 <CardHeader className="border-b border-border">
-                  <CardTitle>{lineSkills[0].lineLabel}</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                  <EntitySigil src={skillLineArt(lineSkills[0])} size={22} />
+                  {lineSkills[0].lineLabel}
+                </CardTitle>
                   <CardDescription>Weapon &amp; guild skill line</CardDescription>
                 </CardHeader>
                 <CardContent>
