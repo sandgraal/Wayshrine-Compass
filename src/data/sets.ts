@@ -37,7 +37,9 @@ export const sets: GearSet[] = [
     name: "Order's Wrath",
     type: "crafted",
     source: "Crafted — High Isle (Galen stations work too)",
-    dlcRequired: "high-isle",
+    // Crafted gear is tradeable and wearable without the chapter, so the
+    // resolver (and the live dataset) leave crafted sets ungated.
+    dlcRequired: null,
     bonuses: [
       b(2, "Adds 657 Critical Chance", [crit(657)]),
       b(3, "Adds 129 Weapon and Spell Damage", [dmg(129)]),
@@ -95,9 +97,9 @@ export const sets: GearSet[] = [
   {
     id: "set-whorl-of-the-depths",
     name: "Whorl of the Depths",
-    type: "dungeon",
-    source: "Depths of Malatar dungeon",
-    dlcRequired: "wrathstone",
+    type: "trial",
+    source: "Dreadsail Reef trial — High Isle",
+    dlcRequired: "high-isle",
     bonuses: [
       b(2, "Adds 657 Critical Chance", [crit(657)]),
       b(3, "Adds 129 Weapon and Spell Damage", [dmg(129)]),
@@ -172,8 +174,8 @@ export const sets: GearSet[] = [
     id: "set-turning-tide",
     name: "Turning Tide",
     type: "dungeon",
-    source: "The Dread Cellar dungeon",
-    dlcRequired: "waking-flame",
+    source: "Shipwright's Regret dungeon",
+    dlcRequired: "ascending-tide",
     bonuses: [
       b(2, "Adds 1206 Maximum Health", [hp(1206)]),
       b(3, "Adds 1487 Armor", [armor(1487)]),
@@ -273,8 +275,8 @@ export const sets: GearSet[] = [
     id: "set-ozezan-the-inferno",
     name: "Ozezan the Inferno",
     type: "monster",
-    source: "Shipyard of Fathoms Drift (head) / Undaunted chest (shoulders)",
-    dlcRequired: "necrom",
+    source: "Scrivener's Hall (head) / Undaunted chest (shoulders)",
+    dlcRequired: "scribes-of-fate",
     bonuses: [
       b(1, "Adds 4% Healing Done", [heal(4)]),
       b(2, "Healing a target grants them Armor; healing yourself grants you Minor Vitality"),
@@ -288,7 +290,9 @@ export const sets: GearSet[] = [
     name: "Oakensoul Ring",
     type: "mythic",
     source: "Antiquities — High Isle leads (Mythic)",
-    dlcRequired: "high-isle",
+    // Mythic leads scatter across many zones, so the resolver (and the live
+    // dataset) leave mythics ungated.
+    dlcRequired: null,
     mythicSlot: "ring1",
     bonuses: [
       b(1, "While equipped you cannot swap weapon bars, but gain a large suite of Major and Minor buffs"),
@@ -301,7 +305,7 @@ export const sets: GearSet[] = [
     name: "Velothi Ur-Mage's Amulet",
     type: "mythic",
     source: "Antiquities — Telvanni Peninsula leads (Mythic)",
-    dlcRequired: "necrom",
+    dlcRequired: null,
     mythicSlot: "necklace",
     bonuses: [
       b(1, "Adds 1650 Offensive Penetration, Minor Force, and 15% damage to monsters; reduces your Light/Heavy attack damage", [pen(1650)]),
@@ -314,7 +318,7 @@ export const sets: GearSet[] = [
     name: "Ring of the Pale Order",
     type: "mythic",
     source: "Antiquities — Blackreach/Markarth leads (Mythic)",
-    dlcRequired: "markarth",
+    dlcRequired: null,
     mythicSlot: "ring1",
     bonuses: [
       b(1, "Restore Health for a portion of damage you deal, but you cannot be healed by anyone else"),
@@ -358,7 +362,7 @@ export const sets: GearSet[] = [
     name: "Heartland Conqueror",
     type: "crafted",
     source: "Crafted — Blackwood (9 traits)",
-    dlcRequired: "blackwood",
+    dlcRequired: null,
     bonuses: [
       b(2, "Adds 1096 Maximum Stamina", [stam(1096)]),
       b(3, "Adds 657 Critical Chance", [crit(657)]),
@@ -419,7 +423,7 @@ export const sets: GearSet[] = [
     name: "Highland Sentinel",
     type: "crafted",
     source: "Crafted — West Weald (9 traits)",
-    dlcRequired: "gold-road",
+    dlcRequired: null,
     bonuses: [
       b(2, "Adds 657 Critical Chance", [crit(657)]),
       b(3, "Adds 657 Critical Chance", [crit(657)]),
@@ -434,7 +438,7 @@ export const sets: GearSet[] = [
     name: "New Moon Acolyte",
     type: "crafted",
     source: "Crafted — Southern Elsweyr (8 traits)",
-    dlcRequired: "dragonhold",
+    dlcRequired: null,
     bonuses: [
       b(2, "Adds 657 Critical Chance", [crit(657)]),
       b(3, "Adds 129 Weapon and Spell Damage", [dmg(129)]),
@@ -542,7 +546,7 @@ export const sets: GearSet[] = [
     name: "Fortified Brass",
     type: "crafted",
     source: "Crafted — Clockwork City (Restricted Brassworks)",
-    dlcRequired: "clockwork-city",
+    dlcRequired: null,
     bonuses: [
       b(2, "Adds 1206 Maximum Health", [hp(1206)]),
       b(3, "Adds 1487 Armor", [armor(1487)]),

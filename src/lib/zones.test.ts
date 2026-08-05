@@ -54,13 +54,16 @@ describe("zoneAccess", () => {
 
 describe("setsForZone", () => {
   it("matches chapter/DLC zones on the exact gate", () => {
+    // Counts cover only the chapter's true drop sets. Crafted and mythic sets
+    // whose station/leads sit in a chapter are ungated (null) — tradeable gear
+    // and cross-zone leads aren't chapter-locked — so they don't group here.
     const highIsle = setsForZone(zoneById("zone-high-isle"), sets);
-    expect(highIsle.length).toBe(5);
+    expect(highIsle.length).toBe(4);
     expect(highIsle.every((s) => s.dlcRequired === "high-isle")).toBe(true);
 
-    expect(setsForZone(zoneById("zone-telvanni-peninsula"), sets).length).toBe(2);
-    expect(setsForZone(zoneById("zone-blackwood"), sets).length).toBe(4);
-    expect(setsForZone(zoneById("zone-west-weald"), sets).length).toBe(3);
+    expect(setsForZone(zoneById("zone-telvanni-peninsula"), sets).length).toBe(1);
+    expect(setsForZone(zoneById("zone-blackwood"), sets).length).toBe(3);
+    expect(setsForZone(zoneById("zone-west-weald"), sets).length).toBe(2);
   });
 
   it("never leaks a set gated to a different chapter", () => {

@@ -161,6 +161,37 @@ describe("public/dataset/current.json", () => {
     expect(unmapped.get("Fake Dungeon")).toBe(1);
   });
 
+  it("classifies every committed set's source place — no silent un-gating", () => {
+    // The table above spot-checks the resolver; this replays it over the whole
+    // shipped catalog. Two guarantees a spot-check cannot give: (1) every set's
+    // source place is known to PLACE_DLC — a set from a new or renamed DLC zone
+    // the map has not learned would gate to null and What Next / the planner
+    // would treat DLC gear as base-game; (2) the committed dlcRequired still
+    // equals what the resolver produces, so a hand edit or an upstream sources
+    // change can't leave a wrong gate in current.json. Regenerate the dataset
+    // (or extend PLACE_DLC) when this fails — do not edit dlcRequired by hand.
+    const raw = JSON.parse(fs.readFileSync(file, "utf8")).sets as {
+      type: string;
+      source: string;
+      dlcRequired: string | null;
+    }[];
+    const unmapped = new Map<string, number>();
+    const drift: string[] = [];
+    for (const s of raw) {
+      const got = resolveSetDlc(s.type, s.source ?? "", unmapped);
+      if ((got ?? null) !== (s.dlcRequired ?? null)) {
+        drift.push(`${s.source} → committed ${s.dlcRequired}, resolver ${got}`);
+      }
+    }
+    expect(
+      [...unmapped.keys()],
+      `these source places are not in PLACE_DLC (extend the map in scripts/build-dataset.mjs):\n${[
+        ...unmapped.keys(),
+      ].join("\n")}`
+    ).toEqual([]);
+    expect(drift, `committed dlcRequired diverges from the resolver:\n${drift.join("\n")}`).toEqual([]);
+  });
+
   it("gates a healthy share of sets behind known DLC ids", () => {
     const gated = dataset!.sets.filter((s) => s.dlcRequired !== null);
     // 310 at snapshot time; a mapping regression (or an upstream sources-field
