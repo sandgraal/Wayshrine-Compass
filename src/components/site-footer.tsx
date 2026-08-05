@@ -41,6 +41,9 @@ export function SiteFooter({ currentPatch, source }: { currentPatch: string; sou
                   {item.label}
                 </Link>
               ))}
+              <Link href="/about" className="text-muted-foreground no-underline hover:text-foreground">
+                About
+              </Link>
             </div>
             <div className="flex flex-col gap-2 text-sm">
               <span className="font-medium text-foreground">Freshness</span>
