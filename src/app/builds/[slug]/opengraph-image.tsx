@@ -57,7 +57,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   const db = await getDb();
   const build = db.getBuild(slug);
 
-  const semiBold = await readFile(path.join(process.cwd(), "src/assets/og/Geist-SemiBold.ttf"));
+  const semiBold = await readFile(path.join(process.cwd(), "src/assets/og/SpaceGrotesk-SemiBold.ttf"));
   const emblem = await asset("src/assets/og/emblem.png");
 
   const portrait = build ? portraitForBuild(build) : undefined;
@@ -77,7 +77,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           height: "100%",
           display: "flex",
           backgroundColor: C.background,
-          fontFamily: "Geist",
+          fontFamily: "Space Grotesk",
           position: "relative",
         }}
       >
@@ -219,7 +219,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
     ),
     {
       ...size,
-      fonts: [{ name: "Geist", data: semiBold, weight: 600, style: "normal" }],
+      fonts: [{ name: "Space Grotesk", data: semiBold, weight: 600, style: "normal" }],
     }
   );
 }

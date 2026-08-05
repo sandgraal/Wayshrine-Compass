@@ -1,19 +1,27 @@
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/site-url";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { PlatformProvider } from "@/components/platform-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getDb } from "@/lib/data";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Type stack: a geometric display face for headings, a humanist sans for body
+// copy at data density, and a technical mono for patch codes and entity ids —
+// the mono accent is part of the "patch database" identity.
+const displayFont = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bodyFont = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+});
+
+const monoFont = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
 });
 
@@ -36,7 +44,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-rune-field">
         <PlatformProvider>
