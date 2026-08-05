@@ -1,22 +1,25 @@
 import type { Metadata } from "next";
 import { siteUrl } from "@/lib/site-url";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Marcellus, Source_Sans_3, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { PlatformProvider } from "@/components/platform-provider";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getDb } from "@/lib/data";
 
-// Type stack: a geometric display face for headings, a humanist sans for body
-// copy at data density, and a technical mono for patch codes and entity ids —
-// the mono accent is part of the "patch database" identity.
-const displayFont = Space_Grotesk({
-  variable: "--font-space-grotesk",
+// Type stack chosen to read as authored, not defaulted: Marcellus is a
+// lapidary, inscriptional serif that suits the carved-stone wayshrine brand
+// for headings; Source Sans 3 is a humanist workhorse that stays legible at
+// data-table density; JetBrains Mono carries patch codes, counters, and
+// entity ids — the mono accent is part of the "patch database" identity.
+const displayFont = Marcellus({
+  variable: "--font-marcellus",
+  weight: "400",
   subsets: ["latin"],
 });
 
-const bodyFont = Inter({
-  variable: "--font-inter",
+const bodyFont = Source_Sans_3({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
