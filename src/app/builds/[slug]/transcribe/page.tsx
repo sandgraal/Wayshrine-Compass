@@ -81,6 +81,8 @@ export default async function TranscribePage({ params }: { params: Promise<{ slu
   const barLine = (bar: SkillBar) =>
     [...bar.skills, bar.ultimate].map((id) => db.skillById.get(id)?.name ?? id);
 
+  const freshness = db.freshness(build);
+
   return (
     <div className="transcribe-sheet mx-auto max-w-2xl">
       <div className="no-print mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -101,12 +103,29 @@ export default async function TranscribePage({ params }: { params: Promise<{ slu
         <p className="text-muted-foreground">
           <span className="capitalize">{build.className}</span> · <span className="capitalize">{build.role}</span> ·{" "}
           <span className="capitalize">{build.contentType}</span> · verified for{" "}
-          <span className="font-mono">{build.patchVerified}</span>
+          <span className="font-mono">{freshness.patchVerified}</span>
         </p>
         <p className="mt-1 text-sm text-muted-foreground">
           Skill lines: {lineLabels.join(" / ")}
         </p>
       </header>
+
+      {freshness.status !== "verified" && (
+        <div className="mt-3 rounded-md border border-needs-review/40 bg-needs-review/10 px-3 py-2 text-xs">
+          {freshness.status === "stale" ? (
+            <span>
+              Last verified for <span className="font-mono">{freshness.patchVerified}</span>,{" "}
+              {freshness.patchesBehind} patches ago. Treat with caution.
+            </span>
+          ) : (
+            <div>
+              {freshness.reasons.map((r) => (
+                <p key={`${r.entityType}-${r.entityId}`}>{r.summary}</p>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="mt-6 flex flex-col gap-6 text-[15px] leading-relaxed sm:text-base">
         <Step n={1} title="Gear">
@@ -119,6 +138,10 @@ export default async function TranscribePage({ params }: { params: Promise<{ slu
                   <span className="text-sm text-muted-foreground">{SLOT_LABEL[slot]}</span>
                   {g ? (
                     <span>
+                      {g.weaponType ? (
+                        <span className="font-semibold">{g.weaponType}</span>
+                      ) : null}
+                      {g.weaponType ? " — " : ""}
                       <span className="font-semibold">{set?.name ?? g.setId}</span>
                       {" — "}
                       {g.trait} trait

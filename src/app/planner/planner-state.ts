@@ -175,7 +175,7 @@ export function updateGearSlot(
   const existing = gear.find((g) => g.slot === slot);
   const next = gear.filter((g) => g.slot !== slot);
   if (setId) {
-    next.push({ ...existing, slot, setId, trait: trait ?? existing?.trait ?? "Divines" });
+    next.push({ enchant: "", ...existing, slot, setId, trait: trait ?? existing?.trait ?? "Divines" });
   }
   return next;
 }
@@ -228,13 +228,18 @@ export function sanitizeState(parsed: unknown, tables: EntityTables): PlannerSta
       const enchant =
         typeof g.enchant === "string" && g.enchant.length > 0 && g.enchant.length <= 80
           ? g.enchant
+          : "";
+      const weaponType =
+        typeof g.weaponType === "string" && g.weaponType.length > 0 && g.weaponType.length <= 80
+          ? g.weaponType
           : undefined;
       gear.push({
         slot,
         setId: g.setId,
         trait,
         ...(weight ? { weight } : {}),
-        ...(enchant ? { enchant } : {}),
+        enchant,
+        ...(weaponType ? { weaponType } : {}),
       });
     }
   }

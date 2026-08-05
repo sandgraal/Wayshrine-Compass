@@ -69,28 +69,43 @@ function gearTemplate(opts: {
   monsterSet?: string;
   headShoulderSet?: string; // used when no monster set (leveling)
   bodyTrait: string;
+  bodyEnchant: string;
   jewelryTrait: string;
+  jewelryEnchant: string;
   weaponTraitFront: string;
   weaponTraitBack: string;
+  weaponTypeFront: string;
+  weaponTypeBack: string;
+  weaponEnchantFront: string;
+  weaponEnchantBack: string;
   weight: "light" | "medium" | "heavy";
 }): GearAssignment[] {
   const gear: GearAssignment[] = [];
   const hs = opts.monsterSet ?? opts.headShoulderSet ?? opts.bodySet;
-  gear.push({ slot: "head", setId: hs, trait: opts.bodyTrait, weight: opts.weight });
-  gear.push({ slot: "shoulders", setId: hs, trait: opts.bodyTrait, weight: opts.weight });
+  gear.push({ slot: "head", setId: hs, trait: opts.bodyTrait, weight: opts.weight, enchant: opts.bodyEnchant });
+  gear.push({ slot: "shoulders", setId: hs, trait: opts.bodyTrait, weight: opts.weight, enchant: opts.bodyEnchant });
   for (const slot of BODY) {
-    gear.push({ slot, setId: opts.bodySet, trait: opts.bodyTrait, weight: opts.weight });
+    gear.push({ slot, setId: opts.bodySet, trait: opts.bodyTrait, weight: opts.weight, enchant: opts.bodyEnchant });
   }
   for (const slot of JEWELRY_WEAPONS) {
     const isWeapon = slot === "frontBarWeapon" || slot === "backBarWeapon";
+    const isFront = slot === "frontBarWeapon";
     gear.push({
       slot,
       setId: opts.jewelrySet,
       trait: isWeapon
-        ? slot === "frontBarWeapon"
+        ? isFront
           ? opts.weaponTraitFront
           : opts.weaponTraitBack
         : opts.jewelryTrait,
+      enchant: isWeapon
+        ? isFront
+          ? opts.weaponEnchantFront
+          : opts.weaponEnchantBack
+        : opts.jewelryEnchant,
+      ...(isWeapon
+        ? { weaponType: isFront ? opts.weaponTypeFront : opts.weaponTypeBack }
+        : undefined),
     });
   }
   return gear;
@@ -259,6 +274,12 @@ function makeDps(className: ClassName): Build {
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Precise",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Inferno staff",
+      weaponTypeBack: "Lightning staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Spell Cost Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "light",
     }),
     frontBar: {
@@ -301,6 +322,12 @@ function makeTank(className: ClassName): Build {
       jewelryTrait: "Infused",
       weaponTraitFront: "Defending",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "One hand and shield",
+      weaponTypeBack: "One hand and shield",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Magicka Cost Reduction",
+      weaponEnchantFront: "Crusher",
+      weaponEnchantBack: "Hardening",
       weight: "heavy",
     }),
     frontBar: {
@@ -349,6 +376,12 @@ function makeHealer(className: ClassName): Build {
       jewelryTrait: "Arcane",
       weaponTraitFront: "Powered",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Restoration staff",
+      weaponTypeBack: "Restoration staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Magicka Cost Reduction",
+      weaponEnchantFront: "Absorb Magicka",
+      weaponEnchantBack: "Absorb Magicka",
       weight: "light",
     }),
     frontBar: {
@@ -397,6 +430,12 @@ function makeLeveling(className: ClassName): Build {
       jewelryTrait: "Arcane",
       weaponTraitFront: "Training",
       weaponTraitBack: "Training",
+      weaponTypeFront: "Inferno staff",
+      weaponTypeBack: "Inferno staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Arcane",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Berserker",
       weight: "light",
     }),
     frontBar: {
@@ -550,6 +589,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Infused",
       weaponTraitFront: "Infused",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "One hand and shield",
+      weaponTypeBack: "One hand and shield",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Magicka Cost Reduction",
+      weaponEnchantFront: "Crusher",
+      weaponEnchantBack: "Hardening",
       weight: "heavy",
     }),
     frontBar: bar(
@@ -614,6 +659,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Two-handed",
+      weaponTypeBack: "Two-handed",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "medium",
     }),
     frontBar: bar(
@@ -662,6 +713,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Precise",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Inferno staff",
+      weaponTypeBack: "Lightning staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Spell Cost Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "light",
     }),
     frontBar: bar(
@@ -726,6 +783,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Precise",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Inferno staff",
+      weaponTypeBack: "Lightning staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Spell Cost Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "light",
     }),
     frontBar: bar(
@@ -770,6 +833,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Arcane",
       weaponTraitFront: "Powered",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Restoration staff",
+      weaponTypeBack: "Restoration staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Magicka Cost Reduction",
+      weaponEnchantFront: "Absorb Magicka",
+      weaponEnchantBack: "Absorb Magicka",
       weight: "light",
     }),
     frontBar: bar(
@@ -834,6 +903,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Dual wield",
+      weaponTypeBack: "Dual wield",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "medium",
     }),
     frontBar: bar(
@@ -878,6 +953,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Precise",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Dual wield",
+      weaponTypeBack: "Dual wield",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "medium",
     }),
     frontBar: bar(
@@ -942,6 +1023,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Two-handed",
+      weaponTypeBack: "Two-handed",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "medium",
     }),
     frontBar: bar(
@@ -986,6 +1073,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Infused",
       weaponTraitFront: "Infused",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "One hand and shield",
+      weaponTypeBack: "One hand and shield",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Magicka Cost Reduction",
+      weaponEnchantFront: "Crusher",
+      weaponEnchantBack: "Hardening",
       weight: "heavy",
     }),
     frontBar: bar(
@@ -1050,6 +1143,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Precise",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Two-handed",
+      weaponTypeBack: "Two-handed",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "medium",
     }),
     frontBar: bar(
@@ -1094,6 +1193,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Arcane",
       weaponTraitFront: "Powered",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Restoration staff",
+      weaponTypeBack: "Restoration staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Magicka Cost Reduction",
+      weaponEnchantFront: "Absorb Magicka",
+      weaponEnchantBack: "Absorb Magicka",
       weight: "light",
     }),
     frontBar: bar(
@@ -1158,6 +1263,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Precise",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Inferno staff",
+      weaponTypeBack: "Lightning staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Spell Cost Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "light",
     }),
     frontBar: bar(
@@ -1202,6 +1313,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Precise",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Inferno staff",
+      weaponTypeBack: "Lightning staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Spell Cost Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "light",
     }),
     frontBar: bar(
@@ -1266,6 +1383,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Precise",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Inferno staff",
+      weaponTypeBack: "Lightning staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Spell Cost Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "light",
     }),
     frontBar: bar(
@@ -1310,6 +1433,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Robust",
       weaponTraitFront: "Sharpened",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Two-handed",
+      weaponTypeBack: "One hand and shield",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Hardening",
       weight: "heavy",
     }),
     frontBar: bar(
@@ -1358,6 +1487,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Robust",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Inferno staff",
+      weaponTypeBack: "Lightning staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Spell Cost Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "light",
     }),
     frontBar: bar(
@@ -1406,6 +1541,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Robust",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Dual wield",
+      weaponTypeBack: "Bow",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Poisoned",
       weight: "medium",
     }),
     frontBar: bar(
@@ -1454,6 +1595,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Infused",
       weaponTraitFront: "Powered",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Restoration staff",
+      weaponTypeBack: "Restoration staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Magicka Cost Reduction",
+      weaponEnchantFront: "Absorb Magicka",
+      weaponEnchantBack: "Absorb Magicka",
       weight: "light",
     }),
     frontBar: bar(
@@ -1502,6 +1649,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Robust",
       weaponTraitFront: "Sharpened",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Two-handed",
+      weaponTypeBack: "One hand and shield",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Hardening",
       weight: "heavy",
     }),
     frontBar: bar(
@@ -1550,6 +1703,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Robust",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Inferno staff",
+      weaponTypeBack: "Lightning staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Spell Cost Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "medium",
     }),
     frontBar: bar(
@@ -1598,6 +1757,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Robust",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Inferno staff",
+      weaponTypeBack: "Lightning staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Spell Cost Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "light",
     }),
     frontBar: bar(
@@ -1648,6 +1813,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Dual wield",
+      weaponTypeBack: "Bow",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Poisoned",
       weight: "medium",
     }),
     frontBar: bar(
@@ -1692,6 +1863,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Dual wield",
+      weaponTypeBack: "Bow",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Poisoned",
       weight: "medium",
     }),
     frontBar: bar(
@@ -1736,6 +1913,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Dual wield",
+      weaponTypeBack: "Bow",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Poisoned",
       weight: "medium",
     }),
     frontBar: bar(
@@ -1780,6 +1963,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Dual wield",
+      weaponTypeBack: "Bow",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Poisoned",
       weight: "medium",
     }),
     frontBar: bar(
@@ -1826,6 +2015,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Arcane",
       weaponTraitFront: "Precise",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Inferno staff",
+      weaponTypeBack: "Lightning staff",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Spell Cost Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Crusher",
       weight: "light",
     }),
     frontBar: bar(
@@ -1890,6 +2085,12 @@ const authoredBuilds: Build[] = [
       jewelryTrait: "Bloodthirsty",
       weaponTraitFront: "Nirnhoned",
       weaponTraitBack: "Infused",
+      weaponTypeFront: "Dual wield",
+      weaponTypeBack: "Bow",
+      bodyEnchant: "Prismatic Defence",
+      jewelryEnchant: "Physical Harm Reduction",
+      weaponEnchantFront: "Berserker",
+      weaponEnchantBack: "Poisoned",
       weight: "medium",
     }),
     frontBar: bar(
