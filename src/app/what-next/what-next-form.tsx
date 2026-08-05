@@ -89,6 +89,7 @@ export function WhatNextForm() {
           <Field label={`Level: ${profile.level}`}>
             <input
               type="range"
+              aria-label="Level"
               min={1}
               max={50}
               value={profile.level}
@@ -99,6 +100,7 @@ export function WhatNextForm() {
           <Field label={`Champion Points: ${profile.cp}`}>
             <input
               type="range"
+              aria-label="Champion Points"
               min={0}
               max={3600}
               step={10}
@@ -172,6 +174,7 @@ export function WhatNextForm() {
         <Field label={`Weekly time budget: ~${profile.hoursPerWeek}h`}>
           <input
             type="range"
+            aria-label="Weekly time budget in hours"
             min={1}
             max={30}
             value={profile.hoursPerWeek}
