@@ -77,9 +77,9 @@
   html {
     scroll-behavior: smooth;
   }
-  /* Headings carry the geometric display face; body copy and mono are set on
-     <body> via Tailwind's font-sans default. Utilities (font-mono, font-sans)
-     still override where a component asks for them. */
+  /* Headings carry the Marcellus inscriptional display serif; body copy and
+     mono are set on <body> via Tailwind's font-sans default. Utilities
+     (font-mono, font-sans) still override where a component asks for them. */
   h1,
   h2,
   h3 {
