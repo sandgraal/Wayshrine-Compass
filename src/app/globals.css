@@ -192,8 +192,8 @@
    transcription sheet as high-contrast black-on-white so it reads on paper
    regardless of the browser's "print background colors" setting. */
 @media print {
-  header,
-  footer,
+  body > header,
+  body > footer,
   a[href="#main-content"],
   .no-print {
     display: none !important;
