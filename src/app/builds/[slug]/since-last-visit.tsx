@@ -55,6 +55,9 @@ export function SinceLastVisit({
         const key = `${c.entityType}:${c.entityId}`;
         if (!seen.has(key) || c.ranAt > seen.get(key)!.ranAt) seen.set(key, c);
       }
+      // This list is derived from localStorage, which is client-only — computing
+      // it during render would cause a hydration mismatch, so it is set on mount.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFresh([...seen.values()]);
     }
     // Advance the checkpoint to the latest run we actually have, not wall time.
