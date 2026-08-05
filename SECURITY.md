@@ -1,21 +1,17 @@
 # Security Policy
 
-## Supported Versions
+## Supported versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Wayshrine Compass is a continuously deployed web app — only the current
+production deployment (https://wayshrine-compass.vercel.app) is supported.
+There are no released versions to patch retroactively.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+## Reporting a vulnerability
 
-## Reporting a Vulnerability
+Please report suspected vulnerabilities privately through GitHub's
+[security advisories](https://github.com/sandgraal/Wayshrine-Compass/security/advisories/new),
+not a public issue. Include steps to reproduce and the affected URL or route.
 
-Use this section to tell people how to report a vulnerability.
-
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Expect an acknowledgement within a few days. Confirmed issues affecting user
+data or the ingest pipeline are prioritized; a fix ships as a normal pull
+request once verified.

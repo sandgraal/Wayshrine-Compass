@@ -55,7 +55,7 @@ export function computeFreshnessPreview(
           entityId,
           entityName: entityId,
           patch: currentPatch,
-          summary: `${entityId} no longer exists in the ${currentPatch} game data — this draft references a removed entity.`,
+          summary: `${entityId} is gone from the ${currentPatch} game data. This draft references a removed entity.`,
         });
       } else if (
         entity.lastChangedPatch === currentPatch &&
@@ -69,7 +69,7 @@ export function computeFreshnessPreview(
           entityId,
           entityName: entity.name,
           patch: currentPatch,
-          summary: `${entity.name} changed in ${currentPatch} — this draft references it.`,
+          summary: `${entity.name} changed in ${currentPatch}. This draft references it.`,
         });
       }
     }

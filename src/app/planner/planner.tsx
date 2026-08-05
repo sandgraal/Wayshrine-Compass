@@ -251,7 +251,7 @@ export function Planner({
                     onChange={(e) => setGearSlot(slot, e.target.value)}
                     className="min-w-0 rounded-md border border-input bg-secondary px-2 py-1 text-xs"
                   >
-                    <option value="">— empty —</option>
+                    <option value="">(empty)</option>
                     {setTypes.map(([type, group]) => (
                       <optgroup key={type} label={type[0].toUpperCase() + type.slice(1)}>
                         {group.map((s) => (
@@ -296,7 +296,7 @@ export function Planner({
                     }}
                     className="rounded-md border border-input bg-secondary px-2 py-1 text-xs"
                   >
-                    <option value="">— slot {i + 1} —</option>
+                    <option value="">Slot {i + 1}</option>
                     {availableSkills
                       .filter((s) => !s.ultimate)
                       .map((s) => (
@@ -313,7 +313,7 @@ export function Planner({
                   }
                   className="rounded-md border border-primary/40 bg-primary/10 px-2 py-1 text-xs"
                 >
-                  <option value="">— ultimate —</option>
+                  <option value="">Ultimate</option>
                   {availableSkills
                     .filter((s) => s.ultimate)
                     .map((s) => (

@@ -3,7 +3,11 @@ import { getDb } from "@/lib/data";
 import { SkillsExplorer } from "./skills-explorer";
 import { ScribingSection } from "./scribing-section";
 
-export const metadata: Metadata = { title: "Skills" };
+export const metadata: Metadata = {
+  title: "Skills",
+  description:
+    "Browse ESO class skill lines and Scribing, annotated with the patch each skill last changed so you know before you slot it.",
+};
 
 export const revalidate = 300;
 

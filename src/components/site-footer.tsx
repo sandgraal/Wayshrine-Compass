@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { CompassMark } from "@/components/illustrations";
+import { NAV } from "@/lib/nav";
 
 export function SiteFooter({ currentPatch, source }: { currentPatch: string; source: string }) {
   return (
@@ -31,15 +32,15 @@ export function SiteFooter({ currentPatch, source }: { currentPatch: string; sou
               <Link href="/" className="text-muted-foreground no-underline hover:text-foreground">
                 Home
               </Link>
-              <Link href="/builds" className="text-muted-foreground no-underline hover:text-foreground">
-                Build Guide
-              </Link>
-              <Link
-                href="/patch-tracker"
-                className="text-muted-foreground no-underline hover:text-foreground"
-              >
-                Patch Tracker
-              </Link>
+              {NAV.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-muted-foreground no-underline hover:text-foreground"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
             <div className="flex flex-col gap-2 text-sm">
               <span className="font-medium text-foreground">Freshness</span>
@@ -63,7 +64,7 @@ export function SiteFooter({ currentPatch, source }: { currentPatch: string; sou
           Elder Scrolls Online. It is not affiliated with, endorsed, sponsored, or specifically
           approved by ZeniMax Online Studios, Bethesda Softworks, or their affiliates. All game
           trademarks and copyrights belong to their respective owners. All guidance is original
-          and derived from our patch-versioned database — currently {currentPatch} (source:{" "}
+          and derived from our patch-versioned database, currently {currentPatch} (source:{" "}
           {source} ·{" "}
           <Link href="/admin" className="underline underline-offset-2 hover:text-foreground">
             admin

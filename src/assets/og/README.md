@@ -11,4 +11,4 @@ fetch at request time, so everything is read from disk):
   PNG because satori does not decode WebP.
 
 Portrait inputs live in `public/chars-og/` (JPEG derivatives of
-`public/chars/*.webp`, same reason) — see the README there.
+`public/chars/*.webp`, same reason) — see src/assets/chars/README.md.
