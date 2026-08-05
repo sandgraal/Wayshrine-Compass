@@ -1,14 +1,15 @@
 import type { MetadataRoute } from "next";
 import { getDb } from "@/lib/data";
+import { siteUrl } from "@/lib/site-url";
 
 /**
  * Static routes plus every build detail page. Admin and API routes are
- * excluded (they are disallowed in robots.ts). Uses metadataBase so the host
- * matches whatever NEXT_PUBLIC_SITE_URL / Vercel resolves to.
+ * excluded (they are disallowed in robots.ts). The base URL comes from the
+ * same siteUrl() helper the root metadataBase uses, so the two can't drift.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const db = await getDb();
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "https://wayshrine-compass.vercel.app";
+  const base = siteUrl();
 
   const routes = [
     "",
