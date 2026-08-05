@@ -1809,6 +1809,132 @@ const authoredBuilds: Build[] = [
       "Stamina Necromancer is a burst-and-DoT weaver. Blighted Blastbones detonates for a big hit, Avid Boneyard lays down an area DoT plus a synergy for the group, and Venom Skull rounds out the rotation as your spammable. Beckoning Armor keeps Major Resolve up and drags runners back; Ruinous Scythe heals you as it cleaves. Pestilent Colossus is your burst-and-debuff ultimate — line it up with the group's."
     ),
   }),
+
+  /* ---------------- New-set showcase builds ---------------- */
+  finalize({
+    slug: "sorcerer-support-dps",
+    name: "Sorcerer Raid Support DPS",
+    className: "sorcerer",
+    subclassLines: ["sorcerer/dark-magic", "sorcerer/daedric-summoning", "sorcerer/storm-calling"],
+    role: "dps",
+    contentType: "trial",
+    gear: gearTemplate({
+      bodySet: "set-the-worms-raiment",
+      jewelrySet: "set-tzogvins-warband",
+      monsterSet: "set-zaan",
+      bodyTrait: "Divines",
+      jewelryTrait: "Arcane",
+      weaponTraitFront: "Precise",
+      weaponTraitBack: "Infused",
+      weight: "light",
+    }),
+    frontBar: bar(
+      [
+        classSkill("sorcerer", "dark-magic", "Crystal Shard").id,
+        classSkill("sorcerer", "daedric-summoning", "Daedric Curse").id,
+        weaponSkill("destruction-staff", "Weakness to Elements").id,
+        classSkill("sorcerer", "storm-calling", "Surge").id,
+        weaponSkill("destruction-staff", "Force Shock").id,
+      ],
+      classSkill("sorcerer", "daedric-summoning", "Summon Storm Atronach").id
+    ),
+    backBar: bar(
+      [
+        classSkill("sorcerer", "storm-calling", "Lightning Form").id,
+        classSkill("sorcerer", "daedric-summoning", "Conjured Ward").id,
+        weaponSkill("destruction-staff", "Wall of Elements").id,
+        weaponSkill("mages-guild", "Magelight").id,
+        classSkill("sorcerer", "daedric-summoning", "Summon Unstable Familiar").id,
+      ],
+      classSkill("sorcerer", "storm-calling", "Overload").id
+    ),
+    cp: {
+      warfare: ["cp-master-at-arms", "cp-deadly-aim", "cp-thaumaturge", "cp-fighting-finesse"],
+      fitness: ["cp-boundless-vitality", "cp-rejuvenation", "cp-celerity", "cp-fortified"],
+      craft: ["cp-steeds-blessing", "cp-gifted-rider", "cp-plentiful-harvest", "cp-master-gatherer"],
+    },
+    mundusId: "mundus-thief",
+    foodId: "food-ghastly-eye-bowl",
+    guidance: [
+      {
+        platform: "all",
+        title: "The support-DPS job",
+        body: "Not every trial DPS just parses — this one carries the group. Elemental Drain keeps Major Breach on the boss so everyone's damage lands harder and feeds the group Magicka every tick, and The Worm's Raiment layers even more recovery on top so your healers can spend freely. Crystal Fragments and a delayed Haunting Curse are still your own burst, but the real job is holding Breach and your damage-over-time timers while the other seven players benefit.",
+      },
+      {
+        platform: "all",
+        title: "Tzogvin and Zaan",
+        body: "Tzogvin's Warband turns steady critical hits into stacking Critical Chance and, at cap, Minor Force — so keep pressure constant rather than bursty. Zaan wants a single target it can tether: pop it on the boss, not into a trash pack.",
+      },
+      {
+        platform: "pc",
+        title: "Watching Breach uptime",
+        body: "On PC, Bandits UI or a debuff tracker shows your Major Breach uptime on the boss — that number is the whole point of the build.",
+        consoleAlternative:
+          "On console, re-cast Elemental Drain on a fixed rhythm before it expires (watch the debuff on your target frame) so Major Breach never lapses.",
+      },
+    ],
+  }),
+  finalize({
+    slug: "warden-aoe-farmer",
+    name: "Warden AoE Grinder",
+    className: "warden",
+    subclassLines: ["warden/animal-companions", "warden/winters-embrace", "warden/green-balance"],
+    role: "dps",
+    contentType: "overland",
+    gear: gearTemplate({
+      bodySet: "set-deadly-strike",
+      jewelrySet: "set-spriggans-thorns",
+      monsterSet: "set-grothdarr",
+      bodyTrait: "Divines",
+      jewelryTrait: "Bloodthirsty",
+      weaponTraitFront: "Nirnhoned",
+      weaponTraitBack: "Infused",
+      weight: "medium",
+    }),
+    frontBar: bar(
+      [
+        classSkill("warden", "animal-companions", "Scorch").id,
+        classSkill("warden", "animal-companions", "Dive").id,
+        weaponSkill("dual-wield", "Blade Cloak").id,
+        weaponSkill("dual-wield", "Whirlwind").id,
+        classSkill("warden", "animal-companions", "Betty Netch").id,
+      ],
+      classSkill("warden", "winters-embrace", "Sleet Storm").id
+    ),
+    backBar: bar(
+      [
+        weaponSkill("bow", "Volley").id,
+        weaponSkill("fighters-guild", "Trap Beast").id,
+        classSkill("warden", "winters-embrace", "Impaling Shards").id,
+        classSkill("warden", "winters-embrace", "Arctic Wind").id,
+        weaponSkill("fighters-guild", "Silver Bolts").id,
+      ],
+      weaponSkill("bow", "Rapid Fire").id
+    ),
+    cp: STAM_DPS_CP,
+    mundusId: "mundus-thief",
+    foodId: "food-artaeum-takeaway-broth",
+    guidance: [
+      {
+        platform: "all",
+        title: "Melt the pack",
+        body: "This is a grind build: pull everything into one pile and delete it. Subterranean Assault erupts across the group, Steel Tornado and Deadly Cloak shred everything in melee, and Grothdarr's lava pools tick on top. Northern Storm is a huge, cheap area ultimate — drop it the moment a pack is stacked. Blue Betty keeps your resources up through hours of farming.",
+      },
+      {
+        platform: "all",
+        title: "Keep moving",
+        body: "Spriggan's Thorns and Deadly Strike push your penetration and damage-over-time damage, so refresh Barbed Trap and Endless Hail as you round up the next group rather than standing still. Cutting Dive is there for the straggler that runs.",
+      },
+      {
+        platform: "pc",
+        title: "Farming efficiently",
+        body: "On PC, a pull-counter or damage meter helps you find the biggest safe pull size for your gear.",
+        consoleAlternative:
+          "On console, judge it by feel: if a pack dies before your area ultimate ends, pull more next time; if you're dropping low, pull fewer.",
+      },
+    ],
+  }),
 ];
 
 export const builds: Build[] = [...generatedBuilds, ...authoredBuilds];
