@@ -179,6 +179,13 @@ export const skills: Skill[] = [
   sk(null, "undaunted", "Undaunted", "Inner Fire", { desc: "Ranged taunt that forces an enemy to attack you.", morphs: ["Inner Rage", "Inner Beast"] }),
   sk(null, "psijic-order", "Psijic Order", "Time Stop", { desc: "Slow, then freeze, enemies in an area.", morphs: ["Borrowed Time", "Time Freeze"] }),
   sk(null, "psijic-order", "Psijic Order", "Accelerate", { desc: "Gain Minor Force and movement speed.", morphs: ["Channeled Acceleration", "Race Against Time"] }),
+
+  /* ---------------- Extra weapon/guild actives (database breadth) ---------------- */
+  sk(null, "destruction-staff", "Destruction Staff", "Weakness to Elements", { desc: "Sap an enemy's defenses, applying Major Breach to cut their Physical and Spell Resistance.", morphs: ["Elemental Susceptibility", "Elemental Drain"] }),
+  sk(null, "bow", "Bow", "Poison Arrow", { desc: "Fire a poisoned arrow that hits for Poison Damage up front and more over time.", morphs: ["Venom Arrow", "Poison Injection"] }),
+  sk(null, "two-handed", "Two Handed", "Reverse Slash", { desc: "Bring your weapon down on an enemy, dealing more the lower their Health.", morphs: ["Reverse Slice", "Executioner"] }),
+  sk(null, "dual-wield", "Dual Wield", "Blade Cloak", { desc: "Wreath yourself in whirling blades, gaining Major Evasion and damaging nearby enemies.", morphs: ["Quick Cloak", "Deadly Cloak"] }),
+  sk(null, "fighters-guild", "Fighters Guild", "Trap Beast", { desc: "Set a blade trap that arms after a moment and punishes enemies who cross it, empowering your Critical Damage.", morphs: ["Barbed Trap", "Lightweight Beast Trap"] }),
 ];
 
 /** Lookup helpers used across the app. */

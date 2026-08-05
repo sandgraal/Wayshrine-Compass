@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ALL_CLASSES, type ClassName, type PatchCode, type Skill } from "@/lib/types";
 import { entityChangeStatus } from "@/lib/freshness";
 import { EntityChangeBadge } from "@/components/entity-change-badge";
@@ -67,12 +67,15 @@ export function SkillsExplorer({
     window.addEventListener("hashchange", apply);
     return () => window.removeEventListener("hashchange", apply);
   }, [skills]);
+  // One-shot guard: scroll to a given hash once (across the class-switch
+  // re-render), tracked in a ref so the effect never has to call setState.
+  const scrolledFor = useRef<string | null>(null);
   useEffect(() => {
-    if (!pendingHash) return;
+    if (!pendingHash || scrolledFor.current === pendingHash) return;
     const el = document.getElementById(pendingHash);
     if (el) {
       el.scrollIntoView({ block: "center" });
-      setPendingHash(null);
+      scrolledFor.current = pendingHash;
     }
   }, [pendingHash, cls]);
 
