@@ -19,6 +19,7 @@ import {
 const dataset = JSON.parse(readFileSync("public/dataset/current.json", "utf8")) as {
   sets: { type: string }[];
   skills: { className: string | null; line: string }[];
+  classMasteryLines: { className: string | null; line: string }[];
 };
 
 const ALL_MANIFEST_PATHS = [...Object.values(SET_TYPE_SIGILS), ...Object.values(LINE_EMBLEMS)];
@@ -32,9 +33,13 @@ describe("entity art manifest", () => {
   });
 
   it("covers every skill line in the dataset", () => {
-    const uncovered = [
-      ...new Set(dataset.skills.map((s) => lineEmblemKey(s))),
-    ].filter((key) => !(key in LINE_EMBLEMS));
+    // Both collections carry line keys the sigil serves: class-mastery meta
+    // lines live in classMasteryLines, not just skills, so guard both.
+    const lineKeys = [
+      ...dataset.skills.map((s) => lineEmblemKey(s)),
+      ...dataset.classMasteryLines.map((m) => lineEmblemKey(m)),
+    ];
+    const uncovered = [...new Set(lineKeys)].filter((key) => !(key in LINE_EMBLEMS));
     expect(uncovered).toEqual([]);
   });
 
