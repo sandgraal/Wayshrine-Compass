@@ -95,9 +95,8 @@ export function SetsTable({
   }, [hasMore]);
 
   // Deep links (/sets#<set-id>, e.g. from a build page): clear any active
-  // filter so the row isn't hidden, mark it as the window target, and scroll.
-  // Deferred with setTimeout (out of the effect body) so no setState is
-  // synchronous in the effect; hash changes come through the event callback.
+  // filter so the row isn't hidden and mark it as the window target. Initial
+  // navigation is deferred so state updates do not run in the effect body.
   useEffect(() => {
     const goToHash = () => {
       const id = window.location.hash.slice(1);
@@ -106,7 +105,6 @@ export function SetsTable({
       setType("all");
       setSort("name");
       setHashTargetId(id);
-      setTimeout(() => document.getElementById(id)?.scrollIntoView({ block: "center" }), 60);
     };
     const initial = setTimeout(goToHash, 0);
     window.addEventListener("hashchange", goToHash);
@@ -115,6 +113,11 @@ export function SetsTable({
       window.removeEventListener("hashchange", goToHash);
     };
   }, [sets]);
+
+  useEffect(() => {
+    if (!hashTargetId) return;
+    document.getElementById(hashTargetId)?.scrollIntoView({ block: "center" });
+  }, [hashTargetId]);
 
   return (
     <div>
