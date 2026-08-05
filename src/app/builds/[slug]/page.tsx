@@ -4,12 +4,15 @@ import type { Metadata } from "next";
 import { GitFork } from "lucide-react";
 import { getDb } from "@/lib/data";
 import { buildEntityRefs } from "@/lib/entities";
+import { computeStats } from "@/lib/planner/validate";
+import { estimateLoadoutDps } from "@/lib/planner/dps";
 import {
   fetchIngestRunReports,
   fetchRecentIngestRuns,
   persistenceConfigured,
 } from "@/lib/ingest/persist";
 import { SinceLastVisit, type RecentReferencedChange } from "./since-last-visit";
+import { ComputedStatsCard } from "./computed-stats";
 import { builds as seedBuilds } from "@/data/builds";
 import { BuildGuidance } from "@/components/build-guidance";
 import { FreshnessBadge } from "@/components/freshness-badge";
@@ -153,6 +156,18 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
     (sum, tree) => sum + build.cp[tree].length,
     0
   );
+
+  // Same pure engine (and the same DPS adapter) the planner uses, so a forked
+  // build shows identical numbers — see estimateLoadoutDps.
+  const computedStats = computeStats(build.gear, db.setById, [
+    mundus?.stats ?? [],
+    food?.stats ?? [],
+  ]);
+  const slottedCp = (["warfare", "fitness", "craft"] as const)
+    .flatMap((tree) => build.cp[tree])
+    .map((id) => db.cpStarById.get(id))
+    .filter((s): s is NonNullable<typeof s> => s !== undefined);
+  const dpsEstimate = estimateLoadoutDps(computedStats, slottedCp);
 
   return (
     <div>
@@ -333,6 +348,8 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
               </Table>
             </CardContent>
           </Card>
+
+          <ComputedStatsCard stats={computedStats} dps={dpsEstimate} />
 
           <Card>
             <CardHeader>

@@ -9,7 +9,7 @@ import { computeFreshnessPreview } from "./freshness-preview";
 import { mundusStones } from "@/data/mundus";
 import { foods } from "@/data/food";
 import { computeStats, validateGear, validateSubclassLines } from "@/lib/planner/validate";
-import { DPS_MODEL, dpsAssumptions, estimateDps } from "@/lib/planner/dps";
+import { DPS_MODEL, dpsAssumptions, estimateLoadoutDps } from "@/lib/planner/dps";
 import { cn } from "@/lib/utils";
 import { ClassSigil } from "@/components/illustrations";
 import { CharacterPicker } from "./character-picker";
@@ -90,15 +90,8 @@ export function Planner({
   const dps = useMemo(() => {
     const slottedCp = [...state.cp.warfare, ...state.cp.fitness, ...state.cp.craft]
       .map((id) => tables.cpStarById.get(id))
-      .filter((s) => s !== undefined);
-    return estimateDps(stats.totals, [
-      ...stats.activeBonuses.map((b) => ({
-        source: `${b.setName} (${b.pieces}pc)`,
-        effect: b.effect,
-        structured: (b.stats?.length ?? 0) > 0,
-      })),
-      ...slottedCp.map((s) => ({ source: `${s.name} (CP)`, effect: s.effect })),
-    ]);
+      .filter((s): s is NonNullable<typeof s> => s !== undefined);
+    return estimateLoadoutDps(stats, slottedCp);
   }, [stats, state.cp, tables]);
 
   const availableSkills = useMemo(() => {

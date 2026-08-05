@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getDb } from "@/lib/data";
 import { ALL_CLASSES, type ClassName } from "@/lib/types";
+import { ROLES, CONTENT } from "./filters";
 import { FreshnessBadge } from "@/components/freshness-badge";
 import { CharacterPortrait } from "@/components/character-portrait";
 import { ClassSigil } from "@/components/illustrations";
@@ -16,8 +17,6 @@ export const metadata: Metadata = {
 
 export const revalidate = 300;
 
-const ROLES = ["dps", "tank", "healer"] as const;
-const CONTENT = ["trial", "dungeon", "leveling"] as const;
 const FRESHNESS = ["verified", "needs_review", "stale"] as const;
 const FRESHNESS_LABEL: Record<(typeof FRESHNESS)[number], string> = {
   verified: "Verified",
