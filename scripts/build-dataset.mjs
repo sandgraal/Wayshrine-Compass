@@ -345,7 +345,7 @@ function transformSets(raw) {
       type,
       source,
       // UESP setSummary has no DLC field; derived from the source place name
-      // via PLACE_DLC (see public/dataset/README.md).
+      // via PLACE_DLC (see src/assets/dataset/README.md).
       dlcRequired: resolveSetDlc(type, source, unmapped),
       bonuses,
     });

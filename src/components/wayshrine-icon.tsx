@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
  * and colors keep carrying the meaning.
  *
  * Falls back to the badge's original colored dot until the art exists in
- * public/freshness/ (see the README there), so this ships before the icons do.
+ * public/freshness/ (see src/assets/freshness/README.md), so this ships before the icons do.
  */
 
 const ICON_SRC: Record<Freshness["status"], string> = {

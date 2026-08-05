@@ -4,7 +4,11 @@ import { getDb } from "@/lib/data";
 import { setsForZone } from "@/lib/zones";
 import { SetsTable } from "./sets-table";
 
-export const metadata: Metadata = { title: "Sets" };
+export const metadata: Metadata = {
+  title: "Sets",
+  description:
+    "Search the tracked Elder Scrolls Online gear set library — bonuses, source, and the patch each set last changed.",
+};
 
 export const revalidate = 300;
 

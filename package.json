@@ -2,6 +2,12 @@
   "name": "wayshrine-compass",
   "version": "0.1.0",
   "private": true,
+  "description": "A patch-versioned Elder Scrolls Online database and build-guidance site where every build proves how current it is.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sandgraal/Wayshrine-Compass.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

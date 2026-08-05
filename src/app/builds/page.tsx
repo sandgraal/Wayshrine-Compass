@@ -9,7 +9,11 @@ import { ClassSigil } from "@/components/illustrations";
 import { portraitForBuild } from "@/lib/portraits";
 import { cn } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Builds" };
+export const metadata: Metadata = {
+  title: "Builds",
+  description:
+    "Browse tracked Elder Scrolls Online builds by class, role, and content. Each build carries a patch badge and names exactly what changed.",
+};
 
 export const revalidate = 300;
 

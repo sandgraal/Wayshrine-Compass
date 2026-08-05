@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
  * rendered as adjacent text by the consumer, so the image itself is presented
  * with an empty alt.
  *
- * The art ships in `public/chars/` (see the README there), but a portrait must
+ * The art ships in `public/chars/` (see src/assets/chars/README.md), but a portrait must
  * survive its file failing to load — a renamed or dropped asset falls back to
  * the class sigil rather than a broken image.
  */

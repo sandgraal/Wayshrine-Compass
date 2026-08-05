@@ -5,11 +5,9 @@
 and intro carry the meaning, and a gradient base layer sits under it so a failed
 load still reads as intentional.
 
-Derived from the project-owned master render
-`Ancient_stone_wayshrine_glowing_…_202608022021.jpeg`
-(sha256 5e67305548cea59d55d0ec5a566b6317640a83feb956199d6b1dce903ac5632a),
-the same glowing-wayshrine scene used across the brand. Pipeline, from a ≥2.4:1
-source (crop to a wide band, downscale to 1600px, encode):
+Derived from the project-owned master render of the glowing-wayshrine scene
+used across the brand. Pipeline, from a ≥2.4:1 source (crop to a wide band,
+downscale to 1600px, encode):
 
 ```bash
 sips -c 1147 2752 --cropOffset 200 0 master.jpeg --out /tmp/crop.png

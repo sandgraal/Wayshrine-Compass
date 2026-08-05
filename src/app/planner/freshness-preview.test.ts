@@ -72,7 +72,7 @@ describe("planner freshness preview", () => {
       ["skill", "skill-deleted"],
     ]);
     for (const r of preview.reasons) {
-      expect(r.summary).toContain(`no longer exists in the ${CURRENT} game data`);
+      expect(r.summary).toContain(`is gone from the ${CURRENT} game data`);
     }
   });
 

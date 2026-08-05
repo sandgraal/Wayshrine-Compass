@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 const LABELS: Record<Freshness["status"], (f: Freshness, current: string) => string> = {
   verified: (_f, current) => `Verified for ${current}`,
   needs_review: () => "Needs review",
-  stale: (f) => `Stale — last verified ${f.patchVerified}`,
+  stale: (f) => `Stale: last verified ${f.patchVerified}`,
 };
 
 export function FreshnessBadge({
