@@ -7,12 +7,14 @@ import { RuneDivider } from "@/components/illustrations";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Who makes Wayshrine Compass, how its patch-freshness is computed, and why every icon on the site is drawn rather than ripped from the game.",
+    "Who makes Wayshrine Compass, how its patch-freshness is computed, and why the game-facing artwork is drawn for the site rather than ripped from the game.",
 };
 
 export const revalidate = 300;
 
-const DATE_FORMAT = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
+// timeZone pinned to UTC: entry dates are date-only ISO strings (parsed at UTC
+// midnight), so without this a server west of UTC renders them a day early.
+const DATE_FORMAT = new Intl.DateTimeFormat("en-US", { dateStyle: "long", timeZone: "UTC" });
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -47,8 +49,8 @@ export default async function AboutPage() {
 
       <Section title="How freshness is computed">
         <p className="text-sm text-muted-foreground">
-          Freshness is derived from provenance, not a button someone remembers to press. The
-          data comes from the community datamining at{" "}
+          It runs both ways. The amber and red badges are automatic: the data comes from the
+          community datamining at{" "}
           <a
             href="https://esolog.uesp.net"
             className="text-primary underline underline-offset-2"
@@ -57,9 +59,12 @@ export default async function AboutPage() {
           >
             UESP&apos;s ESO log project
           </a>{" "}
-          (CC-BY-SA); a daily job diffs it against the last known state and stamps each entity
-          with the patch it last actually changed in. A green &ldquo;verified&rdquo; badge is a
-          claim I can show my work for — the{" "}
+          (CC-BY-SA), a daily job diffs it against the last known state and stamps each entity
+          with the patch it last actually changed in, and a build flags itself the moment
+          something it references moves. Green is the opposite — it isn&apos;t automatic. A build
+          only goes green when I&apos;ve reviewed it against the current patch and signed off by
+          hand; the instant a referenced entity changes again, it drops back to amber on its own.
+          Either way it&apos;s a claim I can show my work for — the{" "}
           <Link href="/patch-tracker" className="text-primary underline underline-offset-2">
             patch tracker
           </Link>{" "}
@@ -75,11 +80,14 @@ export default async function AboutPage() {
 
       <Section title="The art is ours">
         <p className="text-sm text-muted-foreground">
-          Every icon, sigil, and portrait on this site is drawn for it. Nothing is extracted
-          from the game&apos;s files — partly because reusing ZeniMax&apos;s assets isn&apos;t a
+          The game-facing artwork is drawn for this site — the character portraits and the
+          freshness marks today, and the set and skill sigils as they land — never extracted
+          from the game&apos;s files. Partly because reusing ZeniMax&apos;s assets isn&apos;t a
           right I have, and partly because original art can encode things the in-game icons
-          don&apos;t, like a set&apos;s source or a skill line&apos;s role. When a piece of art is
-          missing, the page falls back to text; the words always carry the meaning.
+          don&apos;t, like a set&apos;s source or a skill line&apos;s role. (Small interface
+          affordances — the menu and close glyphs and the like — use the open-source Lucide set.)
+          When a piece of art is missing, the page falls back to text; the words always carry the
+          meaning.
         </p>
       </Section>
 

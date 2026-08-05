@@ -18,8 +18,8 @@ export interface ChangelogEntry {
 export const CHANGELOG: ChangelogEntry[] = [
   {
     date: "2026-08-05",
-    title: "The site draws its own icons now",
-    body: "Set-type and skill-line sigils are original art made for this site, not extracted game files. It's the honest choice — reusing ZeniMax's icons isn't something I have the right to do — and it lets the art encode things the game icons don't, like a set's source and a line's role.",
+    title: "Groundwork for our own iconography",
+    body: "The art that ships today — character portraits, the freshness marks — is drawn for this site, not extracted from game files, and I've built the seam so set and skill sigils follow the same rule as they land. Reusing ZeniMax's icons isn't a right I have, and original art can encode things the game icons don't, like a set's source and a line's role.",
   },
   {
     date: "2026-08-05",
