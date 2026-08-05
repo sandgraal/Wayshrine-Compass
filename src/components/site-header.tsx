@@ -2,29 +2,24 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { PlatformToggle } from "@/components/platform-toggle";
 import { CompassMark } from "@/components/illustrations";
-
-const NAV = [
-  { href: "/builds", label: "Builds" },
-  { href: "/what-next", label: "What Next" },
-  { href: "/planner", label: "Planner" },
-  { href: "/sets", label: "Sets" },
-  { href: "/skills", label: "Skills" },
-  { href: "/zones", label: "Zones" },
-  { href: "/patch-tracker", label: "Patch Tracker" },
-];
+import { NAV } from "@/lib/nav";
+import { cn } from "@/lib/utils";
 
 export function SiteHeader({ currentPatch }: { currentPatch: string }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/92 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:gap-6 sm:px-6">
         <Link
           href="/"
-          aria-label="Wayshrine Compass — home"
+          aria-label="Wayshrine Compass home"
           className="flex items-center gap-2.5 font-semibold text-primary"
         >
           <CompassMark className="size-7" />
@@ -35,7 +30,11 @@ export function SiteHeader({ currentPatch }: { currentPatch: string }) {
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-md px-3 py-1.5 text-muted-foreground no-underline transition-colors hover:bg-secondary/60 hover:text-foreground"
+              aria-current={isActive(item.href) ? "page" : undefined}
+              className={cn(
+                "rounded-md px-3 py-1.5 no-underline transition-colors hover:bg-secondary/60 hover:text-foreground",
+                isActive(item.href) ? "bg-secondary/70 text-foreground" : "text-muted-foreground"
+              )}
             >
               {item.label}
             </Link>
@@ -65,7 +64,11 @@ export function SiteHeader({ currentPatch }: { currentPatch: string }) {
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="rounded-md px-3 py-2 text-sm text-muted-foreground no-underline transition-colors hover:bg-secondary/60 hover:text-foreground"
+              aria-current={isActive(item.href) ? "page" : undefined}
+              className={cn(
+                "rounded-md px-3 py-2 text-sm no-underline transition-colors hover:bg-secondary/60 hover:text-foreground",
+                isActive(item.href) ? "bg-secondary/70 text-foreground" : "text-muted-foreground"
+              )}
             >
               {item.label}
             </Link>

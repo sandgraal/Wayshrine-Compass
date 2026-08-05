@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { WhatNextForm } from "./what-next-form";
 
-export const metadata: Metadata = { title: "What Next" };
+export const metadata: Metadata = {
+  title: "What Next",
+  description:
+    "Tell us your class, level, and goal and get a short, prioritized list of what to do next in ESO — no addons required, console-safe.",
+};
 
 export default function WhatNextPage() {
   return (

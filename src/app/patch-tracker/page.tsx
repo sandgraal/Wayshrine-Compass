@@ -7,7 +7,11 @@ import { fetchIngestRunReports, persistenceConfigured } from "@/lib/ingest/persi
 import { RuneDivider } from "@/components/illustrations";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
-export const metadata: Metadata = { title: "Patch Tracker" };
+export const metadata: Metadata = {
+  title: "Patch Tracker",
+  description:
+    "See what each ESO update actually changed: a per-run diff of tracked sets, skills, and CP stars from the data pipeline.",
+};
 
 export const revalidate = 300;
 

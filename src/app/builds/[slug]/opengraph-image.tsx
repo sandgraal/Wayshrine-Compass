@@ -15,7 +15,7 @@ import type { Freshness } from "@/lib/freshness";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Build overview card";
+export const alt = "Wayshrine Compass build overview";
 export const revalidate = 300;
 
 const C = {

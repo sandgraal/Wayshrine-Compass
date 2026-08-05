@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Check, Clock, Sparkles, Undo2, X } from "lucide-react";
+import { Check, Clock, Undo2, X } from "lucide-react";
+import { CompassMark } from "@/components/illustrations";
 import type { NextAction, PlayerGoal, PlayerPlatform, PlayerProfile } from "@/lib/types";
 import { ALL_CLASSES } from "@/lib/types";
 import { selectActions } from "./select-actions";
@@ -219,7 +220,7 @@ export function WhatNextForm() {
             onClick={() => saveProfile(profile)}
             className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
           >
-            <Sparkles className="size-4" /> Show my next 5 actions
+            <CompassMark className="size-4" /> Show my next 5 actions
           </button>
         )}
       </div>

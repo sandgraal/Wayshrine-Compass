@@ -3,10 +3,9 @@
 Portrait art for build cards and build page heroes: 207 WebP files covering all
 10 races × 7 classes × both genders, plus alternate variants (`-2`, `-3`, …).
 
-These are 900px-wide derivatives. The 1792×2400 originals live outside the repo
-(generated for the claude.ai/design project `deb6b95d-a6c5-49dd-8dff-11809c3606b3`;
-local master copies in `~/Downloads/ESO/chars-new/`). To regenerate or add art,
-resize to 900px wide and encode WebP q80 (`sips --resampleWidth 900` + `cwebp -q 80`).
+These are 900px-wide derivatives; the 1792×2400 master renders are kept outside
+the repo. To regenerate or add art, resize a master to 900px wide and encode
+WebP q80 (`sips --resampleWidth 900` + `cwebp -q 80`).
 
 Filenames are `<race>-<class>-<gender>[-<variant>].webp` and are the portrait
 ids in `src/lib/portraits.ts`. That catalog's manifest must list exactly the

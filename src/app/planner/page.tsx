@@ -4,7 +4,11 @@ import { getDb } from "@/lib/data";
 import { RuneDivider } from "@/components/illustrations";
 import { Planner } from "./planner";
 
-export const metadata: Metadata = { title: "Build Planner" };
+export const metadata: Metadata = {
+  title: "Build Planner",
+  description:
+    "Draft an ESO build against the live set and skill catalog, with legality checks, computed stats, and a live patch-freshness preview.",
+};
 
 export default async function PlannerPage() {
   const db = await getDb();

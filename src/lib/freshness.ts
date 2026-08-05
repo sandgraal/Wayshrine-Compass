@@ -107,7 +107,7 @@ export function renameReason(
   patch: PatchCode
 ): string {
   const successor = newName === oldName ? `now id ${newId}` : `now "${newName}"`;
-  return `${oldName} was renamed/reworked in ${patch} (${successor}) — this build references the old id and may be affected.`;
+  return `${oldName} was renamed/reworked in ${patch} (${successor}). This build references the old id, so it may be affected.`;
 }
 
 /**
@@ -156,7 +156,7 @@ export function computeFreshness(
             entityId: ref.entityId,
             entityName: ref.entityId,
             patch: currentPatch,
-            summary: `${ref.entityId} no longer exists in the ${currentPatch} game data — this build references a removed entity.`,
+            summary: `${ref.entityId} is gone from the ${currentPatch} game data. This build references a removed entity.`,
           });
         }
       }
@@ -172,7 +172,7 @@ export function computeFreshness(
       const enteredTracking =
         entity.firstSeenPatch !== undefined && entity.firstSeenPatch === entity.lastChangedPatch;
       const summary = !enteredTracking
-        ? `${entity.name} changed in ${entity.lastChangedPatch} — this build references it and may be affected.`
+        ? `${entity.name} changed in ${entity.lastChangedPatch}. This build references it, so its listed values may be out of date.`
         : entity.lastChangedPatch === TRACKING_BASELINE_PATCH
           ? `${entity.name} entered tracking with the ${entity.lastChangedPatch} catalog import and has not been re-verified for this build since.`
           : `${entity.name} was added in ${entity.lastChangedPatch} and has not been reviewed for this build yet.`;

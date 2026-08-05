@@ -130,12 +130,12 @@ export function runIngest(
 
   const reasonFor = (c: (typeof report.changes)[number]): string => {
     if (c.kind === "changed") {
-      return `${c.entityName} changed in ${stampPatch} (${c.changedFields.join(", ")}) — this build references it and may be affected.`;
+      return `${c.entityName} changed in ${stampPatch} (${c.changedFields.join(", ")}). This build references it, so its listed values may be out of date.`;
     }
     if (c.kind === "renamed" && c.renamedTo) {
       return renameReason(c.entityName, c.renamedTo.entityName, c.renamedTo.entityId, stampPatch);
     }
-    return `${c.entityName} was ${c.kind} in ${stampPatch} — this build references it and may be affected.`;
+    return `${c.entityName} was ${c.kind} in ${stampPatch}. This build references it, so it may be affected.`;
   };
 
   const flagged: Build[] = builds
