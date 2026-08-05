@@ -3,6 +3,9 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { db } from "@/lib/data";
 import { buildEntityRefs } from "@/lib/entities";
+import { computeStats } from "@/lib/planner/validate";
+import { estimateDps } from "@/lib/planner/dps";
+import { ROLES, CONTENT } from "@/app/builds/filters";
 import { builds } from "./builds";
 import { skillById as seedSkillById } from "./skills";
 
@@ -102,5 +105,46 @@ describe("no build slots a passive", () => {
       }
     }
     expect(offenders, `these ultimate slots are not modeled as ultimates:\n${offenders.join("\n")}`).toEqual([]);
+  });
+});
+
+describe("computed stats surface (build page reuses the planner engine)", () => {
+  it("computes finite stats and a positive DPS estimate for every build", () => {
+    for (const build of builds) {
+      const stats = computeStats(build.gear, db.setById, [
+        db.mundusById.get(build.mundusId)?.stats ?? [],
+        db.foodById.get(build.foodId)?.stats ?? [],
+      ]);
+      for (const [stat, value] of Object.entries(stats.totals)) {
+        expect(Number.isFinite(value), `${build.slug} total ${stat}`).toBe(true);
+      }
+      const cpBonuses = [...build.cp.warfare, ...build.cp.fitness, ...build.cp.craft]
+        .map((id) => db.cpStarById.get(id))
+        .filter((s): s is NonNullable<typeof s> => s !== undefined)
+        .map((s) => ({ source: `${s.name} (CP)`, effect: s.effect }));
+      const dps = estimateDps(stats.totals, [
+        ...stats.activeBonuses.map((b) => ({
+          source: `${b.setName} (${b.pieces}pc)`,
+          effect: b.effect,
+          structured: (b.stats?.length ?? 0) > 0,
+        })),
+        ...cpBonuses,
+      ]);
+      expect(Number.isFinite(dps.dps), `${build.slug} dps`).toBe(true);
+      expect(dps.dps, `${build.slug} dps`).toBeGreaterThan(0);
+      expect(dps.low).toBeLessThanOrEqual(dps.dps);
+      expect(dps.high).toBeGreaterThanOrEqual(dps.dps);
+    }
+  });
+});
+
+describe("build filter coverage", () => {
+  it("the /builds filter lists every role and content type present in the catalog", () => {
+    for (const role of new Set(builds.map((b) => b.role))) {
+      expect(ROLES, `role "${role}" is unfilterable on /builds`).toContain(role);
+    }
+    for (const content of new Set(builds.map((b) => b.contentType))) {
+      expect(CONTENT, `content type "${content}" is unfilterable on /builds`).toContain(content);
+    }
   });
 });
