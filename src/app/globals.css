@@ -71,6 +71,16 @@
   * {
     @apply border-border outline-ring/50;
   }
+  /* Keyboard focus indicator. Custom-styled controls — the nav links, filter
+     chips, the platform toggle, planner selects — had no visible focus ring:
+     the browser default outline is effectively invisible on this dark palette,
+     and only the shadcn ui/* components carried their own. Give every
+     keyboard-focused element a high-contrast gold ring. :focus-visible only, so
+     a mouse click never shows it. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
   body {
     @apply bg-background text-foreground;
   }
