@@ -62,9 +62,9 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 12px);
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-body);
   --font-mono: var(--font-jetbrains-mono);
-  --font-display: var(--font-space-grotesk);
+  --font-display: var(--font-marcellus);
 }
 
 @layer base {
@@ -87,9 +87,9 @@
   html {
     scroll-behavior: smooth;
   }
-  /* Headings carry the geometric display face; body copy and mono are set on
-     <body> via Tailwind's font-sans default. Utilities (font-mono, font-sans)
-     still override where a component asks for them. */
+  /* Headings carry the Marcellus inscriptional display serif; body copy and
+     mono are set on <body> via Tailwind's font-sans default. Utilities
+     (font-mono, font-sans) still override where a component asks for them. */
   h1,
   h2,
   h3 {
