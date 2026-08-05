@@ -106,10 +106,16 @@ Scribing + Class Mastery entities — grimoires/scribing_scripts/class_mastery_l
 tracked freshness types, /skills Scribing section; migration 0005. Builds derive mastery_line
 refs from subclassLines; grimoire/script refs come from the optional `scribedSkills` build
 field, which no build uses yet. Per-grimoire script combination text
-(`craftedScriptDescriptions`) is deliberately unmodeled.)
+(`craftedScriptDescriptions`) is deliberately unmodeled. DLC gating for datamined sets —
+`scripts/build-dataset.mjs`'s `PLACE_DLC` derives every set's DLC from its source place (all
+641 classified, 0 unmapped; crafted/mythic stay null by convention). `build-dataset.test.ts`
+replays the resolver over the whole committed catalog and fails CI if a future set's place is
+unclassified — silently un-gating DLC gear — or if a committed `dlcRequired` drifts from the
+resolver; `sets.test.ts` locks each seed set's DLC gate and content type to the artifact.)
 
-1. DLC gating data for new sets — UESP's export has no DLC field, so `dlcRequired` is null
-   for datamined sets; the What Next DLC-gate rules need another source.
+(No discrete items are queued. What Next gates companions, Scribing, and overland targets by
+owned DLC; set `dlcRequired` — the last data gap — is resolved and guarded, see Done above.
+Remaining work is the improvement program below.)
 
 (What Next card art shipped — all 20 WebPs live in public/whatnext/. The broader improvement
 program of 2026-08 is tracked in the session plan + memory: freshness signal integrity, patch

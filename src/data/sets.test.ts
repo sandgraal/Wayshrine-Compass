@@ -14,10 +14,20 @@ import { sets } from "./sets";
  *   2. the bonus tier structure (which piece counts carry a bonus) matches;
  *   3. each declared stat delta is reflected in its own effect wording
  *      (internal consistency — catches a stat attached to the wrong text).
- * All three held across the whole catalog when written, so a future edit that
+ *   4. categorical fields — the DLC gate and content type — match exactly.
+ *      These are not approximations: a wrong DLC gate makes the planner and
+ *      What Next mislead (recommending gear behind a DLC the player lacks), and
+ *      a wrong type misfiles the set. The resolver derives the artifact's gate
+ *      from the source place, so the seed must not drift from it.
+ * All four held across the whole catalog when written, so a future edit that
  * breaks one is an authoring mistake, not an approximation.
  */
-type ArtifactSet = { id: string; bonuses: { pieces: number }[] };
+type ArtifactSet = {
+  id: string;
+  type: string;
+  dlcRequired: string | null;
+  bonuses: { pieces: number }[];
+};
 const dataset = JSON.parse(
   readFileSync(resolve(process.cwd(), "public/dataset/current.json"), "utf8")
 ) as { sets: ArtifactSet[] };
@@ -60,6 +70,21 @@ describe("seed sets vs the live artifact", () => {
       }
     }
     expect(mismatches, `bonus tier structure differs from the artifact:\n${mismatches.join("\n")}`).toEqual([]);
+  });
+
+  it("gates each seed set exactly as the artifact does (DLC gate and type are categorical, not approximate)", () => {
+    const mismatches: string[] = [];
+    for (const s of sets) {
+      const art = artifactSetById.get(s.id);
+      if (!art) continue;
+      if ((s.dlcRequired ?? null) !== (art.dlcRequired ?? null)) {
+        mismatches.push(`${s.id} dlc: seed ${s.dlcRequired} vs artifact ${art.dlcRequired}`);
+      }
+      if (s.type !== art.type) {
+        mismatches.push(`${s.id} type: seed ${s.type} vs artifact ${art.type}`);
+      }
+    }
+    expect(mismatches, `seed DLC gate / type drift from the artifact:\n${mismatches.join("\n")}`).toEqual([]);
   });
 });
 
