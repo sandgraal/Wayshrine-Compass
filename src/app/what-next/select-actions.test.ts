@@ -156,4 +156,15 @@ describe("stored-value parsing", () => {
     expect(parseStoredProfile("junk")).toBeNull();
     expect(parseStoredProfile(null)).toBeNull();
   });
+
+  it("only accepts a real boolean esoPlus, so tampered strings can't grant DLC", () => {
+    const withEsoPlus = (v: unknown) =>
+      parseStoredProfile(JSON.stringify({ v: 1, profile: { ...baseProfile, esoPlus: v } }))?.esoPlus;
+    expect(withEsoPlus(true)).toBe(true);
+    expect(withEsoPlus(false)).toBe(false);
+    // The string "false" is truthy — Boolean(...) would wrongly grant all DLC.
+    expect(withEsoPlus("false")).toBe(false);
+    expect(withEsoPlus(1)).toBe(false);
+    expect(withEsoPlus(undefined)).toBe(false);
+  });
 });

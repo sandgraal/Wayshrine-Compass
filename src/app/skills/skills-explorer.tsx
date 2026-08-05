@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ALL_CLASSES, type ClassName, type PatchCode, type Skill } from "@/lib/types";
 import { entityChangeStatus } from "@/lib/freshness";
 import { EntityChangeBadge } from "@/components/entity-change-badge";
@@ -52,32 +52,26 @@ export function SkillsExplorer({
 
   // Deep links (/skills#<skill-id>, e.g. from the patch tracker) target rows
   // that only render for the selected class — switch the selector to the
-  // target's class first, then scroll once that render commits.
-  const [pendingHash, setPendingHash] = useState<string | null>(null);
+  // target's class, then scroll once that render commits. The initial run is
+  // deferred with setTimeout (reliable even in a background tab, unlike rAF)
+  // and hash changes come through an event callback, so this never sets state
+  // synchronously inside the effect body (react-hooks lint).
   useEffect(() => {
-    const apply = () => {
+    const navigateToHash = () => {
       const id = window.location.hash.slice(1);
       if (!id) return;
       const target = skills.find((s) => s.id === id);
-      if (!target) return;
-      if (target.className) setCls(target.className);
-      setPendingHash(id);
+      if (target?.className) setCls(target.className);
+      // Scroll after the class-switch render has committed the target row.
+      setTimeout(() => document.getElementById(id)?.scrollIntoView({ block: "center" }), 50);
     };
-    apply();
-    window.addEventListener("hashchange", apply);
-    return () => window.removeEventListener("hashchange", apply);
+    const initial = setTimeout(navigateToHash, 0);
+    window.addEventListener("hashchange", navigateToHash);
+    return () => {
+      clearTimeout(initial);
+      window.removeEventListener("hashchange", navigateToHash);
+    };
   }, [skills]);
-  // One-shot guard: scroll to a given hash once (across the class-switch
-  // re-render), tracked in a ref so the effect never has to call setState.
-  const scrolledFor = useRef<string | null>(null);
-  useEffect(() => {
-    if (!pendingHash || scrolledFor.current === pendingHash) return;
-    const el = document.getElementById(pendingHash);
-    if (el) {
-      el.scrollIntoView({ block: "center" });
-      scrolledFor.current = pendingHash;
-    }
-  }, [pendingHash, cls]);
 
   const classSkills = skills.filter((s) => s.className === cls);
   const lines = [...new Set(classSkills.map((s) => s.line))];
