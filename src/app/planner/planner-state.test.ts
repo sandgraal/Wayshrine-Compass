@@ -88,7 +88,7 @@ describe("live-catalog validation", () => {
       gear: [{ slot: "head", setId: "set-tarnished-nightmare", trait: "Divines" }],
     };
     expect(sanitizeState(s, liveTables)?.gear).toEqual([
-      { slot: "head", setId: "set-tarnished-nightmare", trait: "Divines" },
+      { slot: "head", setId: "set-tarnished-nightmare", trait: "Divines", enchant: "" },
     ]);
   });
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { GitFork } from "lucide-react";
+import { ClipboardList, GitFork } from "lucide-react";
 import { getDb } from "@/lib/data";
 import { buildEntityRefs } from "@/lib/entities";
 import { computeStats } from "@/lib/planner/validate";
@@ -218,11 +218,18 @@ export default async function BuildPage({ params }: { params: Promise<{ slug: st
               .join(" / ")}
           </p>
         </div>
-        <Button asChild size="sm" variant="outline">
-          <Link href={`/planner?from=${build.slug}`}>
-            <GitFork className="size-3.5" /> Fork in planner
-          </Link>
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button asChild size="sm" variant="outline">
+            <Link href={`/builds/${build.slug}/transcribe`}>
+              <ClipboardList className="size-3.5" /> Transcribe for console
+            </Link>
+          </Button>
+          <Button asChild size="sm" variant="outline">
+            <Link href={`/planner?from=${build.slug}`}>
+              <GitFork className="size-3.5" /> Fork in planner
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <SinceLastVisit slug={build.slug} changes={recentChanges} />

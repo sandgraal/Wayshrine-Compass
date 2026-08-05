@@ -258,7 +258,9 @@ export interface GearAssignment {
   setId: string;
   trait: string;
   weight?: "light" | "medium" | "heavy";
-  enchant?: string;
+  enchant: string;
+  /** Weapon kind for weapon slots; undefined for armour/jewellery. */
+  weaponType?: string;
 }
 
 export interface SkillBar {

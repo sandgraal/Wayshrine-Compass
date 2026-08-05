@@ -187,6 +187,30 @@
 .wc-glow-text {
   text-shadow: 0 0 30px color-mix(in oklab, var(--primary) 35%, transparent);
 }
+
+/* Print: strip the site chrome from every printout, and render the console
+   transcription sheet as high-contrast black-on-white so it reads on paper
+   regardless of the browser's "print background colors" setting. */
+@media print {
+  body > header,
+  body > footer,
+  a[href="#main-content"],
+  .no-print {
+    display: none !important;
+  }
+  html,
+  body {
+    background: #fff !important;
+  }
+  .transcribe-sheet,
+  .transcribe-sheet * {
+    color: #111 !important;
+    border-color: #ccc !important;
+  }
+  .transcribe-sheet .transcribe-accent {
+    color: #6b5200 !important;
+  }
+}
 ::selection {
   background: color-mix(in oklab, var(--primary) 40%, transparent);
 }
