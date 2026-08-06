@@ -12,6 +12,8 @@ import { computeStats, validateGear, validateSubclassLines } from "@/lib/planner
 import { DPS_MODEL, dpsAssumptions, estimateLoadoutDps } from "@/lib/planner/dps";
 import { cn } from "@/lib/utils";
 import { ClassSigil } from "@/components/illustrations";
+import { EntityCombobox, type ComboGroup } from "@/components/entity-combobox";
+import { setTypeArt, skillLineArt } from "@/lib/entity-art";
 import { CharacterPicker } from "./character-picker";
 import {
   type PlannerCpStar,
@@ -104,9 +106,11 @@ export function Planner({
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [state.lines, tables]);
 
-  // Gear dropdown groups, one <optgroup> per set type. Sets arrive sorted by
-  // name from the facade; group order is fixed for scanability.
-  const setTypes = useMemo(() => {
+  // Gear picker groups, one section per set type. Sets arrive in source order
+  // from the facade (the Supabase query has no ORDER BY), so sort every group;
+  // group order is fixed for scanability. Each option folds the set's type,
+  // source, and DLC gate into its search keywords and carries the type sigil.
+  const setGroups = useMemo<ComboGroup[]>(() => {
     const order = ["crafted", "overland", "dungeon", "trial", "arena", "pvp", "monster", "mythic"];
     const byType = new Map<string, PlannerSet[]>();
     for (const s of tables.sets) {
@@ -114,15 +118,66 @@ export function Planner({
       group.push(s);
       byType.set(s.type, group);
     }
-    // The facade returns source order (the Supabase query has no ORDER BY) —
-    // sort every group so the native picker stays scannable.
     for (const group of byType.values()) group.sort((a, b) => a.name.localeCompare(b.name));
     const rank = (t: string) => {
       const i = order.indexOf(t);
       return i === -1 ? order.length : i;
     };
-    return [...byType.entries()].sort(([a], [b]) => rank(a) - rank(b));
+    return [...byType.entries()]
+      .sort(([a], [b]) => rank(a) - rank(b))
+      .map(([type, group]) => ({
+        label: type[0].toUpperCase() + type.slice(1),
+        options: group.map((s) => ({
+          value: s.id,
+          label: s.name,
+          keywords: [type, s.source, s.dlcRequired ?? ""].filter(Boolean),
+          icon: setTypeArt(s),
+        })),
+      }));
   }, [tables]);
+
+  // Skill-bar picker groups, one section per skill line, split into non-ultimate
+  // (bar slots) and ultimate. Class name rides along as a search keyword; the
+  // line sigil rides along as decoration.
+  const [skillGroups, ultGroups] = useMemo<[ComboGroup[], ComboGroup[]]>(() => {
+    const toGroups = (list: PlannerSkill[]): ComboGroup[] => {
+      const byLine = new Map<string, ComboGroup["options"]>();
+      for (const s of list) {
+        const opts = byLine.get(s.lineLabel) ?? [];
+        opts.push({
+          value: s.id,
+          label: s.name,
+          keywords: s.className ? [s.className] : undefined,
+          icon: skillLineArt(s),
+        });
+        byLine.set(s.lineLabel, opts);
+      }
+      return [...byLine.entries()]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([label, options]) => ({ label, options }));
+    };
+    return [
+      toGroups(availableSkills.filter((s) => !s.ultimate)),
+      toGroups(availableSkills.filter((s) => s.ultimate)),
+    ];
+  }, [availableSkills]);
+
+  const lineGroups = useMemo<ComboGroup[]>(
+    () => [{ options: tables.lines.map((l) => ({ value: l.id, label: l.label })) }],
+    [tables]
+  );
+  const traitGroups: ComboGroup[] = useMemo(
+    () => [{ options: TRAITS.map((t) => ({ value: t, label: t })) }],
+    []
+  );
+  const mundusGroups: ComboGroup[] = useMemo(
+    () => [{ options: mundusStones.map((m) => ({ value: m.id, label: m.name })) }],
+    []
+  );
+  const foodGroups: ComboGroup[] = useMemo(
+    () => [{ options: foods.map((f) => ({ value: f.id, label: f.name })) }],
+    []
+  );
 
   /**
    * Live freshness preview: any currently-slotted set, skill, or CP star that
@@ -207,23 +262,20 @@ export function Planner({
           </div>
           <div className="mt-3 grid gap-2 sm:grid-cols-3">
             {[0, 1, 2].map((i) => (
-              <select
+              <EntityCombobox
                 key={i}
-                aria-label={`Class skill line ${i + 1}`}
+                ariaLabel={`Class skill line ${i + 1}`}
+                groups={lineGroups}
                 value={state.lines[i] ?? ""}
-                onChange={(e) => {
+                placeholder="Choose line"
+                searchPlaceholder="Search lines…"
+                onChange={(v) => {
                   const lines = [...state.lines];
-                  lines[i] = e.target.value;
+                  lines[i] = v;
                   update({ lines: lines.filter(Boolean) });
                 }}
-                className="rounded-md border border-input bg-secondary px-2 py-1.5 text-sm"
-              >
-                {tables.lines.map((l) => (
-                  <option key={l.id} value={l.id}>
-                    {l.label}
-                  </option>
-                ))}
-              </select>
+                className="px-2 py-1.5 text-sm"
+              />
             ))}
           </div>
           <p className="mt-2 text-xs text-muted-foreground">
@@ -240,34 +292,23 @@ export function Planner({
               return (
                 <div key={slot} className="grid grid-cols-[110px_1fr_110px] items-center gap-2 text-sm">
                   <span className="text-xs text-muted-foreground">{SLOT_LABEL[slot]}</span>
-                  <select
-                    aria-label={`${SLOT_LABEL[slot]} set`}
+                  <EntityCombobox
+                    ariaLabel={`${SLOT_LABEL[slot]} set`}
+                    groups={setGroups}
                     value={current?.setId ?? ""}
-                    onChange={(e) => setGearSlot(slot, e.target.value)}
-                    className="min-w-0 rounded-md border border-input bg-secondary px-2 py-1 text-xs"
-                  >
-                    <option value="">(empty)</option>
-                    {setTypes.map(([type, group]) => (
-                      <optgroup key={type} label={type[0].toUpperCase() + type.slice(1)}>
-                        {group.map((s) => (
-                          <option key={s.id} value={s.id}>
-                            {s.name}
-                          </option>
-                        ))}
-                      </optgroup>
-                    ))}
-                  </select>
-                  <select
-                    aria-label={`${SLOT_LABEL[slot]} trait`}
+                    placeholder="(empty)"
+                    searchPlaceholder="Search sets…"
+                    clearLabel="(empty)"
+                    onChange={(v) => setGearSlot(slot, v)}
+                  />
+                  <EntityCombobox
+                    ariaLabel={`${SLOT_LABEL[slot]} trait`}
+                    groups={traitGroups}
                     value={current?.trait ?? "Divines"}
-                    onChange={(e) => current && setGearSlot(slot, current.setId, e.target.value)}
+                    searchPlaceholder="Search traits…"
                     disabled={!current}
-                    className="rounded-md border border-input bg-secondary px-2 py-1 text-xs disabled:opacity-40"
-                  >
-                    {TRAITS.map((t) => (
-                      <option key={t}>{t}</option>
-                    ))}
-                  </select>
+                    onChange={(v) => current && setGearSlot(slot, current.setId, v)}
+                  />
                 </div>
               );
             })}
@@ -282,44 +323,33 @@ export function Planner({
               <p className="mb-1 text-xs capitalize text-muted-foreground">{bar} bar</p>
               <div className="grid gap-1.5 sm:grid-cols-3">
                 {[0, 1, 2, 3, 4].map((i) => (
-                  <select
+                  <EntityCombobox
                     key={i}
-                    aria-label={`${bar} bar, skill ${i + 1}`}
+                    ariaLabel={`${bar} bar, skill ${i + 1}`}
+                    groups={skillGroups}
                     value={state.bar[bar][i] ?? ""}
-                    onChange={(e) => {
+                    placeholder={`Slot ${i + 1}`}
+                    searchPlaceholder="Search skills…"
+                    clearLabel="(empty)"
+                    onChange={(v) => {
                       const arr = [...state.bar[bar]];
-                      arr[i] = e.target.value;
+                      arr[i] = v;
                       update({ bar: { ...state.bar, [bar]: arr } });
                     }}
-                    className="rounded-md border border-input bg-secondary px-2 py-1 text-xs"
-                  >
-                    <option value="">Slot {i + 1}</option>
-                    {availableSkills
-                      .filter((s) => !s.ultimate)
-                      .map((s) => (
-                        <option key={s.id} value={s.id}>
-                          {s.name} ({s.lineLabel})
-                        </option>
-                      ))}
-                  </select>
+                  />
                 ))}
-                <select
-                  aria-label={`${bar} bar ultimate`}
+                <EntityCombobox
+                  ariaLabel={`${bar} bar ultimate`}
+                  groups={ultGroups}
                   value={bar === "front" ? state.bar.frontUlt : state.bar.backUlt}
-                  onChange={(e) =>
-                    update({ bar: { ...state.bar, [bar === "front" ? "frontUlt" : "backUlt"]: e.target.value } })
+                  placeholder="Ultimate"
+                  searchPlaceholder="Search ultimates…"
+                  clearLabel="(empty)"
+                  onChange={(v) =>
+                    update({ bar: { ...state.bar, [bar === "front" ? "frontUlt" : "backUlt"]: v } })
                   }
-                  className="rounded-md border border-primary/40 bg-primary/10 px-2 py-1 text-xs"
-                >
-                  <option value="">Ultimate</option>
-                  {availableSkills
-                    .filter((s) => s.ultimate)
-                    .map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.name} ({s.lineLabel})
-                      </option>
-                    ))}
-                </select>
+                  className="border-primary/40 bg-primary/10"
+                />
               </div>
             </div>
           ))}
@@ -372,34 +402,27 @@ export function Planner({
             ))}
           </div>
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
-            <label className="text-xs text-muted-foreground">
+            <div className="flex flex-col gap-1 text-xs text-muted-foreground">
               Mundus
-              <select
+              <EntityCombobox
+                ariaLabel="Mundus stone"
+                groups={mundusGroups}
                 value={state.mundusId}
-                onChange={(e) => update({ mundusId: e.target.value })}
-                className="mt-1 w-full rounded-md border border-input bg-secondary px-2 py-1.5 text-sm text-foreground"
-              >
-                {mundusStones.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="text-xs text-muted-foreground">
+                searchPlaceholder="Search mundus…"
+                onChange={(v) => update({ mundusId: v })}
+                className="w-full px-2 py-1.5 text-sm text-foreground"
+              />
+            </div>
+            <div className="flex flex-col gap-1 text-xs text-muted-foreground">
               Food
-              <select
+              <EntityCombobox
+                ariaLabel="Food or drink"
+                groups={foodGroups}
                 value={state.foodId}
-                onChange={(e) => update({ foodId: e.target.value })}
-                className="mt-1 w-full rounded-md border border-input bg-secondary px-2 py-1.5 text-sm text-foreground"
-              >
-                {foods.map((f) => (
-                  <option key={f.id} value={f.id}>
-                    {f.name}
-                  </option>
-                ))}
-              </select>
-            </label>
+                onChange={(v) => update({ foodId: v })}
+                className="w-full px-2 py-1.5 text-sm text-foreground"
+              />
+            </div>
           </div>
         </section>
       </div>
