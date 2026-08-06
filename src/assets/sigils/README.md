@@ -12,13 +12,16 @@ the acceptance test keeps manifest and disk in sync both directions.
 ## Master style prompt (prefix for every asset)
 
 > Emblem in the style of an ancient carved stone bas-relief, engraved antique-gold
-> line-work with subtle pale glacial-blue rune glow accents, on a very dark desaturated
-> blue-slate background, aged high-fantasy craftsmanship, clean silhouette readable at
-> 32 pixels, centered composition, single consistent top-left light source, painterly
-> texture with crisp edges, no text, no letters, no watermark, square format
+> line-work (#EBBD57) with subtle pale glacial-blue (#50B1DC) rune glow accents, on a
+> very dark desaturated blue-slate background (#11161E), aged high-fantasy craftsmanship,
+> clean silhouette readable at 32 pixels, centered composition, single consistent
+> top-left light source, painterly texture with crisp edges, no text, no letters, no
+> watermark, square format
 
-Palette anchors (from `src/app/globals.css`): gold accents ≈ `oklch(0.82 0.13 85)`,
-background ≈ `oklch(0.145 0.018 260)`, glow ≈ pale glacial blue.
+Palette (hex sampled from the `src/app/globals.css` oklch tokens): gold line-work
+**#EBBD57** (`--primary`), glacial-blue glow **#50B1DC** (`--wayshrine`), art background
+**#11161E** (`--card`; the page background proper is the darker **#090D14**). Keep every
+asset on the same gold-on-slate palette so the set grid reads as one carved set.
 
 ## Negative prompt (append to all)
 
