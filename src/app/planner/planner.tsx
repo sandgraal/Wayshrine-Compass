@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { AlertCircle, Check, Link2 } from "lucide-react";
+import { AlertCircle, Check, Gem, Link2, Shirt, Swords } from "lucide-react";
 import type { GearSlot } from "@/lib/types";
-import { ALL_CLASSES, GEAR_SLOTS } from "@/lib/types";
+import { ALL_CLASSES } from "@/lib/types";
 import { computeFreshnessPreview } from "./freshness-preview";
 import { mundusStones } from "@/data/mundus";
 import { foods } from "@/data/food";
@@ -13,7 +13,8 @@ import { DPS_MODEL, dpsAssumptions, estimateLoadoutDps } from "@/lib/planner/dps
 import { cn } from "@/lib/utils";
 import { ClassSigil } from "@/components/illustrations";
 import { EntityCombobox, type ComboGroup } from "@/components/entity-combobox";
-import { setTypeArt, skillLineArt } from "@/lib/entity-art";
+import { gearSlotArt, setTypeArt, skillLineArt } from "@/lib/entity-art";
+import { EntitySigil } from "@/components/entity-sigil";
 import { CharacterPicker } from "./character-picker";
 import {
   type PlannerCpStar,
@@ -36,6 +37,15 @@ const SLOT_LABEL: Record<GearSlot, string> = {
   legs: "Legs", feet: "Feet", necklace: "Necklace", ring1: "Ring 1", ring2: "Ring 2",
   frontBarWeapon: "Front bar weapon", backBarWeapon: "Back bar weapon",
 };
+
+// Paper-doll grouping — the three equipment regions of the in-game character
+// sheet. Each group's lucide icon is the fallback the slot glyph renders until
+// the drawn slot art (gearSlotArt) ships.
+const GEAR_GROUPS: { label: string; icon: typeof Shirt; slots: GearSlot[] }[] = [
+  { label: "Armor", icon: Shirt, slots: ["head", "shoulders", "chest", "hands", "waist", "legs", "feet"] },
+  { label: "Jewelry", icon: Gem, slots: ["necklace", "ring1", "ring2"] },
+  { label: "Weapons", icon: Swords, slots: ["frontBarWeapon", "backBarWeapon"] },
+];
 
 export function Planner({
   currentPatch,
@@ -283,35 +293,68 @@ export function Planner({
           </p>
         </section>
 
-        {/* Gear */}
+        {/* Gear — paper-doll layout: the character sheet's three equipment
+            regions, each slot a labelled tile with its glyph and pickers. */}
         <section className="rounded-lg border border-border bg-card p-4">
           <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Gear</h2>
-          <div className="mt-2 space-y-1.5">
-            {GEAR_SLOTS.map((slot) => {
-              const current = state.gear.find((g) => g.slot === slot);
-              return (
-                <div key={slot} className="grid grid-cols-[110px_1fr_110px] items-center gap-2 text-sm">
-                  <span className="text-xs text-muted-foreground">{SLOT_LABEL[slot]}</span>
-                  <EntityCombobox
-                    ariaLabel={`${SLOT_LABEL[slot]} set`}
-                    groups={setGroups}
-                    value={current?.setId ?? ""}
-                    placeholder="(empty)"
-                    searchPlaceholder="Search sets…"
-                    clearLabel="(empty)"
-                    onChange={(v) => setGearSlot(slot, v)}
-                  />
-                  <EntityCombobox
-                    ariaLabel={`${SLOT_LABEL[slot]} trait`}
-                    groups={traitGroups}
-                    value={current?.trait ?? "Divines"}
-                    searchPlaceholder="Search traits…"
-                    disabled={!current}
-                    onChange={(v) => current && setGearSlot(slot, current.setId, v)}
-                  />
+          <div className="mt-3 space-y-4">
+            {GEAR_GROUPS.map((group) => (
+              <div key={group.label}>
+                <p className="mb-1.5 text-[11px] font-medium uppercase tracking-wide text-muted-foreground/70">
+                  {group.label}
+                </p>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  {group.slots.map((slot) => {
+                    const current = state.gear.find((g) => g.slot === slot);
+                    const glyph = gearSlotArt(slot);
+                    const GroupIcon = group.icon;
+                    return (
+                      <div
+                        key={slot}
+                        className={cn(
+                          "rounded-md border p-2.5",
+                          current ? "border-border bg-secondary/30" : "border-border/60 bg-secondary/10"
+                        )}
+                      >
+                        <div className="mb-1.5 flex items-center gap-2">
+                          <span className="sigil-ring size-7 shrink-0">
+                            {glyph ? (
+                              <EntitySigil src={glyph} size={16} />
+                            ) : (
+                              <GroupIcon className="size-3.5 text-muted-foreground" aria-hidden />
+                            )}
+                          </span>
+                          <span className="truncate text-xs font-medium text-muted-foreground">
+                            {SLOT_LABEL[slot]}
+                          </span>
+                        </div>
+                        <div className="flex gap-1.5">
+                          <EntityCombobox
+                            ariaLabel={`${SLOT_LABEL[slot]} set`}
+                            groups={setGroups}
+                            value={current?.setId ?? ""}
+                            placeholder="(empty)"
+                            searchPlaceholder="Search sets…"
+                            clearLabel="(empty)"
+                            onChange={(v) => setGearSlot(slot, v)}
+                            className="min-w-0 flex-1"
+                          />
+                          <EntityCombobox
+                            ariaLabel={`${SLOT_LABEL[slot]} trait`}
+                            groups={traitGroups}
+                            value={current?.trait ?? "Divines"}
+                            searchPlaceholder="Search traits…"
+                            disabled={!current}
+                            onChange={(v) => current && setGearSlot(slot, current.setId, v)}
+                            className="w-24 shrink-0"
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </section>
 
