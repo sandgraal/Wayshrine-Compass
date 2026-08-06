@@ -1,10 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { GEAR_SLOTS } from "@/lib/types";
 import {
+  GEAR_SLOT_GLYPHS,
   LINE_EMBLEMS,
   SET_TYPE_SIGILS,
   SHIPPED_SIGILS,
+  gearSlotArt,
   lineEmblemKey,
   setTypeArt,
   skillLineArt,
@@ -23,6 +26,10 @@ const dataset = JSON.parse(readFileSync("public/dataset/current.json", "utf8")) 
 };
 
 const ALL_MANIFEST_PATHS = [...Object.values(SET_TYPE_SIGILS), ...Object.values(LINE_EMBLEMS)];
+// Gear-slot glyphs deliberately reuse one file across the ring pair and the
+// weapon pair, so they're excluded from the uniqueness check but included in
+// the disk-sync checks (any file in public/sigils/ must be a known path).
+const SHIPPABLE_PATHS = [...new Set([...ALL_MANIFEST_PATHS, ...Object.values(GEAR_SLOT_GLYPHS)])];
 
 describe("entity art manifest", () => {
   it("covers every set type in the dataset", () => {
@@ -47,9 +54,19 @@ describe("entity art manifest", () => {
     expect(new Set(ALL_MANIFEST_PATHS).size).toBe(ALL_MANIFEST_PATHS.length);
   });
 
+  it("covers every gear slot", () => {
+    const uncovered = GEAR_SLOTS.filter((s) => !(s in GEAR_SLOT_GLYPHS));
+    expect(uncovered).toEqual([]);
+    // Nothing shipped yet: every slot glyph resolves to undefined, not a 404.
+    for (const slot of GEAR_SLOTS) {
+      const art = gearSlotArt(slot);
+      if (art) expect(existsSync(join("public", art))).toBe(true);
+    }
+  });
+
   it("has a file on disk for every shipped path", () => {
     for (const path of SHIPPED_SIGILS) {
-      expect(ALL_MANIFEST_PATHS).toContain(path);
+      expect(SHIPPABLE_PATHS).toContain(path);
       expect(existsSync(join("public", path)), `missing file for shipped ${path}`).toBe(true);
     }
   });
@@ -57,7 +74,7 @@ describe("entity art manifest", () => {
   it("has a manifest entry for every file on disk", () => {
     const dir = join("public", "sigils");
     if (!existsSync(dir)) return; // no art shipped yet
-    const known = new Set(ALL_MANIFEST_PATHS.map((p) => p.split("/").pop()));
+    const known = new Set(SHIPPABLE_PATHS.map((p) => p.split("/").pop()));
     for (const file of readdirSync(dir)) {
       if (file === "README.md") continue;
       expect(known.has(file), `unmanifested file public/sigils/${file}`).toBe(true);

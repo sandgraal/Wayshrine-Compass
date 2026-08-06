@@ -117,8 +117,30 @@ Subject template: "[subject] as a compact heraldic crest".
 | line-vampire.webp | a bat-winged goblet with a single drop falling |
 | line-werewolf.webp | a claw slash across a full moon |
 
+## Gear-slot glyphs (10 files) — `slot-<slot>.webp`
+
+Rendered in the planner paper-doll and the console transcribe sheet
+(`gearSlotArt`, manifest `GEAR_SLOT_GLYPHS`). The two rings share `slot-ring`
+and both weapon bars share `slot-weapon`, so twelve slots need ten files. Until
+these ship the layout falls back to a lucide category icon, so they are
+non-blocking. Subject template: "a [subject] rendered as a simple engraved
+armory glyph inside a thin octagonal frame".
+
+| file | subject |
+|---|---|
+| slot-head.webp | a closed barbute helm |
+| slot-shoulders.webp | a spaulder over a rounded pauldron |
+| slot-chest.webp | a segmented cuirass breastplate |
+| slot-hands.webp | a bracered gauntlet, fingers together |
+| slot-waist.webp | a broad belt with a central buckle plate |
+| slot-legs.webp | a pair of tasset-plated greaves |
+| slot-feet.webp | a plated sabaton boot |
+| slot-necklace.webp | a pendant amulet on a fine chain |
+| slot-ring.webp | a gem-set signet ring, viewed face-on |
+| slot-weapon.webp | a sword and staff crossed behind a small round shield |
+
 ## Later phases (not blocking)
 
-Gear-slot glyphs (12), role glyphs (4), CP tree marks (3), mundus stone cards (13),
-zone banners (13), grimoire icons (12), update seals, page-header art. Prompts live in
-the improvement-program plan; add manifests here as each category lands.
+Role glyphs (4), CP tree marks (3), mundus stone cards (13), zone banners (13),
+grimoire icons (12), update seals, page-header art. Prompts live in the
+improvement-program plan; add manifests here as each category lands.

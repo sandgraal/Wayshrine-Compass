@@ -1,4 +1,4 @@
-import type { GearSet, SetType } from "@/lib/types";
+import type { GearSet, GearSlot, SetType } from "@/lib/types";
 
 /**
  * Original category iconography for entity rows — set-type sigils and
@@ -115,4 +115,30 @@ export function lineEmblemKey(skill: { className: string | null; line: string })
 export function skillLineArt(skill: { className: string | null; line: string }): string | undefined {
   const path = LINE_EMBLEMS[lineEmblemKey(skill)];
   return path && SHIPPED_SIGILS.has(path) ? path : undefined;
+}
+
+/**
+ * Armory-glyph per gear slot, for the planner's paper-doll layout and the
+ * console transcribe sheet. Same category discipline: 12 slot glyphs, not
+ * per-item art. The two ring slots share one glyph; a shipped glyph renders,
+ * everything else falls back to a lucide category icon at the call site.
+ */
+export const GEAR_SLOT_GLYPHS: Record<GearSlot, string> = {
+  head: "/sigils/slot-head.webp",
+  shoulders: "/sigils/slot-shoulders.webp",
+  chest: "/sigils/slot-chest.webp",
+  hands: "/sigils/slot-hands.webp",
+  waist: "/sigils/slot-waist.webp",
+  legs: "/sigils/slot-legs.webp",
+  feet: "/sigils/slot-feet.webp",
+  necklace: "/sigils/slot-necklace.webp",
+  ring1: "/sigils/slot-ring.webp",
+  ring2: "/sigils/slot-ring.webp",
+  frontBarWeapon: "/sigils/slot-weapon.webp",
+  backBarWeapon: "/sigils/slot-weapon.webp",
+};
+
+export function gearSlotArt(slot: GearSlot): string | undefined {
+  const path = GEAR_SLOT_GLYPHS[slot];
+  return SHIPPED_SIGILS.has(path) ? path : undefined;
 }
