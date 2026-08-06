@@ -119,8 +119,8 @@ Subject template: "[subject] as a compact heraldic crest".
 
 ## Gear-slot glyphs (10 files) — `slot-<slot>.webp`
 
-Rendered in the planner paper-doll and the console transcribe sheet
-(`gearSlotArt`, manifest `GEAR_SLOT_GLYPHS`). The two rings share `slot-ring`
+Rendered in the planner paper-doll (`gearSlotArt`, manifest
+`GEAR_SLOT_GLYPHS`). The two rings share `slot-ring`
 and both weapon bars share `slot-weapon`, so twelve slots need ten files. Until
 these ship the layout falls back to a lucide category icon, so they are
 non-blocking. Subject template: "a [subject] rendered as a simple engraved

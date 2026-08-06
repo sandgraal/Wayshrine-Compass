@@ -118,9 +118,9 @@ export function skillLineArt(skill: { className: string | null; line: string }):
 }
 
 /**
- * Armory-glyph per gear slot, for the planner's paper-doll layout and the
- * console transcribe sheet. Same category discipline: 12 slot glyphs, not
- * per-item art. The two ring slots share one glyph; a shipped glyph renders,
+ * Armory-glyph per gear slot, for the planner's paper-doll layout. Same
+ * category discipline: 12 slot glyphs, not per-item art. The two ring slots
+ * share one glyph, as do the two weapon bars; a shipped glyph renders,
  * everything else falls back to a lucide category icon at the call site.
  */
 export const GEAR_SLOT_GLYPHS: Record<GearSlot, string> = {

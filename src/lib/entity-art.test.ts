@@ -64,6 +64,22 @@ describe("entity art manifest", () => {
     }
   });
 
+  it("shares only the ring and weapon glyphs — exactly 10 distinct slot files", () => {
+    const g = GEAR_SLOT_GLYPHS;
+    // The two intended aliases (twelve slots, ten files):
+    expect(g.ring1).toBe(g.ring2);
+    expect(g.frontBarWeapon).toBe(g.backBarWeapon);
+    // Exactly ten distinct paths across twelve slots means precisely two
+    // collapses; with the two above accounted for, no accidental third alias
+    // can slip in (a third would drop the count below ten).
+    expect(new Set(Object.values(g)).size).toBe(10);
+    // …and no slot glyph may collide with a set-type or skill-line sigil.
+    const otherSigils = new Set([...Object.values(SET_TYPE_SIGILS), ...Object.values(LINE_EMBLEMS)]);
+    for (const path of Object.values(g)) {
+      expect(otherSigils.has(path), `slot glyph ${path} collides with another sigil`).toBe(false);
+    }
+  });
+
   it("has a file on disk for every shipped path", () => {
     for (const path of SHIPPED_SIGILS) {
       expect(SHIPPABLE_PATHS).toContain(path);
