@@ -96,7 +96,7 @@ const buildUsing =(id: string, setIds: string[], skillIds: string[]): Build => (
   author: "test",
   status: "verified",
   patchVerified: "U50",
-  gear: setIds.map((setId, i) => ({ slot: i === 0 ? "chest" : "necklace", setId, trait: "Divines" })),
+  gear: setIds.map((setId, i) => ({ slot: i === 0 ? "chest" : "necklace", setId, trait: "Divines", enchant: "" })),
   frontBar: { skills: skillIds, ultimate: skillIds[0] },
   backBar: { skills: skillIds, ultimate: skillIds[0] },
   cp: { warfare: ["cp-alpha-aim"], fitness: [], craft: [] },

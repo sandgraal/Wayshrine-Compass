@@ -8,18 +8,18 @@ const setById = new Map(sets.map((s) => [s.id, s]));
 
 function fullLoadout(bodySet: string, jewelrySet: string, headShoulders: string): GearAssignment[] {
   return [
-    { slot: "head", setId: headShoulders, trait: "Divines" },
-    { slot: "shoulders", setId: headShoulders, trait: "Divines" },
-    { slot: "chest", setId: bodySet, trait: "Divines" },
-    { slot: "hands", setId: bodySet, trait: "Divines" },
-    { slot: "waist", setId: bodySet, trait: "Divines" },
-    { slot: "legs", setId: bodySet, trait: "Divines" },
-    { slot: "feet", setId: bodySet, trait: "Divines" },
-    { slot: "necklace", setId: jewelrySet, trait: "Bloodthirsty" },
-    { slot: "ring1", setId: jewelrySet, trait: "Bloodthirsty" },
-    { slot: "ring2", setId: jewelrySet, trait: "Bloodthirsty" },
-    { slot: "frontBarWeapon", setId: jewelrySet, trait: "Precise" },
-    { slot: "backBarWeapon", setId: jewelrySet, trait: "Infused" },
+    { slot: "head", setId: headShoulders, trait: "Divines", enchant: "" },
+    { slot: "shoulders", setId: headShoulders, trait: "Divines", enchant: "" },
+    { slot: "chest", setId: bodySet, trait: "Divines", enchant: "" },
+    { slot: "hands", setId: bodySet, trait: "Divines", enchant: "" },
+    { slot: "waist", setId: bodySet, trait: "Divines", enchant: "" },
+    { slot: "legs", setId: bodySet, trait: "Divines", enchant: "" },
+    { slot: "feet", setId: bodySet, trait: "Divines", enchant: "" },
+    { slot: "necklace", setId: jewelrySet, trait: "Bloodthirsty", enchant: "" },
+    { slot: "ring1", setId: jewelrySet, trait: "Bloodthirsty", enchant: "" },
+    { slot: "ring2", setId: jewelrySet, trait: "Bloodthirsty", enchant: "" },
+    { slot: "frontBarWeapon", setId: jewelrySet, trait: "Precise", enchant: "" },
+    { slot: "backBarWeapon", setId: jewelrySet, trait: "Infused", enchant: "" },
   ];
 }
 
@@ -32,7 +32,7 @@ describe("planner validation", () => {
   it("flags a mythic worn in the wrong slot", () => {
     const gear: GearAssignment[] = [
       // Velothi is a necklace mythic — put it on a ring
-      { slot: "ring1", setId: "set-velothi-ur-mages-amulet", trait: "Bloodthirsty" },
+      { slot: "ring1", setId: "set-velothi-ur-mages-amulet", trait: "Bloodthirsty", enchant: "" },
     ];
     const issues = validateGear(gear, setById);
     expect(issues.some((i) => i.code === "mythic-wrong-slot")).toBe(true);
@@ -40,8 +40,8 @@ describe("planner validation", () => {
 
   it("flags two mythics at once", () => {
     const gear: GearAssignment[] = [
-      { slot: "necklace", setId: "set-velothi-ur-mages-amulet", trait: "Bloodthirsty" },
-      { slot: "ring1", setId: "set-oakensoul-ring", trait: "Bloodthirsty" },
+      { slot: "necklace", setId: "set-velothi-ur-mages-amulet", trait: "Bloodthirsty", enchant: "" },
+      { slot: "ring1", setId: "set-oakensoul-ring", trait: "Bloodthirsty", enchant: "" },
     ];
     const issues = validateGear(gear, setById);
     expect(issues.some((i) => i.code === "multiple-mythics")).toBe(true);
@@ -52,7 +52,7 @@ describe("planner validation", () => {
     // (a necklace mythic) cannot legally fit.
     const gear = [
       ...fullLoadout("set-deadly-strike", "set-orders-wrath", "set-deadly-strike"),
-      { slot: "necklace" as const, setId: "set-velothi-ur-mages-amulet", trait: "Bloodthirsty" },
+      { slot: "necklace" as const, setId: "set-velothi-ur-mages-amulet", trait: "Bloodthirsty", enchant: "" },
     ];
     const issues = validateGear(gear, setById);
     expect(issues.some((i) => i.code === "duplicate-slot")).toBe(true);
@@ -118,9 +118,9 @@ describe("computeStats with live-catalog bonuses (tooltip text only)", () => {
       ],
     };
     const gear = [
-      { slot: "head" as const, setId: "set-live", trait: "Divines" },
-      { slot: "chest" as const, setId: "set-live", trait: "Divines" },
-      { slot: "legs" as const, setId: "set-live", trait: "Divines" },
+      { slot: "head" as const, setId: "set-live", trait: "Divines", enchant: "" },
+      { slot: "chest" as const, setId: "set-live", trait: "Divines", enchant: "" },
+      { slot: "legs" as const, setId: "set-live", trait: "Divines", enchant: "" },
     ];
     const { totals, activeBonuses } = computeStats(gear, new Map([["set-live", liveSet]]));
     expect(totals.maxMagicka).toBe(12000 + 1096);
@@ -140,8 +140,8 @@ describe("computeStats with live-catalog bonuses (tooltip text only)", () => {
       bonuses: [{ pieces: 2, effect: "Adds 6-300 Weapon and Spell Damage while your Health is above 50%." }],
     };
     const gear = [
-      { slot: "head" as const, setId: "set-cond", trait: "Divines" },
-      { slot: "chest" as const, setId: "set-cond", trait: "Divines" },
+      { slot: "head" as const, setId: "set-cond", trait: "Divines", enchant: "" },
+      { slot: "chest" as const, setId: "set-cond", trait: "Divines", enchant: "" },
     ];
     const { totals, activeBonuses } = computeStats(gear, new Map([["set-cond", liveSet]]));
     expect(totals.weaponSpellDamage).toBe(1000);
